@@ -1,0 +1,918 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Admin Panel - CGS</title>
+    <style>
+        @import url('https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;700;800;900&display=swap');
+        *{margin:0;padding:0;box-sizing:border-box;font-family:'Poppins',sans-serif;}
+
+        /* ===== ADMIN LOGIN OVERLAY ===== */
+        .admin-login-overlay {
+            position:fixed;top:0;left:0;width:100%;height:100%;
+            background:linear-gradient(135deg,#0b1a0d 0%,#0d1f3c 35%,#1a0b2e 70%,#0b1a0d 100%);
+            background-size:400% 400%;animation:bgAnim 12s ease infinite;
+            display:flex;align-items:center;justify-content:center;z-index:9999;
+        }
+        @keyframes bgAnim{0%{background-position:0% 50%}50%{background-position:100% 50%}100%{background-position:0% 50%}}
+        .admin-login-box {
+            background:rgba(255,255,255,0.06);backdrop-filter:blur(20px);
+            border:1px solid rgba(253,204,13,0.3);border-radius:24px;
+            padding:40px 35px;width:100%;max-width:380px;text-align:center;
+            box-shadow:0 25px 60px rgba(0,0,0,0.6);
+            animation:popIn 0.5s cubic-bezier(0.175,0.885,0.32,1.275) both;
+        }
+        @keyframes popIn{from{opacity:0;transform:scale(0.8)}to{opacity:1;transform:scale(1)}}
+        .admin-login-box .lock{font-size:3.5rem;margin-bottom:12px;animation:bounce 2s ease-in-out infinite;}
+        @keyframes bounce{0%,100%{transform:translateY(0)}50%{transform:translateY(-10px)}}
+        .admin-login-box h2{
+            font-size:1.3rem;font-weight:800;
+            background:linear-gradient(90deg,#fdcc0d,#fff,#fdcc0d);background-size:200%;
+            -webkit-background-clip:text;-webkit-text-fill-color:transparent;background-clip:text;
+            animation:shine 3s linear infinite;margin-bottom:6px;
+        }
+        @keyframes shine{0%{background-position:0%}100%{background-position:200%}}
+        .admin-login-box p{color:#9ca3af;font-size:0.82rem;margin-bottom:22px;}
+        .admin-input{
+            width:100%;padding:12px 16px;background:rgba(255,255,255,0.07);
+            border:1px solid rgba(253,204,13,0.3)!important;border-radius:12px;
+            color:#e0e0e0;font-size:0.9rem;margin-bottom:12px;
+            font-family:'Poppins',sans-serif;outline:none;transition:all 0.3s;
+        }
+        .admin-input::placeholder{color:rgba(255,255,255,0.3);}
+        .admin-input:focus{border-color:rgba(253,204,13,0.7)!important;background:rgba(255,255,255,0.1);box-shadow:0 0 15px rgba(253,204,13,0.15);}
+        .admin-login-btn{
+            width:100%;padding:13px;
+            background:linear-gradient(120deg,#fdcc0d,#f39c12);
+            border:none;border-radius:12px;color:#1a1a2e;
+            font-size:0.95rem;font-weight:800;cursor:pointer;
+            transition:all 0.3s;box-shadow:0 8px 25px rgba(253,204,13,0.4);
+            font-family:'Poppins',sans-serif;
+        }
+        .admin-login-btn:hover{transform:translateY(-3px);box-shadow:0 12px 35px rgba(253,204,13,0.6);}
+        .forgot-admin-btn{display:block;margin:14px auto 0;border:0;background:none;color:#fdcc0d;cursor:pointer;font:0.78rem 'Poppins',sans-serif;text-decoration:underline;}
+        .admin-reset-form{display:none;margin-top:14px;}
+        .admin-reset-form .admin-login-btn{display:block;}
+        .reset-back{border:0;background:none;cursor:pointer;width:100%;}
+        .admin-error{color:#ff6b6b;font-size:0.8rem;margin-top:8px;display:none;}
+        .back-link{color:#9ca3af;font-size:0.78rem;margin-top:14px;display:block;text-decoration:none;transition:color 0.3s;}
+        .back-link:hover{color:#4eb060;}
+
+        body{
+            min-height:100vh;
+            background:linear-gradient(135deg,#0b1a0d 0%,#0d1f3c 35%,#1a0b2e 70%,#0b1a0d 100%);
+            background-size:400% 400%;animation:bgAnim 12s ease infinite;
+            display:flex;overflow-x:hidden;
+        }
+        @keyframes bgAnim{0%{background-position:0% 50%}50%{background-position:100% 50%}100%{background-position:0% 50%}}
+
+        body::before{
+            content:'';position:fixed;top:0;left:0;width:100%;height:100%;
+            background-image:linear-gradient(rgba(78,176,96,0.03) 1px,transparent 1px),linear-gradient(90deg,rgba(78,176,96,0.03) 1px,transparent 1px);
+            background-size:50px 50px;pointer-events:none;z-index:0;
+            animation:gridScroll 20s linear infinite;
+        }
+        @keyframes gridScroll{from{transform:translateY(0)}to{transform:translateY(50px)}}
+
+        /* SIDEBAR */
+        .sidebar{
+            width:240px;min-height:100vh;
+            background:rgba(255,255,255,0.05);
+            backdrop-filter:blur(20px);
+            border-right:1px solid rgba(78,176,96,0.2);
+            padding:25px 0;position:fixed;left:0;top:0;
+            z-index:100;display:flex;flex-direction:column;
+        }
+        .sidebar-logo{
+            text-align:center;padding:0 20px 25px;
+            border-bottom:1px solid rgba(78,176,96,0.15);margin-bottom:15px;
+        }
+        .sidebar-logo h2{font-size:1.4rem;font-weight:900;color:#e0e0e0;letter-spacing:2px;}
+        .sidebar-logo h2 span{color:#4eb060;}
+        .sidebar-logo p{color:#9ca3af;font-size:0.72rem;margin-top:3px;}
+
+        .nav-item{
+            display:flex;align-items:center;gap:12px;
+            padding:13px 22px;cursor:pointer;
+            color:#9ca3af;font-size:0.88rem;font-weight:500;
+            transition:all 0.3s ease;border-left:3px solid transparent;
+            text-decoration:none;
+        }
+        .nav-item:hover,.nav-item.active{
+            color:#4eb060;background:rgba(78,176,96,0.08);
+            border-left-color:#4eb060;
+        }
+        .nav-item .icon{font-size:1.1rem;}
+
+        .sidebar-footer{margin-top:auto;padding:20px;}
+        .sidebar-footer a{
+            display:block;text-align:center;padding:10px;
+            background:rgba(255,80,80,0.1);border:1px solid rgba(255,80,80,0.3);
+            color:#ff6b6b;border-radius:12px;text-decoration:none;
+            font-size:0.85rem;font-weight:600;transition:all 0.3s;
+        }
+        .sidebar-footer a:hover{background:rgba(255,80,80,0.2);}
+
+        /* MAIN CONTENT */
+        .main{margin-left:240px;flex:1;padding:30px;position:relative;z-index:1;min-height:100vh;}
+
+        /* TOP BAR */
+        .topbar{
+            display:flex;justify-content:space-between;align-items:center;
+            margin-bottom:28px;
+            background:rgba(255,255,255,0.05);
+            backdrop-filter:blur(15px);border:1px solid rgba(78,176,96,0.15);
+            border-radius:16px;padding:16px 24px;
+        }
+        .topbar h1{
+            font-size:1.4rem;font-weight:800;
+            background:linear-gradient(90deg,#4eb060,#a5d6a7,#fff);
+            background-size:200%;-webkit-background-clip:text;
+            -webkit-text-fill-color:transparent;background-clip:text;
+            animation:textShine 4s linear infinite;
+        }
+        @keyframes textShine{0%{background-position:0%}100%{background-position:200%}}
+        .topbar-right{color:#9ca3af;font-size:0.82rem;}
+        .topbar-right span{color:#4eb060;font-weight:600;}
+
+        /* STATS */
+        .stats-grid{display:grid;grid-template-columns:repeat(5,1fr);gap:16px;margin-bottom:28px;}
+        .stat-box{
+            background:rgba(255,255,255,0.05);
+            backdrop-filter:blur(15px);
+            border:1px solid rgba(78,176,96,0.15);
+            border-radius:18px;padding:22px;
+            text-align:center;transition:all 0.3s ease;
+            animation:fadeInUp 0.6s ease both;
+        }
+        .stat-box:hover{transform:translateY(-5px);border-color:rgba(78,176,96,0.4);box-shadow:0 12px 30px rgba(78,176,96,0.15);}
+        .stat-box .icon{font-size:2rem;margin-bottom:8px;}
+        .stat-box .num{
+            font-size:1.8rem;font-weight:900;
+            background:linear-gradient(90deg,#4eb060,#a5d6a7);
+            -webkit-background-clip:text;-webkit-text-fill-color:transparent;background-clip:text;
+        }
+        .stat-box .lbl{color:#9ca3af;font-size:0.78rem;margin-top:4px;}
+
+        @keyframes fadeInUp{from{opacity:0;transform:translateY(20px)}to{opacity:1;transform:translateY(0)}}
+
+        /* SECTION */
+        .section{display:none;}
+        .section.active{display:block;}
+
+        .section-title{
+            font-size:1.1rem;font-weight:700;color:#e0e0e0;
+            margin-bottom:16px;display:flex;align-items:center;gap:8px;
+        }
+
+        /* TABLE */
+        .table-wrap{
+            background:rgba(255,255,255,0.04);
+            backdrop-filter:blur(15px);
+            border:1px solid rgba(78,176,96,0.15);
+            border-radius:18px;overflow:hidden;
+        }
+        table{width:100%;border-collapse:collapse;}
+        thead tr{background:linear-gradient(120deg,rgba(78,176,96,0.2),rgba(46,125,50,0.1));}
+        thead th{padding:13px 16px;text-align:left;color:#81c784;font-size:0.78rem;font-weight:700;text-transform:uppercase;letter-spacing:1px;}
+        tbody tr{border-bottom:1px solid rgba(255,255,255,0.04);transition:background 0.2s;}
+        tbody tr:hover{background:rgba(78,176,96,0.05);}
+        tbody tr:last-child{border-bottom:none;}
+        tbody td{padding:12px 16px;font-size:0.85rem;color:#c8e6c9;}
+
+        .badge{display:inline-block;padding:3px 10px;border-radius:20px;font-size:0.72rem;font-weight:700;}
+        .badge.green{background:rgba(78,176,96,0.15);color:#4eb060;border:1px solid rgba(78,176,96,0.3);}
+        .badge.yellow{background:rgba(253,204,13,0.15);color:#fdcc0d;border:1px solid rgba(253,204,13,0.3);}
+        .badge.red{background:rgba(255,80,80,0.15);color:#ff6b6b;border:1px solid rgba(255,80,80,0.3);}
+        .badge.blue{background:rgba(41,182,246,0.15);color:#29b6f6;border:1px solid rgba(41,182,246,0.3);}
+        .badge.grey{background:rgba(156,163,175,0.15);color:#9ca3af;border:1px solid rgba(156,163,175,0.3);}
+
+        /* Action buttons in orders table */
+        .action-btn{
+            padding:5px 12px;border:none;border-radius:8px;font-size:0.75rem;font-weight:700;
+            cursor:pointer;font-family:'Poppins',sans-serif;transition:all 0.2s;margin:2px;
+        }
+        .action-btn.confirm{background:rgba(78,176,96,0.2);color:#4eb060;border:1px solid rgba(78,176,96,0.4);}
+        .action-btn.confirm:hover{background:rgba(78,176,96,0.4);}
+        .action-btn.reject{background:rgba(255,80,80,0.15);color:#ff6b6b;border:1px solid rgba(255,80,80,0.3);}
+        .action-btn.reject:hover{background:rgba(255,80,80,0.3);}
+
+        /* Rejection reason modal */
+        .modal-overlay{
+            display:none;position:fixed;inset:0;background:rgba(0,0,0,0.7);
+            backdrop-filter:blur(4px);z-index:9999;
+            align-items:center;justify-content:center;
+        }
+        .modal-overlay.open{display:flex;}
+        .modal-box{
+            background:linear-gradient(135deg,#0b1a0d,#0d1f3c);
+            border:1px solid rgba(255,80,80,0.4);border-radius:20px;
+            padding:32px;width:100%;max-width:440px;
+            box-shadow:0 25px 60px rgba(0,0,0,0.6);
+            animation:popIn 0.3s cubic-bezier(0.175,0.885,0.32,1.275) both;
+        }
+        @keyframes popIn{from{opacity:0;transform:scale(0.85)}to{opacity:1;transform:scale(1)}}
+        .modal-box h3{color:#ff6b6b;font-size:1.1rem;font-weight:800;margin-bottom:6px;}
+        .modal-box p{color:#9ca3af;font-size:0.82rem;margin-bottom:16px;}
+        .modal-box textarea{
+            width:100%;padding:12px;background:rgba(255,255,255,0.07);
+            border:1px solid rgba(255,80,80,0.35);border-radius:12px;
+            color:#e0e0e0;font-size:0.88rem;font-family:'Poppins',sans-serif;
+            resize:vertical;min-height:90px;outline:none;margin-bottom:16px;
+        }
+        .modal-box textarea:focus{border-color:rgba(255,80,80,0.7);box-shadow:0 0 12px rgba(255,80,80,0.15);}
+        .modal-btns{display:flex;gap:10px;}
+        .modal-btns button{
+            flex:1;padding:11px;border:none;border-radius:12px;
+            font-size:0.88rem;font-weight:700;cursor:pointer;font-family:'Poppins',sans-serif;
+        }
+        .modal-btns .btn-cancel-modal{background:rgba(255,255,255,0.08);color:#9ca3af;}
+        .modal-btns .btn-reject-confirm{background:linear-gradient(120deg,#e53935,#b71c1c);color:#fff;}
+
+        .loading{text-align:center;padding:40px;color:#9ca3af;}
+        .loading .spin{font-size:2rem;animation:spin 1s linear infinite;display:block;margin-bottom:10px;}
+        @keyframes spin{from{transform:rotate(0deg)}to{transform:rotate(360deg)}}
+
+        .empty-msg{text-align:center;padding:40px;color:#9ca3af;font-size:0.9rem;}
+
+        /* Refresh btn */
+        .refresh-btn{
+            padding:8px 18px;background:linear-gradient(120deg,#4eb060,#2e7d32);
+            border:none;border-radius:20px;color:#fff;font-size:0.8rem;font-weight:600;
+            cursor:pointer;transition:all 0.3s;font-family:'Poppins',sans-serif;margin-left:auto;display:block;margin-bottom:12px;
+        }
+        .refresh-btn:hover{transform:translateY(-2px);box-shadow:0 6px 15px rgba(78,176,96,0.4);}
+
+        /* Scrollbar */
+        ::-webkit-scrollbar{width:7px;}
+        ::-webkit-scrollbar-track{background:#0b1a0d;}
+        ::-webkit-scrollbar-thumb{background:linear-gradient(#4eb060,#7b2fbe);border-radius:10px;}
+
+        @media(max-width:900px){
+            .sidebar{width:60px;}
+            .sidebar-logo,.nav-item span,.sidebar-footer{display:none;}
+            .main{margin-left:60px;}
+            .stats-grid{grid-template-columns:1fr 1fr;}
+        }
+    </style>
+</head>
+<body>
+
+    <!-- Rejection Reason Modal -->
+    <div class="modal-overlay" id="reject-modal">
+        <div class="modal-box">
+            <h3>❌ Reject Order</h3>
+            <p>Enter a reason for rejecting this order. The customer will see this message.</p>
+            <textarea id="rejection-reason" placeholder="e.g. Item out of stock, delivery not available in your area..."></textarea>
+            <div class="modal-btns">
+                <button class="btn-cancel-modal" onclick="closeRejectModal()">Cancel</button>
+                <button class="btn-reject-confirm" onclick="confirmReject()">Reject Order</button>
+            </div>
+        </div>
+    </div>
+
+    <!-- Admin Login Overlay -->
+    <div class="admin-login-overlay" id="admin-login-overlay">
+        <div class="admin-login-box">
+            <div class="lock">🔐</div>
+            <h2>ADMIN ACCESS ONLY</h2>
+            <p>This panel is restricted to administrators only.<br>Enter admin credentials to continue.</p>
+            <input type="text" class="admin-input" id="admin-user" placeholder="📧 Admin Email">
+            <input type="password" class="admin-input" id="admin-pass" placeholder="🔒 Admin Password"
+                onkeydown="if(event.key==='Enter') adminLogin()">
+            <button class="admin-login-btn" onclick="adminLogin()">🔐 Login to Admin Panel</button>
+            <button class="forgot-admin-btn" type="button" onclick="showAdminReset()">Forgot password?</button>
+            <div id="admin-reset-form" class="admin-reset-form">
+                <input type="text" class="admin-input" id="admin-phone" placeholder="📱 Enter Mobile Number">
+                <button class="admin-login-btn" type="button" onclick="sendRecoveryCode()">📨 Send Recovery Code</button>
+                <input type="text" class="admin-input" id="admin-recovery-code" placeholder="🔑 Recovery Code (6 digits)">
+                <input type="password" class="admin-input" id="admin-new-pass" placeholder="🔒 New Password (8+ characters)">
+                <button class="admin-login-btn" type="button" onclick="resetAdminPassword()">Reset Password</button>
+                <button class="back-link reset-back" type="button" onclick="hideAdminReset()">← Back to login</button>
+            </div>
+            <p class="admin-error" id="admin-error">❌ Invalid credentials! Try again.</p>
+            <a href="Home Page HTML.html" class="back-link">← Back to Website</a>
+        </div>
+    </div>
+
+    <!-- Sidebar -->
+    <div class="sidebar">
+        <div class="sidebar-logo">
+            <h2><span>C</span>GS</h2>
+            <p>Admin Panel</p>
+        </div>
+        <a class="nav-item active" onclick="showSection('dashboard')">
+            <span class="icon">📊</span><span>Dashboard</span>
+        </a>
+        <a class="nav-item" onclick="showSection('orders')">
+            <span class="icon">📦</span><span>Orders</span>
+        </a>
+        <a class="nav-item" onclick="showSection('users')">
+            <span class="icon">👥</span><span>Users</span>
+        </a>
+        <a class="nav-item" onclick="showSection('feedbacks')">
+            <span class="icon">⭐</span><span>Feedbacks</span>
+        </a>
+        <a class="nav-item" onclick="showSection('contacts')">
+            <span class="icon">📩</span><span>Contacts</span>
+        </a>
+        <div class="sidebar-footer">
+            <a href="Home Page HTML.html">🏠 Back to Site</a>
+        </div>
+    </div>
+
+    <!-- Main -->
+    <div class="main">
+
+        <!-- Top Bar -->
+        <div class="topbar">
+            <h1 id="topbar-title">📊 Dashboard Overview</h1>
+            <div class="topbar-right">Welcome, <span>Admin</span> | CGS Control Panel</div>
+        </div>
+
+        <!-- Stats always visible -->
+        <div class="stats-grid" id="stats-grid">
+            <div class="stat-box" style="animation-delay:0s">
+                <div class="icon">📦</div>
+                <div class="num" id="s-orders">--</div>
+                <div class="lbl">Total Orders</div>
+            </div>
+            <div class="stat-box" style="animation-delay:0.1s">
+                <div class="icon">👥</div>
+                <div class="num" id="s-users">--</div>
+                <div class="lbl">Registered Users</div>
+            </div>
+            <div class="stat-box" style="animation-delay:0.2s">
+                <div class="icon">⭐</div>
+                <div class="num" id="s-feedbacks">--</div>
+                <div class="lbl">Feedbacks</div>
+            </div>
+            <div class="stat-box" style="animation-delay:0.3s">
+                <div class="icon">📩</div>
+                <div class="num" id="s-contacts">--</div>
+                <div class="lbl">Messages</div>
+            </div>
+            <div class="stat-box" style="animation-delay:0.4s">
+                <div class="icon">💰</div>
+                <div class="num" id="s-revenue">Rs. --</div>
+                <div class="lbl">Total Revenue</div>
+            </div>
+        </div>
+
+        <!-- DASHBOARD -->
+        <div class="section active" id="sec-dashboard">
+            <div class="section-title">🕐 Recent Orders</div>
+            <div class="table-wrap" id="dash-orders-table">
+                <div class="loading"><span class="spin">⏳</span>Loading...</div>
+            </div>
+        </div>
+
+        <!-- ORDERS -->
+        <div class="section" id="sec-orders">
+            <button class="refresh-btn" onclick="loadOrders()">🔄 Refresh</button>
+            <div class="section-title">📦 All Orders</div>
+            <div class="table-wrap" id="orders-table">
+                <div class="loading"><span class="spin">⏳</span>Loading...</div>
+            </div>
+        </div>
+
+        <!-- USERS -->
+        <div class="section" id="sec-users">
+            <button class="refresh-btn" onclick="loadUsers()">🔄 Refresh</button>
+            <div class="section-title">👥 Registered Users</div>
+            <div class="table-wrap" id="users-table">
+                <div class="loading"><span class="spin">⏳</span>Loading...</div>
+            </div>
+        </div>
+
+        <!-- FEEDBACKS -->
+        <div class="section" id="sec-feedbacks">
+            <button class="refresh-btn" onclick="loadFeedbacks()">🔄 Refresh</button>
+            <div class="section-title">⭐ Customer Feedbacks</div>
+            <div class="table-wrap" id="feedbacks-table">
+                <div class="loading"><span class="spin">⏳</span>Loading...</div>
+            </div>
+        </div>
+
+        <!-- CONTACTS -->
+        <div class="section" id="sec-contacts">
+            <button class="refresh-btn" onclick="loadContacts()">🔄 Refresh</button>
+            <div class="section-title">📩 Contact Messages</div>
+            <div class="table-wrap" id="contacts-table">
+                <div class="loading"><span class="spin">⏳</span>Loading...</div>
+            </div>
+        </div>
+
+    </div>
+
+    <script>
+    // ===== ADMIN LOGIN =====
+    const adminHeaders = () => ({ 'x-admin-token': sessionStorage.getItem('cgs_admin_token') || '' });
+
+    function showAdminReset() {
+        document.getElementById('admin-reset-form').style.display = 'block';
+        document.getElementById('admin-pass').style.display = 'none';
+        document.querySelector('.admin-login-btn').style.display = 'none';
+        document.querySelector('.forgot-admin-btn').style.display = 'none';
+    }
+
+    function hideAdminReset() {
+        document.getElementById('admin-reset-form').style.display = 'none';
+        document.getElementById('admin-pass').style.display = '';
+        document.querySelector('.admin-login-btn').style.display = '';
+        document.querySelector('.forgot-admin-btn').style.display = '';
+    }
+
+    async function sendRecoveryCode() {
+        const phone = document.getElementById('admin-phone').value.trim();
+        const err = document.getElementById('admin-error');
+
+        if (!phone) {
+            err.textContent = '❌ Enter the admin mobile number first.';
+            err.style.color = '#ff6b6b';
+            err.style.display = 'block';
+            return;
+        }
+
+        try {
+            const response = await fetch('/api/admin/send-recovery-code', {
+                method: 'POST',
+                headers: { 'Content-Type': 'application/json' },
+                body: JSON.stringify({ adminPhone: phone })
+            });
+            const result = await response.json();
+            if (!response.ok) throw new Error(result.message || 'Unable to send recovery code');
+
+            document.getElementById('admin-recovery-code').value = result.code || '';
+            err.textContent = '✅ Recovery code sent. Use the 6-digit code shown below.';
+            err.style.color = '#4eb060';
+            err.style.display = 'block';
+        } catch (error) {
+            err.textContent = '❌ ' + error.message;
+            err.style.color = '#ff6b6b';
+            err.style.display = 'block';
+        }
+    }
+
+    async function resetAdminPassword() {
+        const err = document.getElementById('admin-error');
+        try {
+            const response = await fetch('/api/admin/reset-password', {
+                method: 'POST',
+                headers: { 'Content-Type': 'application/json' },
+                body: JSON.stringify({
+                    adminPhone: document.getElementById('admin-phone').value.trim(),
+                    code: document.getElementById('admin-recovery-code').value.trim(),
+                    newPassword: document.getElementById('admin-new-pass').value
+                })
+            });
+            const result = await response.json();
+            if (!response.ok) throw new Error(result.message);
+            err.textContent = '✅ ' + result.message;
+            err.style.color = '#4eb060';
+            err.style.display = 'block';
+            document.getElementById('admin-phone').value = '';
+            document.getElementById('admin-recovery-code').value = '';
+            document.getElementById('admin-new-pass').value = '';
+            hideAdminReset();
+        } catch (error) {
+            err.textContent = '❌ ' + error.message;
+            err.style.color = '#ff6b6b';
+            err.style.display = 'block';
+        }
+    }
+
+    async function adminLogin() {
+        const user = document.getElementById('admin-user').value.trim();
+        const pass = document.getElementById('admin-pass').value;
+        const err  = document.getElementById('admin-error');
+
+        try {
+            const loginResponse = await fetch('/api/admin/login', {
+                method: 'POST',
+                headers: { 'Content-Type': 'application/json' },
+                body: JSON.stringify({ email: user, password: pass })
+            });
+            const loginData = await loginResponse.json();
+            if (!loginResponse.ok) throw new Error(loginData.message || 'Admin login failed');
+            sessionStorage.setItem('cgs_admin', 'true');
+            sessionStorage.setItem('cgs_admin_token', loginData.token);
+            document.getElementById('admin-login-overlay').style.display = 'none';
+            loadStats();
+        } catch (error) {
+            err.textContent = '❌ ' + (error.message || 'Unable to connect to server');
+            err.style.display = 'block';
+            document.getElementById('admin-pass').value = '';
+            document.getElementById('admin-pass').style.borderColor = 'rgba(255,80,80,0.8)';
+            setTimeout(() => {
+                document.getElementById('admin-pass').style.borderColor = '';
+                err.style.display = 'none';
+            }, 3000);
+        }
+    }
+
+    const API = '/api';
+
+    async function initializeAdminSession() {
+        const hasSession = sessionStorage.getItem('cgs_admin') === 'true' && sessionStorage.getItem('cgs_admin_token');
+        if (!hasSession) return;
+
+        try {
+            const response = await fetch(API + '/users', { headers: adminHeaders() });
+            if (!response.ok) throw new Error('Admin session expired');
+            document.getElementById('admin-login-overlay').style.display = 'none';
+            loadStats();
+        } catch (error) {
+            sessionStorage.removeItem('cgs_admin');
+            sessionStorage.removeItem('cgs_admin_token');
+            document.getElementById('admin-login-overlay').style.display = 'flex';
+        }
+    }
+
+    // ===== NAVIGATION =====
+    function showSection(name) {
+        document.querySelectorAll('.section').forEach(s => s.classList.remove('active'));
+        document.querySelectorAll('.nav-item').forEach(n => n.classList.remove('active'));
+        document.getElementById('sec-' + name).classList.add('active');
+        event.currentTarget.classList.add('active');
+
+        const titles = {
+            dashboard: '📊 Dashboard Overview',
+            orders:    '📦 All Orders',
+            users:     '👥 Registered Users',
+            feedbacks: '⭐ Customer Feedbacks',
+            contacts:  '📩 Contact Messages'
+        };
+        document.getElementById('topbar-title').textContent = titles[name];
+
+        if (name === 'orders')    loadOrders();
+        if (name === 'users')     loadUsers();
+        if (name === 'feedbacks') loadFeedbacks();
+        if (name === 'contacts')  loadContacts();
+    }
+
+    // ===== LOAD STATS =====
+    async function loadStats() {
+        try {
+            const [orders, users, feedbacks, contacts] = await Promise.all([
+                fetch(API+'/orders', { headers: adminHeaders() }).then(r=>r.ok ? r.json() : []),
+                fetch(API+'/users', { headers: adminHeaders() }).then(r=>r.ok ? r.json() : []),
+                fetch(API+'/feedback', { headers: adminHeaders() }).then(r=>r.ok ? r.json() : []),
+                fetch(API+'/contact', { headers: adminHeaders() }).then(r=>r.ok ? r.json() : [])
+            ]);
+            document.getElementById('s-orders').textContent    = orders.length    || 0;
+            document.getElementById('s-users').textContent     = users.length     || 0;
+            document.getElementById('s-feedbacks').textContent = feedbacks.length || 0;
+            document.getElementById('s-contacts').textContent  = contacts.length  || 0;
+            const revenue = orders.reduce((total, order) => total + Number(order.grandTotal || 0), 0);
+            document.getElementById('s-revenue').textContent = 'Rs. ' + revenue.toLocaleString('en-IN');
+
+            // Dashboard recent orders
+            renderOrdersTable(orders.slice(0, 5), 'dash-orders-table');
+        } catch(e) {
+            document.getElementById('s-orders').textContent    = 'N/A';
+            document.getElementById('s-users').textContent     = 'N/A';
+            document.getElementById('s-feedbacks').textContent = 'N/A';
+            document.getElementById('s-contacts').textContent  = 'N/A';
+            document.getElementById('s-revenue').textContent    = 'N/A';
+        }
+    }
+
+    // ===== ORDERS =====
+    async function loadOrders() {
+        const el = document.getElementById('orders-table');
+        el.innerHTML = '<div class="loading"><span class="spin">⏳</span>Loading orders...</div>';
+        try {
+            const data = await fetch(API+'/orders', { headers: adminHeaders() }).then(r=>r.json());
+            renderOrdersTable(data.reverse(), 'orders-table');
+        } catch(e) {
+            el.innerHTML = '<div class="empty-msg">❌ Could not connect to server. Make sure node server.js is running.</div>';
+        }
+    }
+
+    function statusBadge(status) {
+        const map = {
+            'Pending':          '<span class="badge yellow">⏳ Pending</span>',
+            'Accepted':         '<span class="badge green">✅ Confirmed</span>',
+            'Confirmed':        '<span class="badge green">✅ Confirmed</span>',
+            'Rejected':         '<span class="badge red">❌ Rejected</span>',
+            'Cancelled':        '<span class="badge grey">🚫 Cancelled</span>',
+            'Return Requested': '<span class="badge blue">↩ Return Requested</span>',
+        };
+        return map[status] || `<span class="badge grey">${status||'--'}</span>`;
+    }
+
+    function renderOrdersTable(data, elId) {
+        const el = document.getElementById(elId);
+        if (!data || data.length === 0) {
+            el.innerHTML = '<div class="empty-msg">📭 No orders found</div>'; return;
+        }
+        el.innerHTML = `<table>
+            <thead><tr>
+                <th>Order ID</th><th>Customer</th><th>Items</th>
+                <th>Total</th><th>Payment</th><th>Date</th><th>Status</th><th>Actions</th>
+            </tr></thead>
+            <tbody>
+            ${data.map(o => `<tr id="row-${o.orderId}">
+                <td><strong style="color:#4eb060;font-size:0.8rem">${o.orderId||'--'}</strong><br>
+                    <span style="color:#9ca3af;font-size:0.7rem">${o.invoiceNo||''}</span></td>
+                <td><strong>${o.customer?.name||'--'}</strong><br>
+                    <span style="color:#9ca3af;font-size:0.75rem">${o.customer?.email||o.customer?.phone||''}</span></td>
+                <td style="text-align:center">${(o.items||[]).length}</td>
+                <td><strong style="color:#4eb060">Rs. ${Number(o.grandTotal||0).toLocaleString('en-IN')}</strong></td>
+                <td><span class="badge blue" style="font-size:0.68rem">${o.payment?.method||'--'}</span></td>
+                <td style="color:#9ca3af;font-size:0.78rem">${o.createdAt ? new Date(o.createdAt).toLocaleDateString('en-IN') : '--'}</td>
+                <td>${statusBadge(o.status)}
+                    ${o.rejectionReason ? `<br><span style="color:#ff6b6b;font-size:0.7rem;display:block;margin-top:3px;max-width:120px;overflow:hidden;text-overflow:ellipsis;white-space:nowrap;" title="${o.rejectionReason}">📝 ${o.rejectionReason}</span>` : ''}
+                </td>
+                <td>
+                    ${(o.status === 'Pending') ? `
+                        <button class="action-btn confirm" onclick="confirmOrder('${o.orderId}')">✅ Confirm</button>
+                        <button class="action-btn reject"  onclick="openRejectModal('${o.orderId}')">❌ Reject</button>
+                    ` : (o.status === 'Accepted' || o.status === 'Confirmed') ? `
+                        <span style="color:#9ca3af;font-size:0.75rem">Confirmed</span>
+                    ` : (o.status === 'Rejected') ? `
+                        <span style="color:#ff6b6b;font-size:0.75rem">Rejected</span>
+                    ` : `<span style="color:#9ca3af;font-size:0.75rem">${o.status}</span>`}
+                </td>
+            </tr>`).join('')}
+            </tbody></table>`;
+    }
+
+    // ── Confirm order ─────────────────────────────────────────────────────────
+    async function confirmOrder(orderId) {
+        if (!confirm(`Confirm order ${orderId}?`)) return;
+        try {
+            const res = await fetch(`${API}/orders/${encodeURIComponent(orderId)}/status`, {
+                method: 'PATCH',
+                headers: { 'Content-Type': 'application/json', ...adminHeaders() },
+                body: JSON.stringify({ status: 'Accepted' })
+            });
+            const data = await res.json();
+            if (!res.ok) throw new Error(data.message);
+            alert(`✅ Order ${orderId} confirmed successfully!`);
+            loadOrders();
+            loadStats();
+        } catch(e) {
+            alert('❌ Error: ' + e.message);
+        }
+    }
+
+    // ── Reject order modal ────────────────────────────────────────────────────
+    let pendingRejectOrderId = null;
+
+    function openRejectModal(orderId) {
+        pendingRejectOrderId = orderId;
+        document.getElementById('rejection-reason').value = '';
+        document.getElementById('reject-modal').classList.add('open');
+        setTimeout(() => document.getElementById('rejection-reason').focus(), 200);
+    }
+
+    function closeRejectModal() {
+        pendingRejectOrderId = null;
+        document.getElementById('reject-modal').classList.remove('open');
+    }
+
+    async function confirmReject() {
+        const reason = document.getElementById('rejection-reason').value.trim();
+        if (!reason) {
+            document.getElementById('rejection-reason').style.borderColor = 'rgba(255,80,80,0.8)';
+            document.getElementById('rejection-reason').placeholder = '⚠️ Reason is required!';
+            return;
+        }
+        try {
+            const res = await fetch(`${API}/orders/${encodeURIComponent(pendingRejectOrderId)}/status`, {
+                method: 'PATCH',
+                headers: { 'Content-Type': 'application/json', ...adminHeaders() },
+                body: JSON.stringify({ status: 'Rejected', rejectionReason: reason })
+            });
+            const data = await res.json();
+            if (!res.ok) throw new Error(data.message);
+            closeRejectModal();
+            alert(`❌ Order ${pendingRejectOrderId} rejected.`);
+            loadOrders();
+            loadStats();
+        } catch(e) {
+            alert('❌ Error: ' + e.message);
+        }
+    }
+
+    // Close modal on overlay click
+    document.getElementById('reject-modal').addEventListener('click', function(e) {
+        if (e.target === this) closeRejectModal();
+    });
+
+    // ===== USERS =====
+    async function loadUsers() {
+        const el = document.getElementById('users-table');
+        el.innerHTML = '<div class="loading"><span class="spin">⏳</span>Loading users...</div>';
+        try {
+            const data = await fetch(API+'/users', { headers: adminHeaders() }).then(r=>r.json());
+            if (!data || data.length === 0) { el.innerHTML='<div class="empty-msg">📭 No users found</div>'; return; }
+            el.innerHTML = `<table>
+                <thead><tr><th>#</th><th>Name</th><th>Email</th><th>Phone</th><th>City</th><th>Joined</th></tr></thead>
+                <tbody>
+                ${data.reverse().map((u,i) => `<tr>
+                    <td style="color:#9ca3af">${i+1}</td>
+                    <td><strong>${u.name||'--'}</strong></td>
+                    <td style="color:#81c784">${u.email||'--'}</td>
+                    <td>${u.phone||'--'}</td>
+                    <td>${u.city||'--'}</td>
+                    <td style="color:#9ca3af;font-size:0.8rem">${u.createdAt ? new Date(u.createdAt).toLocaleDateString('en-IN') : '--'}</td>
+                </tr>`).join('')}
+                </tbody></table>`;
+        } catch(e) {
+            el.innerHTML = '<div class="empty-msg">❌ Could not connect to server.</div>';
+        }
+    }
+
+    // ===== FEEDBACKS =====
+    async function loadFeedbacks() {
+        const el = document.getElementById('feedbacks-table');
+        el.innerHTML = '<div class="loading"><span class="spin">⏳</span>Loading feedbacks...</div>';
+        try {
+            const data = await fetch(API+'/feedback', { headers: adminHeaders() }).then(r=>r.json());
+            if (!data || data.length === 0) { el.innerHTML='<div class="empty-msg">📭 No feedbacks found</div>'; return; }
+            renderFeedbacksTable(data, el);
+        } catch(e) {
+            el.innerHTML = '<div class="empty-msg">❌ Could not connect to server.</div>';
+        }
+    }
+
+    function starsHtml(rating) {
+        const r = parseInt(rating) || 0;
+        return Array.from({length:5}, (_,i) =>
+            `<span style="color:${i < r ? '#fdcc0d' : 'rgba(255,255,255,0.15)'};font-size:1rem;">★</span>`
+        ).join('');
+    }
+
+    function renderFeedbacksTable(data, el) {
+        el.innerHTML = `
+        <style>
+            .fb-card{
+                background:rgba(255,255,255,0.04);border:1px solid rgba(253,204,13,0.15);
+                border-radius:16px;padding:18px 20px;margin-bottom:14px;transition:all 0.3s;
+            }
+            .fb-card:hover{border-color:rgba(253,204,13,0.35);box-shadow:0 8px 25px rgba(253,204,13,0.08);}
+            .fb-top{display:flex;justify-content:space-between;align-items:flex-start;gap:12px;flex-wrap:wrap;margin-bottom:10px;}
+            .fb-name{color:#e0e0e0;font-weight:700;font-size:0.92rem;}
+            .fb-email{color:#9ca3af;font-size:0.75rem;margin-top:2px;}
+            .fb-stars{display:flex;gap:1px;margin:4px 0;}
+            .fb-cat{display:inline-block;padding:2px 10px;border-radius:20px;font-size:0.7rem;font-weight:700;background:rgba(253,204,13,0.12);color:#fdcc0d;border:1px solid rgba(253,204,13,0.25);margin-left:8px;}
+            .fb-date{color:#9ca3af;font-size:0.72rem;}
+            .fb-msg{color:#c8e6c9;font-size:0.85rem;line-height:1.6;padding:10px 12px;background:rgba(255,255,255,0.04);border-radius:10px;border-left:3px solid rgba(253,204,13,0.35);margin-bottom:12px;}
+            .low-star-badge{display:inline-block;padding:2px 10px;border-radius:20px;font-size:0.68rem;font-weight:700;background:rgba(255,80,80,0.12);color:#ff6b6b;border:1px solid rgba(255,80,80,0.3);margin-left:8px;vertical-align:middle;}
+            .auto-reply-box{background:rgba(41,182,246,0.07);border:1px solid rgba(41,182,246,0.25);border-radius:12px;padding:12px 14px;margin-bottom:10px;}
+            .auto-reply-label{color:#29b6f6;font-size:0.72rem;font-weight:700;text-transform:uppercase;letter-spacing:1px;margin-bottom:5px;}
+            .auto-reply-text{color:#c8e6c9;font-size:0.83rem;line-height:1.5;}
+            .admin-reply-sent{background:rgba(78,176,96,0.07);border:1px solid rgba(78,176,96,0.25);border-radius:12px;padding:12px 14px;margin-bottom:10px;}
+            .admin-reply-label{color:#4eb060;font-size:0.72rem;font-weight:700;text-transform:uppercase;letter-spacing:1px;margin-bottom:5px;}
+            .reply-form{display:flex;gap:10px;align-items:flex-end;margin-top:4px;}
+            .reply-input{
+                flex:1;padding:10px 14px;background:rgba(255,255,255,0.07);
+                border:1px solid rgba(253,204,13,0.3);border-radius:12px;
+                color:#e0e0e0;font-size:0.85rem;font-family:'Poppins',sans-serif;
+                resize:none;outline:none;min-height:44px;transition:border 0.3s;
+            }
+            .reply-input:focus{border-color:rgba(253,204,13,0.7);box-shadow:0 0 10px rgba(253,204,13,0.1);}
+            .reply-send-btn{
+                padding:10px 20px;background:linear-gradient(120deg,#fdcc0d,#f39c12);
+                color:#1a1a2e;border:none;border-radius:12px;font-size:0.82rem;font-weight:800;
+                cursor:pointer;font-family:'Poppins',sans-serif;white-space:nowrap;transition:all 0.3s;
+            }
+            .reply-send-btn:hover{transform:translateY(-2px);box-shadow:0 6px 18px rgba(253,204,13,0.4);}
+            .quick-replies{display:flex;gap:6px;flex-wrap:wrap;margin-bottom:8px;}
+            .quick-btn{
+                padding:4px 12px;background:rgba(255,255,255,0.07);color:#9ca3af;
+                border:1px solid rgba(255,255,255,0.12);border-radius:20px;
+                font-size:0.72rem;cursor:pointer;font-family:'Poppins',sans-serif;transition:all 0.2s;
+            }
+            .quick-btn:hover{background:rgba(253,204,13,0.1);color:#fdcc0d;border-color:rgba(253,204,13,0.3);}
+        </style>
+        <div style="padding:16px;">
+        ${data.map(fb => {
+            const isLow      = parseInt(fb.rating) <= 2;
+            const hasReply   = fb.adminReply && fb.adminReply.trim();
+            const isAuto     = fb.autoReplied;
+
+            const replySection = hasReply ? `
+                <div class="${isAuto ? 'auto-reply-box' : 'admin-reply-sent'}">
+                    <div class="${isAuto ? 'auto-reply-label' : 'admin-reply-label'}">
+                        ${isAuto ? '🤖 Auto Reply (sent for low rating)' : '✅ Admin Reply Sent'}
+                    </div>
+                    <div class="auto-reply-text">${fb.adminReply}</div>
+                    <div style="color:#9ca3af;font-size:0.7rem;margin-top:5px;">
+                        Sent: ${fb.repliedAt ? new Date(fb.repliedAt).toLocaleString('en-IN') : '--'}
+                    </div>
+                </div>
+                <div style="margin-top:6px;">
+                    <div style="color:#9ca3af;font-size:0.75rem;margin-bottom:6px;">Update reply:</div>
+                    <div class="quick-replies">
+                        <button class="quick-btn" onclick="setReply('${fb._id}','Thank you for your feedback! We appreciate your time. 😊')">👍 Thank you</button>
+                        <button class="quick-btn" onclick="setReply('${fb._id}','Sorry for our inconvenience. We will work hard to give you the best services next time. Thank You! 🙏')">🙏 Apology</button>
+                        <button class="quick-btn" onclick="setReply('${fb._id}','We are glad you had a great experience! Thank you for your support. 🌟')">🌟 Great</button>
+                    </div>
+                    <div class="reply-form">
+                        <textarea class="reply-input" id="reply-${fb._id}" placeholder="Update your reply…">${fb.adminReply}</textarea>
+                        <button class="reply-send-btn" onclick="sendReply('${fb._id}')">📨 Update</button>
+                    </div>
+                </div>` : `
+                <div>
+                    <div class="quick-replies">
+                        <button class="quick-btn" onclick="setReply('${fb._id}','Thank you for your feedback! We appreciate your time. 😊')">👍 Thank you</button>
+                        <button class="quick-btn" onclick="setReply('${fb._id}','Sorry for our inconvenience. We will work hard to give you the best services next time. Thank You! 🙏')">🙏 Apology</button>
+                        <button class="quick-btn" onclick="setReply('${fb._id}','We are glad you had a great experience! Thank you for your support. 🌟')">🌟 Great</button>
+                        <button class="quick-btn" onclick="setReply('${fb._id}','We have noted your feedback and will improve accordingly. Thank you! 📝')">📝 Noted</button>
+                    </div>
+                    <div class="reply-form">
+                        <textarea class="reply-input" id="reply-${fb._id}" placeholder="Write a reply to this customer…"></textarea>
+                        <button class="reply-send-btn" onclick="sendReply('${fb._id}')">📨 Send</button>
+                    </div>
+                </div>`;
+
+            return `
+            <div class="fb-card" id="fb-${fb._id}">
+                <div class="fb-top">
+                    <div>
+                        <div class="fb-name">
+                            ${fb.name || '--'}
+                            ${isLow ? '<span class="low-star-badge">⚠️ Low Rating</span>' : ''}
+                        </div>
+                        <div class="fb-email">${fb.email || '--'} ${fb.userContact && fb.userContact !== fb.email ? '· ' + fb.userContact : ''}</div>
+                        <div class="fb-stars" style="margin-top:5px;">
+                            ${starsHtml(fb.rating)}
+                            <span style="color:#9ca3af;font-size:0.75rem;margin-left:6px;">${fb.rating || 0}/5</span>
+                            ${fb.category ? `<span class="fb-cat">${fb.category}</span>` : ''}
+                        </div>
+                    </div>
+                    <div class="fb-date">${fb.createdAt ? new Date(fb.createdAt).toLocaleDateString('en-IN', {day:'2-digit',month:'short',year:'numeric'}) : '--'}</div>
+                </div>
+                <div class="fb-msg">${fb.message || '--'}</div>
+                ${replySection}
+            </div>`;
+        }).join('')}
+        </div>`;
+    }
+
+    function setReply(id, text) {
+        const el = document.getElementById('reply-' + id);
+        if (el) { el.value = text; el.focus(); }
+    }
+
+    async function sendReply(id) {
+        const el = document.getElementById('reply-' + id);
+        const reply = el ? el.value.trim() : '';
+        if (!reply) { el.style.borderColor = 'rgba(255,80,80,0.8)'; el.placeholder = '⚠️ Reply cannot be empty!'; return; }
+
+        const btn = el.closest('.reply-form').querySelector('.reply-send-btn');
+        const origText = btn.textContent;
+        btn.textContent = '⏳ Sending…';
+        btn.disabled = true;
+
+        try {
+            const res = await fetch(`${API}/feedback/${id}/reply`, {
+                method:  'PATCH',
+                headers: { 'Content-Type': 'application/json', ...adminHeaders() },
+                body:    JSON.stringify({ reply })
+            });
+            const data = await res.json();
+            if (!res.ok) throw new Error(data.message);
+            btn.textContent = '✅ Sent!';
+            setTimeout(() => loadFeedbacks(), 1200);
+        } catch(e) {
+            btn.textContent = origText;
+            btn.disabled = false;
+            alert('❌ ' + e.message);
+        }
+    }
+
+    // ===== CONTACTS =====
+    async function loadContacts() {
+        const el = document.getElementById('contacts-table');
+        el.innerHTML = '<div class="loading"><span class="spin">⏳</span>Loading messages...</div>';
+        try {
+            const data = await fetch(API+'/contact', { headers: adminHeaders() }).then(r=>r.json());
+            if (!data || data.length === 0) { el.innerHTML='<div class="empty-msg">📭 No messages found</div>'; return; }
+            el.innerHTML = `<table>
+                <thead><tr><th>#</th><th>Name</th><th>Email</th><th>Phone</th><th>Message</th><th>Date</th></tr></thead>
+                <tbody>
+                ${data.reverse().map((c,i) => `<tr>
+                    <td style="color:#9ca3af">${i+1}</td>
+                    <td><strong>${c.name||'--'}</strong></td>
+                    <td style="color:#81c784">${c.email||'--'}</td>
+                    <td>${c.phone||'--'}</td>
+                    <td style="max-width:220px;overflow:hidden;text-overflow:ellipsis;white-space:nowrap;">${c.message||'--'}</td>
+                    <td style="color:#9ca3af;font-size:0.8rem">${c.createdAt ? new Date(c.createdAt).toLocaleDateString('en-IN') : '--'}</td>
+                </tr>`).join('')}
+                </tbody></table>`;
+        } catch(e) {
+            el.innerHTML = '<div class="empty-msg">❌ Could not connect to server.</div>';
+        }
+    }
+
+    initializeAdminSession();
+    </script>
+
+</body>
+</html>

@@ -1,0 +1,151 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Beverage - Chitkara Grocery Store</title>
+    <link rel="stylesheet" href="Category Shared CSS.css">
+    <style>
+        .cat-hero .cat-tag { background:rgba(102,187,106,0.12); border:1px solid rgba(102,187,106,0.35); color:#66bb6a; }
+        .cat-hero h1 { background:linear-gradient(90deg,#66bb6a,#ffffff,#c8e6c9,#66bb6a); }
+        .product-card:hover { border-color:rgba(102,187,106,0.5); box-shadow:0 20px 50px rgba(102,187,106,0.2); }
+        .disc-price { background:linear-gradient(90deg,#66bb6a,#c8e6c9); -webkit-background-clip:text; -webkit-text-fill-color:transparent; background-clip:text; }
+        .save-tag { background:rgba(102,187,106,0.15); color:#66bb6a; border:1px solid rgba(102,187,106,0.3); }
+        .add-cart-btn { background:linear-gradient(120deg,#43a047,#2e7d32); color:#fff; box-shadow:0 6px 20px rgba(67,160,71,0.4); }
+        .add-cart-btn:hover { background:linear-gradient(120deg,#66bb6a,#2e7d32); box-shadow:0 10px 30px rgba(67,160,71,0.6); }
+    </style>
+    <script src="Auth JS.js"></script>
+</head>
+<body>
+    <nav class="cat-nav">
+        <a href="Home Page HTML.html" class="logo"><span>C</span>GS</a>
+        <span style="color:#66bb6a;font-weight:700;font-size:1rem;">🥤 Beverage</span>
+        <a href="Home Page HTML.html" class="home-btn">🏠 Home</a>
+    </nav>
+    <div class="cat-hero">
+        <span class="cat-tag">🥤 REFRESH</span>
+        <h1 style="-webkit-text-fill-color:#66bb6a;background:none;font-size:2.5rem;font-weight:900;letter-spacing:3px;margin-bottom:10px;">Beverages</h1>
+        <p>Cool drinks, juices, and refreshing beverage choices for every mood.</p>
+    </div>
+    <div class="products-grid">
+        <div class="product-card">
+            <span class="discount-badge">10% OFF</span>
+            <button class="wish-btn" onclick="toggleWishlist('Coca-Cola',65,'/images/grocery_category_images/Coca-Cola.jpeg',this)">❤️</button>
+            <img src="images/grocery_category_images/Coca-Cola.jpeg" alt="Coca-Cola">
+            <div class="card-body">
+                <h3>Coca-Cola</h3><p class="qty">750 ml</p>
+                <div class="price-wrap"><span class="orig-price">Rs. 72</span><span class="disc-price">Rs. 65</span><span class="save-tag">Save Rs.7</span></div>
+                <button class="add-cart-btn" onclick="addToCart('Coca-Cola',65,'/images/grocery_category_images/Coca-Cola.jpeg',72)">🛒 Add to Cart</button>
+            </div>
+        </div>
+        <div class="product-card">
+            <span class="discount-badge">11% OFF</span>
+            <button class="wish-btn" onclick="toggleWishlist('Thums Up',66,'/images/grocery_category_images/Thums up.jpeg',this)">❤️</button>
+            <img src="images/grocery_category_images/Thums up.jpeg" alt="Thums Up">
+            <div class="card-body">
+                <h3>Thums Up</h3><p class="qty">750 ml</p>
+                <div class="price-wrap"><span class="orig-price">Rs. 74</span><span class="disc-price">Rs. 66</span><span class="save-tag">Save Rs.8</span></div>
+                <button class="add-cart-btn" onclick="addToCart('Thums Up',66,'/images/grocery_category_images/Thums up.jpeg',74)">🛒 Add to Cart</button>
+            </div>
+        </div>
+        <div class="product-card">
+            <span class="discount-badge">12% OFF</span>
+            <button class="wish-btn" onclick="toggleWishlist('Sprite',63,'/images/grocery_category_images/Sprite.jpeg',this)">❤️</button>
+            <img src="images/grocery_category_images/Sprite.jpeg" alt="Sprite">
+            <div class="card-body">
+                <h3>Sprite</h3><p class="qty">750 ml</p>
+                <div class="price-wrap"><span class="orig-price">Rs. 72</span><span class="disc-price">Rs. 63</span><span class="save-tag">Save Rs.9</span></div>
+                <button class="add-cart-btn" onclick="addToCart('Sprite',63,'/images/grocery_category_images/Sprite.jpeg',72)">🛒 Add to Cart</button>
+            </div>
+        </div>
+        <div class="product-card">
+            <span class="discount-badge">12% OFF</span>
+            <button class="wish-btn" onclick="toggleWishlist('Fanta Orange',63,'/images/grocery_category_images/Fanta Orange.jpeg',this)">❤️</button>
+            <img src="images/grocery_category_images/Fanta Orange.jpeg" alt="Fanta Orange">
+            <div class="card-body">
+                <h3>Fanta Orange</h3><p class="qty">750 ml</p>
+                <div class="price-wrap"><span class="orig-price">Rs. 72</span><span class="disc-price">Rs. 63</span><span class="save-tag">Save Rs.9</span></div>
+                <button class="add-cart-btn" onclick="addToCart('Fanta Orange',63,'/images/grocery_category_images/Fanta Orange.jpeg',72)">🛒 Add to Cart</button>
+            </div>
+        </div>
+        <div class="product-card">
+            <span class="discount-badge">10% OFF</span>
+            <button class="wish-btn" onclick="toggleWishlist('Maaza Mango Drink',78,'/images/grocery_category_images/Mazza Mango Drink.jpeg',this)">❤️</button>
+            <img src="images/grocery_category_images/Mazza Mango Drink.jpeg" alt="Maaza Mango Drink">
+            <div class="card-body">
+                <h3>Maaza Mango Drink</h3><p class="qty">1.2 L</p>
+                <div class="price-wrap"><span class="orig-price">Rs. 87</span><span class="disc-price">Rs. 78</span><span class="save-tag">Save Rs.9</span></div>
+                <button class="add-cart-btn" onclick="addToCart('Maaza Mango Drink',78,'/images/grocery_category_images/Mazza Mango Drink.jpeg',87)">🛒 Add to Cart</button>
+            </div>
+        </div>
+        <div class="product-card">
+            <span class="discount-badge">8% OFF</span>
+            <button class="wish-btn" onclick="toggleWishlist('Real Mixed Fruit Juice',98,'/images/grocery_category_images/Real Mixed Fruit Juice.jpeg',this)">❤️</button>
+            <img src="images/grocery_category_images/Real Mixed Fruit Juice.jpeg" alt="Real Mixed Fruit Juice">
+            <div class="card-body">
+                <h3>Real Mixed Fruit Juice</h3><p class="qty">1 L</p>
+                <div class="price-wrap"><span class="orig-price">Rs. 106</span><span class="disc-price">Rs. 98</span><span class="save-tag">Save Rs.8</span></div>
+                <button class="add-cart-btn" onclick="addToCart('Real Mixed Fruit Juice',98,'/images/grocery_category_images/Real Mixed Fruit Juice.jpeg',106)">🛒 Add to Cart</button>
+            </div>
+        </div>
+        <div class="product-card">
+            <span class="discount-badge">9% OFF</span>
+            <button class="wish-btn" onclick="toggleWishlist('Tata Tea',135,'/images/grocery_category_images/Tata Tea.jpeg',this)">❤️</button>
+            <img src="images/grocery_category_images/Tata Tea.jpeg" alt="Tata Tea">
+            <div class="card-body">
+                <h3>Tata Tea</h3><p class="qty">500 g</p>
+                <div class="price-wrap"><span class="orig-price">Rs. 148</span><span class="disc-price">Rs. 135</span><span class="save-tag">Save Rs.13</span></div>
+                <button class="add-cart-btn" onclick="addToCart('Tata Tea',135,'/images/grocery_category_images/Tata Tea.jpeg',148)">🛒 Add to Cart</button>
+            </div>
+        </div>
+        <div class="product-card">
+            <span class="discount-badge">12% OFF</span>
+            <button class="wish-btn" onclick="toggleWishlist('Nescafé Classic Coffee',430,'/images/grocery_category_images/Neacafe` Classic Coffee.jpeg',this)">❤️</button>
+            <img src="images/grocery_category_images/Neacafe` Classic Coffee.jpeg" alt="Nescafé Classic Coffee">
+            <div class="card-body">
+                <h3>Nescafé Classic Coffee</h3><p class="qty">100 g</p>
+                <div class="price-wrap"><span class="orig-price">Rs. 485</span><span class="disc-price">Rs. 430</span><span class="save-tag">Save Rs.55</span></div>
+                <button class="add-cart-btn" onclick="addToCart('Nescafé Classic Coffee',430,'/images/grocery_category_images/Neacafe` Classic Coffee.jpeg',485)">🛒 Add to Cart</button>
+            </div>
+        </div>
+        <div class="product-card">
+            <span class="discount-badge">10% OFF</span>
+            <button class="wish-btn" onclick="toggleWishlist('Bournvita',200,'/images/grocery_category_images/Bournvita.jpeg',this)">❤️</button>
+            <img src="images/grocery_category_images/Bournvita.jpeg" alt="Bournvita">
+            <div class="card-body">
+                <h3>Bournvita</h3><p class="qty">500 g</p>
+                <div class="price-wrap"><span class="orig-price">Rs. 220</span><span class="disc-price">Rs. 200</span><span class="save-tag">Save Rs.20</span></div>
+                <button class="add-cart-btn" onclick="addToCart('Bournvita',200,'/images/grocery_category_images/Bournvita.jpeg',220)">🛒 Add to Cart</button>
+            </div>
+        </div>
+        <div class="product-card">
+            <span class="discount-badge">8% OFF</span>
+            <button class="wish-btn" onclick="toggleWishlist('Tang Orange Drink',90,'/images/grocery_category_images/Tang Orange Drink.jpeg',this)">❤️</button>
+            <img src="images/grocery_category_images/Tang Orange Drink.jpeg" alt="Tang Orange Drink">
+            <div class="card-body">
+                <h3>Tang Orange Drink</h3><p class="qty">500 g</p>
+                <div class="price-wrap"><span class="orig-price">Rs. 98</span><span class="disc-price">Rs. 90</span><span class="save-tag">Save Rs.8</span></div>
+                <button class="add-cart-btn" onclick="addToCart('Tang Orange Drink',90,'/images/grocery_category_images/Tang Orange Drink.jpeg',98)">🛒 Add to Cart</button>
+            </div>
+        </div>
+    </div>
+    <script>
+        (function () {
+            const maxProducts = 10;
+            const cutToLimit = () => {
+                const cards = Array.from(document.querySelectorAll('.product-card'));
+                cards.forEach((card, index) => {
+                    card.style.display = index < maxProducts ? '' : 'none';
+                });
+            };
+            if (document.readyState === 'loading') {
+                document.addEventListener('DOMContentLoaded', cutToLimit);
+            } else {
+                cutToLimit();
+            }
+        })();
+    </script>
+    <script src="Cart JS.js"></script>
+    <script src="Wishlist JS.js"></script>
+</body>
+</html>

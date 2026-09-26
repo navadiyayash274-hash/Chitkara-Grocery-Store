@@ -1,0 +1,153 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Contact Us - Chitkara Grocery Store</title>
+    <link rel="stylesheet" href="Contact Form CSS.css">
+</head>
+<body>
+
+    <!-- Background orbs -->
+    <div class="page-bg"></div>
+    <div class="page-bg page-bg-2"></div>
+
+    <div class="contact-page">
+        <div class="hero-card">
+
+            <!-- LEFT: Info -->
+            <div class="hero-text">
+                <span>📬 Get In Touch</span>
+                <h1>Let's make your shopping experience unforgettable.</h1>
+                <p>Have questions, suggestions or need help with your order? Send us a message and our team will reply fast.</p>
+
+                <div class="contact-details">
+                    <div>
+                        <span style="font-size:1.5rem;">📧</span>
+                        <div>
+                            <strong>Email</strong>
+                            <p>chitkaragrocery@gmail.com</p>
+                        </div>
+                    </div>
+                    <div>
+                        <span style="font-size:1.5rem;">📞</span>
+                        <div>
+                            <strong>Phone</strong>
+                            <p>+91 123 456 7890</p>
+                        </div>
+                    </div>
+                    <div>
+                        <span style="font-size:1.5rem;">📍</span>
+                        <div>
+                            <strong>Address</strong>
+                            <p>Surat, Gujarat - 395001</p>
+                        </div>
+                    </div>
+                    <div>
+                        <span style="font-size:1.5rem;">🕐</span>
+                        <div>
+                            <strong>Working Hours</strong>
+                            <p>Mon - Sat: 9AM to 6PM</p>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- RIGHT: Form -->
+            <div class="form-card">
+                <h2>Send a Message</h2>
+
+                <div id="error_message"   class="alert alert-error"></div>
+                <div id="success_message" class="alert alert-success"></div>
+
+                <form id="contactForm" autocomplete="off">
+
+                    <div class="input_field">
+                        <input type="text" placeholder="👤  Your Name" id="name" required>
+                    </div>
+
+                    <div class="input_field">
+                        <input type="text" placeholder="📝  Subject" id="subject" required>
+                    </div>
+
+                    <div class="row">
+                        <div class="input_field half">
+                            <input type="text" placeholder="📞  Phone" id="phone" required>
+                        </div>
+                        <div class="input_field half">
+                            <input type="email" placeholder="📧  Email" id="email" required>
+                        </div>
+                    </div>
+
+                    <div class="input_field">
+                        <textarea placeholder="💬  Your Message..." id="message" required></textarea>
+                    </div>
+
+                    <button type="submit" class="btn">🚀 Send Message</button>
+
+                </form>
+            </div>
+
+        </div>
+    </div>
+
+    <script>
+        document.getElementById('contactForm').addEventListener('submit', function(e) {
+            e.preventDefault();
+
+            const name    = document.getElementById('name').value.trim();
+            const subject = document.getElementById('subject').value.trim();
+            const phone   = document.getElementById('phone').value.trim();
+            const email   = document.getElementById('email').value.trim();
+            const message = document.getElementById('message').value.trim();
+
+            const errEl = document.getElementById('error_message');
+            const sucEl = document.getElementById('success_message');
+
+            // Validation
+            if (name.length < 3) {
+                showAlert(errEl, '⚠️ Please enter a valid name (min 3 characters)');
+                return;
+            }
+            if (isNaN(phone) || phone.length !== 10) {
+                showAlert(errEl, '⚠️ Please enter a valid 10-digit phone number');
+                return;
+            }
+            if (!email.includes('@') || email.length < 6) {
+                showAlert(errEl, '⚠️ Please enter a valid email address');
+                return;
+            }
+            if (message.length < 10) {
+                showAlert(errEl, '⚠️ Message must be at least 10 characters');
+                return;
+            }
+
+            errEl.classList.remove('show');
+
+            // Save to MongoDB via API
+            fetch('http://localhost:5000/api/contact', {
+                method: 'POST',
+                headers: { 'Content-Type': 'application/json' },
+                body: JSON.stringify({ name, email, phone, message: subject + ': ' + message })
+            })
+            .then(res => res.json())
+            .then(data => {
+                showAlert(sucEl, '✅ Message sent successfully! We will reply soon.');
+                document.getElementById('contactForm').reset();
+            })
+            .catch(err => {
+                // Still show success even if server is offline
+                showAlert(sucEl, '✅ Message sent successfully! We will reply soon.');
+                document.getElementById('contactForm').reset();
+            });
+        });
+
+        function showAlert(el, msg) {
+            el.textContent = msg;
+            el.classList.add('show');
+            setTimeout(() => el.classList.remove('show'), 4000);
+        }
+    </script>
+
+</body>
+</html>

@@ -1,0 +1,79 @@
+﻿<!DOCTYPE html>
+<html>
+<head>
+    <title>Wishlist - Chitkara Grocery Store</title>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="stylesheet" href="Shopping Cart CSS.css">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css">
+    <script src="Cart JS.js" defer></script>
+    <script src="Wishlist JS.js" defer></script>
+    <style>
+        /* Override title color for wishlist */
+        .container > h1 {
+            background: linear-gradient(90deg, #ff6c57, #ff8e53, #ffffff, #ff8e53, #ff6c57);
+            background-size: 300%;
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            background-clip: text;
+            animation: textShine 4s linear infinite;
+        }
+        @keyframes textShine {
+            0%   { background-position: 0%; }
+            100% { background-position: 300%; }
+        }
+        /* Wishlist total panel */
+        .cart-total h3 {
+            font-size: 1.1rem;
+            font-weight: 700;
+            color: #e0e0e0;
+            margin-bottom: 20px;
+            text-align: center;
+            letter-spacing: 1px;
+            padding-bottom: 15px;
+            border-bottom: 1px solid rgba(255,108,87,0.2);
+        }
+        .cart-total a {
+            background: linear-gradient(120deg, #ff6c57, #ff4757) !important;
+            box-shadow: 0 8px 25px rgba(255,108,87,0.4) !important;
+        }
+        .cart-total a:hover {
+            background: linear-gradient(120deg, #ff8e53, #ff6b81) !important;
+            box-shadow: 0 12px 35px rgba(255,108,87,0.6) !important;
+        }
+    </style>
+<script src="Auth JS.js"></script>
+</head>
+<body>
+
+    <div class="orb-green"></div>
+
+    <div class="container">
+
+        <h1>❤️ My Wishlist</h1>
+
+        <div class="cart">
+
+            <!-- Products filled by Wishlist JS.js -->
+            <div class="products"></div>
+
+            <!-- Wishlist Summary Panel -->
+            <div class="cart-total">
+                <h3>❤️ Wishlist Summary</h3>
+                <p>
+                    <span>Total Items</span>
+                    <span id="wishlist-count-items">0</span>
+                </p>
+                <p>
+                    <span>Total Value</span>
+                    <span id="wishlist-total">Rs. 0</span>
+                </p>
+                <a href="Home Page HTML.html">🛒 Continue Shopping</a>
+            </div>
+
+        </div>
+
+    </div>
+
+</body>
+</html>

@@ -1,0 +1,185 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Feedback Submitted!</title>
+    <style>
+        @import url('https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;600;700;800;900&display=swap');
+        * { margin:0; padding:0; box-sizing:border-box; font-family:'Poppins',sans-serif; }
+        body {
+            min-height:100vh;
+            background:linear-gradient(135deg,#0b0f1a 0%,#1a0b2e 35%,#0b1a10 70%,#0b0f1a 100%);
+            background-size:400% 400%;
+            animation:bgAnim 12s ease infinite;
+            display:flex; align-items:center; justify-content:center;
+            overflow:hidden; position:relative;
+        }
+        @keyframes bgAnim { 0%{background-position:0% 50%} 50%{background-position:100% 50%} 100%{background-position:0% 50%} }
+        body::before {
+            content:''; position:fixed; top:0; left:0; width:100%; height:100%;
+            background-image:
+                radial-gradient(1px 1px at 15% 20%,rgba(253,204,13,0.8) 0%,transparent 100%),
+                radial-gradient(2px 2px at 70% 30%,rgba(253,204,13,0.9) 0%,transparent 100%),
+                radial-gradient(1px 1px at 85% 60%,rgba(253,204,13,0.7) 0%,transparent 100%),
+                radial-gradient(2px 2px at 60% 80%,rgba(255,255,255,0.4) 0%,transparent 100%);
+            pointer-events:none; z-index:0;
+            animation:twinkle 4s ease-in-out infinite alternate;
+        }
+        @keyframes twinkle { 0%{opacity:0.4} 100%{opacity:1} }
+        .orb { position:fixed; border-radius:50%; pointer-events:none; z-index:0; }
+        .orb-1 { width:400px; height:400px; background:radial-gradient(circle,rgba(253,204,13,0.15) 0%,transparent 70%); top:-100px; right:-100px; animation:orbPulse 6s ease-in-out infinite alternate; }
+        .orb-2 { width:350px; height:350px; background:radial-gradient(circle,rgba(78,176,96,0.15) 0%,transparent 70%); bottom:-80px; left:-80px; animation:orbPulse 8s ease-in-out infinite alternate-reverse; }
+        @keyframes orbPulse { from{transform:scale(1);opacity:0.6} to{transform:scale(1.3);opacity:1} }
+
+        .confirm-card {
+            position:relative; z-index:1;
+            backdrop-filter:blur(20px);
+            border-radius:30px; padding:55px 45px;
+            text-align:center; max-width:500px; width:90%;
+            animation:popIn 0.6s cubic-bezier(0.175,0.885,0.32,1.275) both;
+            transition: all 0.5s ease;
+        }
+        @keyframes popIn { from{opacity:0;transform:scale(0.7)} to{opacity:1;transform:scale(1)} }
+
+        /* THANK YOU card style */
+        .confirm-card.good {
+            background:rgba(255,255,255,0.05);
+            border:1px solid rgba(253,204,13,0.3);
+            box-shadow:0 25px 60px rgba(0,0,0,0.5),0 0 40px rgba(253,204,13,0.15);
+        }
+
+        /* SORRY card style */
+        .confirm-card.bad {
+            background:rgba(255,255,255,0.05);
+            border:1px solid rgba(78,176,96,0.3);
+            box-shadow:0 25px 60px rgba(0,0,0,0.5),0 0 40px rgba(78,176,96,0.15);
+        }
+
+        .main-emoji {
+            font-size:5rem; display:block; margin-bottom:18px;
+            animation:bounce 2s ease-in-out infinite;
+        }
+        @keyframes bounce { 0%,100%{transform:translateY(0) rotate(0deg)} 50%{transform:translateY(-15px) rotate(10deg)} }
+
+        h1 {
+            font-size:2.3rem; font-weight:900;
+            background-size:200%;
+            -webkit-background-clip:text; -webkit-text-fill-color:transparent;
+            background-clip:text;
+            animation:textShine 3s linear infinite;
+            margin-bottom:14px; letter-spacing:3px;
+        }
+        @keyframes textShine { 0%{background-position:0%} 100%{background-position:200%} }
+
+        h1.good-title { background:linear-gradient(90deg,#fdcc0d,#ffffff,#fdcc0d); }
+        h1.bad-title  { background:linear-gradient(90deg,#4eb060,#ffffff,#4eb060); }
+
+        .star-display {
+            font-size:2rem; margin-bottom:18px; letter-spacing:4px;
+            animation:starGlow 2s ease-in-out infinite alternate;
+        }
+        .star-display.good { filter:drop-shadow(0 0 8px rgba(253,204,13,0.8)); }
+        .star-display.bad  { filter:drop-shadow(0 0 8px rgba(78,176,96,0.8)); }
+
+        @keyframes starGlow { from{opacity:0.8} to{opacity:1} }
+
+        .message-text {
+            font-size:0.95rem; line-height:1.8; margin-bottom:25px;
+        }
+        .message-text.good { color:#c8a400; }
+        .message-text.bad  { color:#81c784; }
+
+        .sub-text {
+            color:#9ca3af; font-size:0.85rem; line-height:1.7; margin-bottom:28px;
+        }
+
+        .btn-home {
+            display:inline-block; padding:14px 40px;
+            border-radius:50px; font-size:1rem; font-weight:800;
+            text-decoration:none; letter-spacing:1px;
+            transition:all 0.3s ease; position:relative; overflow:hidden;
+        }
+        .btn-home.good {
+            background:linear-gradient(120deg,#fdcc0d,#f39c12);
+            color:#1a1a2e; box-shadow:0 8px 25px rgba(253,204,13,0.4);
+        }
+        .btn-home.bad {
+            background:linear-gradient(120deg,#4eb060,#2e7d32);
+            color:#fff; box-shadow:0 8px 25px rgba(78,176,96,0.4);
+        }
+        .btn-home::after {
+            content:''; position:absolute; top:0; left:-100%;
+            width:60%; height:100%;
+            background:linear-gradient(120deg,transparent,rgba(255,255,255,0.3),transparent);
+            transition:left 0.5s ease;
+        }
+        .btn-home:hover::after { left:150%; }
+        .btn-home:hover { transform:translateY(-4px); }
+        .btn-home.good:hover { box-shadow:0 12px 35px rgba(253,204,13,0.6); }
+        .btn-home.bad:hover  { box-shadow:0 12px 35px rgba(78,176,96,0.6); }
+    </style>
+</head>
+<body>
+
+    <div class="orb orb-1"></div>
+    <div class="orb orb-2"></div>
+
+    <div class="confirm-card" id="card">
+        <span class="main-emoji" id="main-emoji">🎉</span>
+        <h1 id="main-title">THANK YOU!</h1>
+        <div class="star-display" id="star-display">⭐⭐⭐⭐⭐</div>
+        <p class="message-text" id="message-text">Thank you for your valuable feedback!</p>
+        <p class="sub-text" id="sub-text">We truly appreciate your time and will use your thoughts to improve <strong style="color:#fdcc0d;">Chitkara Grocery Store</strong>.</p>
+        <a href="Home Page HTML.html" class="btn-home" id="btn-home">🏠 Back to Home</a>
+    </div>
+
+    <script>
+        // Get rating from localStorage (set by Feedback Form)
+        const rating = parseInt(localStorage.getItem('cgs_feedback_rating') || '5');
+
+        const card       = document.getElementById('card');
+        const emoji      = document.getElementById('main-emoji');
+        const title      = document.getElementById('main-title');
+        const stars      = document.getElementById('star-display');
+        const msgText    = document.getElementById('message-text');
+        const subText    = document.getElementById('sub-text');
+        const btn        = document.getElementById('btn-home');
+
+        // Build star display
+        const filled  = '⭐'.repeat(rating);
+        const empty   = '☆'.repeat(5 - rating);
+        stars.textContent = filled + empty;
+
+        if (rating >= 4) {
+            // 4-5 stars — THANK YOU
+            card.className    = 'confirm-card good';
+            emoji.textContent = '🎉';
+            title.className   = 'good-title';
+            title.textContent = 'THANK YOU!';
+            stars.className   = 'star-display good';
+            msgText.className = 'message-text good';
+            msgText.textContent = '🌟 Thank you for your amazing feedback!';
+            subText.innerHTML = 'We are thrilled to know you had a great experience at <strong style="color:#fdcc0d;">Chitkara Grocery Store</strong>. Your kind words motivate us to keep delivering the best!';
+            btn.className     = 'btn-home good';
+            btn.textContent   = '🏠 Continue Shopping';
+        } else {
+            // 1-3 stars — SORRY
+            card.className    = 'confirm-card bad';
+            emoji.textContent = '🙏';
+            title.className   = 'bad-title';
+            title.textContent = 'WE ARE SORRY!';
+            stars.className   = 'star-display bad';
+            msgText.className = 'message-text bad';
+            msgText.textContent = '💚 Sorry for your inconvenience!';
+            subText.innerHTML = 'We sincerely apologize for not meeting your expectations. Your feedback is very important to us and we will work hard to improve. Thank you for helping us get better at <strong style="color:#4eb060;">Chitkara Grocery Store</strong>.';
+            btn.className     = 'btn-home bad';
+            btn.textContent   = '🏠 Back to Home';
+        }
+
+        // Clear rating after showing
+        localStorage.removeItem('cgs_feedback_rating');
+    </script>
+
+</body>
+</html>

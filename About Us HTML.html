@@ -1,0 +1,163 @@
+<!DOCTYPE html>
+
+<html>
+
+    <head>
+
+        <title>
+
+            About Us
+
+        </title>
+
+        <!-- No auto-redirect — user chooses to Login or Skip -->
+        <script>
+            // If already logged in, show a "Go to Home" option instead
+        </script>
+
+        <meta charset = "utf-8">
+
+        <meta name = "viewport" content = "width = device-width, initial-scale = 1.0">
+
+        <script src="https://kit.fontawesome.com/5471644867.js" crossorigin="anonymous"></script>
+
+        <link rel = 'stylesheet' type = "text/css" href = 'About Us CSS.css'>
+	    
+	<link rel="shortcut icon" type="image/jpg" href="C:\Users\hp\Desktop\College\First Semester\Introduction To Web Technologies\Notepad ++ Files\Project\favicon.ico"/>
+
+    </head>
+
+    <body>
+
+        <div class = "section">
+
+            <!-- Extra green glow orb -->
+            <div class="orb-green"></div>
+
+            <div class = "container">
+
+                <div class = "content-section">
+
+                    <div class = "title">
+
+                        <h1 style = "font-family: 'Poppins', sans-serif;">
+
+                            About Us
+
+                        </h1>
+
+                    </div>
+
+                    <div class = "content">
+
+                        <p>
+
+							If you are looking for farm fresh fruits and vegetables, world-class breads, top-quality pulses
+							and food grains, dairy products, then, <b>CHITKARA GROCERY STORE</b> has got you covered.
+							No more getting stuck in traffic jams, paying for parking, standing in long queues and carrying heavy bags- get everything you need,
+							when you need, right at your doorstep. Right from fresh fruits and vegetables, rice and dals, spices and seasonings to packaged products-we have it all.
+							Choose from a wide range of options in every category, exclusively handpicked to help you find the best quality available at lowest prices.
+							Select a time slot for delivery and your order will be delivered right to your doorstep anywhere in India.
+                            Shopping online is now easy as every product on your monthly shopping list,is now available online at <b>CHITKARA GROCERY STORE</b>.
+
+                            <br>
+
+                            <br>
+
+                            To go to the home page, click on the Chitkara Grocery Store Icon.
+
+                            <br>
+
+                            <br>
+
+                            Get in touch with us through the popular social media platforms.
+
+                        </p>
+
+                        <!-- Action buttons — shown dynamically based on login state -->
+                        <div id="about-btns" style="margin-top:28px; display:flex; gap:14px; flex-wrap:wrap; justify-content:center;"></div>
+
+                    </div>
+
+                    <div class="social">
+
+                        <!-- Facebook -->
+                        <a href='https://www.facebook.com/' target="_blank" class="social-facebook">
+                            <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="currentColor">
+                                <path d="M18 2h-3a5 5 0 0 0-5 5v3H7v4h3v8h4v-8h3l1-4h-4V7a1 1 0 0 1 1-1h3z"/>
+                            </svg>
+                        </a>
+
+                        <!-- Twitter / X -->
+                        <a href='https://twitter.com/' target="_blank" class="social-twitter">
+                            <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="currentColor">
+                                <path d="M22 4s-.7 2.1-2 3.4c1.6 10-9.4 17.3-18 11.6 2.2.1 4.4-.6 6-2C3 15.5.5 9.6 3 5c2.2 2.6 5.6 4.1 9 4-.9-4.2 4-6.6 7-3.8 1.1 0 3-1.2 3-1.2z"/>
+                            </svg>
+                        </a>
+
+                        <!-- Instagram -->
+                        <a href='https://www.instagram.com/' target="_blank" class="social-instagram">
+                            <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                                <rect x="2" y="2" width="20" height="20" rx="5" ry="5"/>
+                                <path d="M16 11.37A4 4 0 1 1 12.63 8 4 4 0 0 1 16 11.37z"/>
+                                <line x1="17.5" y1="6.5" x2="17.51" y2="6.5"/>
+                            </svg>
+                        </a>
+
+                        <!-- YouTube -->
+                        <a href='https://www.youtube.com/' target="_blank" class="social-youtube">
+                            <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="currentColor">
+                                <path d="M22.54 6.42a2.78 2.78 0 0 0-1.95-1.96C18.88 4 12 4 12 4s-6.88 0-8.59.46A2.78 2.78 0 0 0 1.46 6.42 29 29 0 0 0 1 12a29 29 0 0 0 .46 5.58 2.78 2.78 0 0 0 1.95 1.96C5.12 20 12 20 12 20s6.88 0 8.59-.46a2.78 2.78 0 0 0 1.95-1.96A29 29 0 0 0 23 12a29 29 0 0 0-.46-5.58z"/>
+                                <polygon points="9.75 15.02 15.5 12 9.75 8.98 9.75 15.02" fill="white"/>
+                            </svg>
+                        </a>
+
+                    </div>
+
+                </div>
+
+
+                <div class = "image-section">
+
+                    <a href = 'Home Page HTML.html'>
+
+                        <img src = 'https://i.imgur.com/FyO9dZl.png' alt = 'Chitkara Grocery Store' style = 'cursor: pointer;'>
+
+                    </a>
+
+                    <h2 class="company-name">Chitkara Grocery Store</h2>
+
+                </div>
+
+            </div>
+
+        </div>
+
+    </body>
+
+    <script>
+        // Show buttons based on login state
+        const btnContainer = document.getElementById('about-btns');
+        const isLoggedIn = localStorage.getItem('cgs_logged_in') === 'true';
+        const btnStyle = 'display:inline-block; padding:13px 30px; border-radius:50px; font-size:0.95rem; font-weight:700; text-decoration:none; cursor:pointer; border:none; font-family:Poppins,sans-serif; transition:all 0.3s ease;';
+
+        if (isLoggedIn) {
+            btnContainer.innerHTML = `
+                <a href="Home Page HTML.html"
+                   style="${btnStyle} background:linear-gradient(120deg,#4eb060,#2e7d32); color:#fff; box-shadow:0 8px 25px rgba(78,176,96,0.4);">
+                   🏠 Go to Home
+                </a>`;
+        } else {
+            btnContainer.innerHTML = `
+                <a href="Login And Registration HTML.html"
+                   style="${btnStyle} background:linear-gradient(120deg,#4eb060,#2e7d32); color:#fff; box-shadow:0 8px 25px rgba(78,176,96,0.4);">
+                   🔐 Login / Sign Up
+                </a>
+                <a href="Home Page HTML.html"
+                   style="${btnStyle} background:rgba(255,255,255,0.07); color:#9ca3af; border:1px solid rgba(255,255,255,0.2)!important;">
+                   Skip →
+                </a>`;
+        }
+    </script>
+
+</html>

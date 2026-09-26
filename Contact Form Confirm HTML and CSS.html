@@ -1,0 +1,213 @@
+ <!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Contact Success</title>
+    <link rel="shortcut icon" type="image/jpg" href="C:\Users\hp\Desktop\College\First Semester\Introduction To Web Technologies\Notepad ++ Files\Project\favicon.ico"/>
+    <style>
+        @import url('https://fonts.googleapis.com/css2?family=Poppins:wght@200;300;400;500;600;700&display=swap');
+
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+            font-family: 'Poppins', sans-serif;
+        }
+
+        body {
+            min-height: 100vh;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            background: radial-gradient(circle at top left, rgba(148, 239, 210, 0.4), transparent 36%),
+                        radial-gradient(circle at bottom right, rgba(255, 213, 118, 0.35), transparent 30%),
+                        linear-gradient(135deg, #c8efd1 0%, #f8f2df 100%);
+            overflow: hidden;
+        }
+
+        body::before {
+            content: '';
+            position: absolute;
+            inset: 0;
+            background: linear-gradient(180deg, rgba(255,255,255,0.28), transparent 60%);
+            pointer-events: none;
+        }
+
+        .container {
+            position: relative;
+            z-index: 1;
+            width: min(520px, 92%);
+            padding: 42px 34px;
+            border-radius: 36px;
+            background: rgba(255, 255, 255, 0.96);
+            border: 1px solid rgba(255, 255, 255, 0.86);
+            box-shadow: 0 28px 80px rgba(30, 82, 58, 0.15);
+            text-align: center;
+            overflow: hidden;
+            animation: popIn 0.75s ease forwards;
+        }
+
+        .container::before,
+        .container::after {
+            content: '';
+            position: absolute;
+            border-radius: 50%;
+            filter: blur(26px);
+            opacity: 0.65;
+        }
+
+        .container::before {
+            width: 180px;
+            height: 180px;
+            top: -70px;
+            left: -60px;
+            background: rgba(92, 189, 134, 0.28);
+        }
+
+        .container::after {
+            width: 150px;
+            height: 150px;
+            right: -50px;
+            bottom: -60px;
+            background: rgba(255, 204, 102, 0.26);
+        }
+
+        .celebration {
+            position: relative;
+            width: 116px;
+            height: 116px;
+            margin: 0 auto 24px;
+            border-radius: 50%;
+            background: rgba(91, 189, 134, 0.14);
+            display: grid;
+            place-items: center;
+            animation: float 2.8s ease-in-out infinite;
+        }
+
+        .celebration::before,
+        .celebration::after {
+            content: '';
+            position: absolute;
+            border-radius: 50%;
+            background: rgba(95, 183, 155, 0.18);
+            opacity: 0.85;
+        }
+
+        .celebration::before {
+            width: 180px;
+            height: 180px;
+            top: -28px;
+            left: -28px;
+        }
+
+        .celebration::after {
+            width: 70px;
+            height: 70px;
+            bottom: -18px;
+            right: -18px;
+        }
+
+        .checkmark {
+            width: 90px;
+            height: 90px;
+            border-radius: 50%;
+            display: grid;
+            place-items: center;
+            background: linear-gradient(135deg, #4ec57d, #2f7e58);
+            box-shadow: 0 18px 28px rgba(47, 96, 62, 0.26);
+            position: relative;
+        }
+
+        .checkmark::after {
+            content: '';
+            position: absolute;
+            inset: 0;
+            border-radius: 50%;
+            background: rgba(255, 255, 255, 0.08);
+            animation: glow 2s ease-in-out infinite;
+        }
+
+        .checkmark span {
+            color: #fff;
+            font-size: 3.75rem;
+            line-height: 1;
+            text-shadow: 0 10px 18px rgba(0, 0, 0, 0.18);
+        }
+
+        h1 {
+            font-size: clamp(2rem, 4vw, 2.7rem);
+            color: #1b4a32;
+            margin-bottom: 14px;
+            letter-spacing: 0.03em;
+        }
+
+        p {
+            max-width: 480px;
+            margin: 0 auto 28px;
+            font-size: 1rem;
+            line-height: 1.75;
+            color: #4b5f4f;
+        }
+
+        .btn {
+            display: inline-flex;
+            align-items: center;
+            justify-content: center;
+            padding: 16px 34px;
+            border-radius: 999px;
+            background: linear-gradient(135deg, #4ec57d, #2b8b5d);
+            color: #fff;
+            text-decoration: none;
+            font-weight: 700;
+            font-size: 1rem;
+            box-shadow: 0 22px 48px rgba(42, 99, 63, 0.18);
+            transition: transform 0.3s ease, box-shadow 0.3s ease, filter 0.3s ease;
+        }
+
+        .btn:hover {
+            transform: translateY(-3px);
+            box-shadow: 0 26px 56px rgba(42, 99, 63, 0.25);
+            filter: brightness(1.03);
+        }
+
+        .hint {
+            margin-top: 22px;
+            color: #5c715f;
+            font-size: 0.95rem;
+        }
+
+        .hint a {
+            color: #2e7550;
+            text-decoration: none;
+            font-weight: 600;
+        }
+
+        @keyframes float {
+            0%, 100% { transform: translateY(0); }
+            50% { transform: translateY(-10px); }
+        }
+
+        @keyframes glow {
+            0%, 100% { box-shadow: 0 0 0 0 rgba(255,255,255,0.2); }
+            50% { box-shadow: 0 0 0 18px rgba(255,255,255,0.12); }
+        }
+
+        @keyframes popIn {
+            from { opacity: 0; transform: scale(0.96) translateY(14px); }
+            to { opacity: 1; transform: scale(1) translateY(0); }
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <div class="celebration">
+            <div class="checkmark"><span>✓</span></div>
+        </div>
+        <h1>Message Sent!</h1>
+        <p>Your message was successfully submitted. We’ll get back to you within 2 working days with the best support and offers.</p>
+        <a href="Home Page HTML.html" class="btn">Back to Home</a>
+        <div class="hint">Want to send another message? <a href="Contact Form HTML.html">Return to Contact</a></div>
+    </div>
+</body>
+</html>

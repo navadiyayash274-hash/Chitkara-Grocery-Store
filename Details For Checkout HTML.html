@@ -1,0 +1,181 @@
+﻿<!DOCTYPE html>
+<html>
+<head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Details for Delivery - Chitkara Grocery Store</title>
+    <link href="Details For Checkout CSS.css" rel="stylesheet" type="text/css">
+    <script src="Details For Checkout JS.js"></script>
+<script src="Auth JS.js"></script>
+</head>
+<body>
+
+    <!-- Green glow orb -->
+    <div class="orb-green"></div>
+
+    <div class="contact-in">
+
+        <!-- LEFT: Google Map -->
+        <div class="contact-map">
+            <div class="map-overlay">
+                <h4>📍 Delivery Location</h4>
+                <p id="map-location-text">Enter pincode to update map</p>
+            </div>
+            <iframe
+                id="delivery-map"
+                src="https://www.google.com/maps/embed?pb=!1m18!1m12!1m3!1d121406.25474389594!2d72.7395891397565!3d21.17418447279585!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0x3be04e59411d1563%3A0xfe4558290938b042!2sSurat%2C%20Gujarat!5e0!3m2!1sen!2sin!4v1783534730485!5m2!1sen!2sin"
+                allowfullscreen="" loading="lazy"
+                referrerpolicy="strict-origin-when-cross-origin">
+            </iframe>
+        </div>
+
+        <!-- RIGHT: Form -->
+        <div class="contact-form">
+
+            <h1>🚚 Details For Delivery</h1>
+            <p class="form-subtitle">Fill in your details to complete your order</p>
+
+            <!-- Steps indicator -->
+            <div class="steps">
+                <div class="step">
+                    <div class="dot">🛒</div>
+                    <span>Cart</span>
+                </div>
+                <div class="step-line"></div>
+                <div class="step active">
+                    <div class="dot">📋</div>
+                    <span>Details</span>
+                </div>
+                <div class="step-line"></div>
+                <div class="step">
+                    <div class="dot">💳</div>
+                    <span>Payment</span>
+                </div>
+                <div class="step-line"></div>
+                <div class="step">
+                    <div class="dot">✅</div>
+                    <span>Done</span>
+                </div>
+            </div>
+
+            <div id="error_message"></div>
+
+            <form class="address_form" onsubmit="return validate_form();">
+
+                <input type="text"
+                    placeholder="👤  Full Name"
+                    class="contact-form-txt"
+                    id="name" required/>
+
+                <input type="text"
+                    placeholder="📞  Contact No."
+                    class="contact-form-txt"
+                    id="phone" required/>
+
+                <input type="text"
+                    placeholder="📧  Email ID"
+                    class="contact-form-txt full-width"
+                    id="email" required/>
+
+                <input type="text"
+                    placeholder="🏠  Full Address"
+                    class="contact-form-txt full-width"
+                    id="address"
+                    oninput="updateMapFromAddress()"
+                    required/>
+
+                <input type="text"
+                    placeholder="🏘️  Locality / Apartment"
+                    class="contact-form-txt"
+                    id="locality"
+                    oninput="updateMapFromAddress()"
+                    required/>
+
+                <input type="text"
+                    placeholder="📮  Pincode (6 digits only)"
+                    class="contact-form-txt"
+                    id="pincode"
+                    maxlength="6"
+                    pattern="[0-9]{6}"
+                    oninput="updateMapFromAddress()"
+                    required/>
+
+                <input type="text"
+                    placeholder="📅  Date (dd/mm/yyyy)"
+                    class="contact-form-txt"
+                    id="date" required/>
+
+                <input type="text"
+                    placeholder="🕐  Time Slot (e.g. 10:00AM - 12:00PM)"
+                    class="contact-form-txt"
+                    id="time" required/>
+
+                <button type="submit" class="contact-form-btn" id="submit">
+                    <a href="Payment HTML.html" style="cursor:pointer; text-decoration:none; color:white;">
+                        🚀 Proceed to Payment
+                    </a>
+                </button>
+
+            </form>
+
+        </div>
+
+    </div>
+
+    <script>
+        // Show error message with animation
+        const origError = document.getElementById('error_message');
+        const observer = new MutationObserver(() => {
+            if (origError.innerHTML.trim() !== '') {
+                origError.classList.add('show');
+            } else {
+                origError.classList.remove('show');
+            }
+        });
+        observer.observe(origError, { childList: true, subtree: true });
+
+        // ===== UPDATE MAP FROM FULL DELIVERY ADDRESS =====
+        let mapTimer = null;
+
+        function updateMapFromAddress() {
+            const address  = document.getElementById('address')?.value.trim()   || '';
+            const locality = document.getElementById('locality')?.value.trim()  || '';
+            const pincode  = document.getElementById('pincode')?.value.trim()   || '';
+            const map      = document.getElementById('delivery-map');
+            const locText  = document.getElementById('map-location-text');
+
+            // Build full search query
+            const parts = [address, locality, pincode, 'India'].filter(p => p !== '');
+            const fullQuery = parts.join(', ');
+
+            // Need at least address OR 6-digit pincode to search
+            if (address.length < 3 && pincode.length < 6) {
+                locText.textContent = 'Enter address to see delivery location';
+                locText.style.color = '';
+                return;
+            }
+
+            // Debounce — wait 800ms after user stops typing
+            clearTimeout(mapTimer);
+            locText.textContent = '🔍 Searching...';
+            locText.style.color = '#fdcc0d';
+
+            mapTimer = setTimeout(() => {
+                const query = encodeURIComponent(fullQuery);
+                // Use zoom level 17 for precise address, 14 for pincode only
+                const zoom = address.length > 5 ? 17 : 14;
+                map.src = `https://maps.google.com/maps?q=${query}&output=embed&z=${zoom}`;
+
+                // Fade map out then in
+                map.style.opacity = '0.4';
+                setTimeout(() => { map.style.opacity = '1'; }, 1000);
+
+                // Update overlay text
+                locText.textContent = '📍 ' + (address || locality || pincode);
+                locText.style.color = '#4eb060';
+            }, 800);
+        }
+    </script>
+
+</body>
+</html>

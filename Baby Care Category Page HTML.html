@@ -1,0 +1,118 @@
+﻿<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Baby Care - Chitkara Grocery Store</title>
+    <link rel="stylesheet" href="Category Shared CSS.css">
+    <style>
+        .cat-hero .cat-tag { background:rgba(41,182,246,0.12); border:1px solid rgba(41,182,246,0.35); color:#29b6f6; }
+        .cat-hero h1 { background:linear-gradient(90deg,#29b6f6,#ffffff,#81d4fa,#29b6f6); }
+        .product-card:hover { border-color:rgba(41,182,246,0.5); box-shadow:0 20px 50px rgba(41,182,246,0.2); }
+        .disc-price { background:linear-gradient(90deg,#29b6f6,#81d4fa); -webkit-background-clip:text; -webkit-text-fill-color:transparent; background-clip:text; }
+        .save-tag { background:rgba(41,182,246,0.15); color:#29b6f6; border:1px solid rgba(41,182,246,0.3); }
+        .add-cart-btn { background:linear-gradient(120deg,#0288d1,#0277bd); color:#fff; box-shadow:0 6px 20px rgba(2,136,209,0.4); }
+        .add-cart-btn:hover { background:linear-gradient(120deg,#29b6f6,#0288d1); box-shadow:0 10px 30px rgba(2,136,209,0.6); }
+    </style>
+<script src="Auth JS.js"></script>
+</head>
+<body>
+    <nav class="cat-nav">
+        <a href="Home Page HTML.html" class="logo"><span>C</span>GS</a>
+        <span style="color:#29b6f6;font-weight:700;font-size:1rem;">👶 Baby Care</span>
+        <a href="Home Page HTML.html" class="home-btn">🏠 Home</a>
+    </nav>
+    <div class="cat-hero">
+        <span class="cat-tag">👶 BABY CARE</span>
+        <h1 style="-webkit-text-fill-color:#29b6f6;background:none;font-size:2.5rem;font-weight:900;letter-spacing:3px;margin-bottom:10px;">Baby Care Products</h1>
+        <p>Premium quality baby care products for your little one's health and happiness</p>
+    </div>
+    <div class="products-grid">
+
+        <div class="product-card">
+            <span class="discount-badge">10% OFF</span>
+            <button class="wish-btn" onclick="toggleWishlist('Baby Powder',135,'images/Baby Powder.jpg',this)">❤️</button>
+            <img src="images/Baby Powder.jpg" alt="Baby Powder">
+            <div class="card-body">
+                <h3>Baby Powder</h3><p class="qty">200 gm</p>
+                <div class="price-wrap"><span class="orig-price">Rs. 150</span><span class="disc-price">Rs. 135</span><span class="save-tag">Save Rs.15</span></div>
+                <button class="add-cart-btn" onclick="addToCart('Baby Powder',135,'images/Baby Powder.jpg',150)">🛒 Add to Cart</button>
+            </div>
+        </div>
+
+        <div class="product-card">
+            <span class="discount-badge">12% OFF</span>
+            <button class="wish-btn" onclick="toggleWishlist('Baby Cream',88,'images/Baby Cream.jpg',this)">❤️</button>
+            <img src="images/Baby Cream.jpg" alt="Baby Cream">
+            <div class="card-body">
+                <h3>Baby Cream</h3><p class="qty">100 gm</p>
+                <div class="price-wrap"><span class="orig-price">Rs. 100</span><span class="disc-price">Rs. 88</span><span class="save-tag">Save Rs.12</span></div>
+                <button class="add-cart-btn" onclick="addToCart('Baby Cream',88,'images/Baby Cream.jpg',100)">🛒 Add to Cart</button>
+            </div>
+        </div>
+
+        <div class="product-card">
+            <span class="discount-badge">15% OFF</span>
+            <button class="wish-btn" onclick="toggleWishlist('Diapers',425,'images/Diapers.jpg',this)">❤️</button>
+            <img src="images/Diapers.jpg" alt="Diapers">
+            <div class="card-body">
+                <h3>Baby Diapers</h3><p class="qty">20 pieces</p>
+                <div class="price-wrap"><span class="orig-price">Rs. 500</span><span class="disc-price">Rs. 425</span><span class="save-tag">Save Rs.75</span></div>
+                <button class="add-cart-btn" onclick="addToCart('Diapers',425,'images/Diapers.jpg',500)">🛒 Add to Cart</button>
+            </div>
+        </div>
+
+        <div class="product-card">
+            <span class="discount-badge">10% OFF</span>
+            <button class="wish-btn" onclick="toggleWishlist('Baby Shampoo',90,'images/Baby Shampoo.jpg',this)">❤️</button>
+            <img src="images/Baby Shampoo.jpg" alt="Baby Shampoo">
+            <div class="card-body">
+                <h3>Baby Shampoo</h3><p class="qty">200 ml</p>
+                <div class="price-wrap"><span class="orig-price">Rs. 100</span><span class="disc-price">Rs. 90</span><span class="save-tag">Save Rs.10</span></div>
+                <button class="add-cart-btn" onclick="addToCart('Baby Shampoo',90,'images/Baby Shampoo.jpg',100)">🛒 Add to Cart</button>
+            </div>
+        </div>
+
+        <div class="product-card">
+            <span class="discount-badge">12% OFF</span>
+            <button class="wish-btn" onclick="toggleWishlist('Baby Wipes',88,'images/Baby Wipes.jpg',this)">❤️</button>
+            <img src="images/Baby Wipes.jpg" alt="Baby Wipes">
+            <div class="card-body">
+                <h3>Baby Wipes</h3><p class="qty">72 pieces</p>
+                <div class="price-wrap"><span class="orig-price">Rs. 100</span><span class="disc-price">Rs. 88</span><span class="save-tag">Save Rs.12</span></div>
+                <button class="add-cart-btn" onclick="addToCart('Baby Wipes',88,'images/Baby Wipes.jpg',100)">🛒 Add to Cart</button>
+            </div>
+        </div>
+
+        <div class="product-card">
+            <span class="discount-badge">10% OFF</span>
+            <button class="wish-btn" onclick="toggleWishlist('Johnson Baby Oil',135,'images/Johnson\'s Baby Oil.jpg',this)">❤️</button>
+            <img src="images/Johnson's Baby Oil.jpg" alt="Baby Oil">
+            <div class="card-body">
+                <h3>Johnson's Baby Oil</h3><p class="qty">200 ml</p>
+                <div class="price-wrap"><span class="orig-price">Rs. 150</span><span class="disc-price">Rs. 135</span><span class="save-tag">Save Rs.15</span></div>
+                <button class="add-cart-btn" onclick="addToCart('Johnson Baby Oil',135,'images/Johnson\'s Baby Oil.jpg',150)">🛒 Add to Cart</button>
+            </div>
+        </div>
+
+    </div>
+    <script>
+        (function () {
+            const maxProducts = 10;
+            const cutToLimit = () => {
+                const cards = Array.from(document.querySelectorAll('.product-card'));
+                cards.forEach((card, index) => {
+                    card.style.display = index < maxProducts ? '' : 'none';
+                });
+            };
+            if (document.readyState === 'loading') {
+                document.addEventListener('DOMContentLoaded', cutToLimit);
+            } else {
+                cutToLimit();
+            }
+        })();
+    </script>
+    <script src="Cart JS.js"></script>
+    <script src="Wishlist JS.js"></script>
+</body>
+</html>

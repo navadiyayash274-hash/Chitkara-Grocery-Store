@@ -1,0 +1,189 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Feedback - Chitkara Grocery Store</title>
+    <link rel="stylesheet" href="Feedback Form CSS.css">
+    <script src="https://kit.fontawesome.com/9088cc6401.js" crossorigin="anonymous"></script>
+</head>
+<body>
+
+    <!-- Background orbs -->
+    <div class="orb orb-1"></div>
+    <div class="orb orb-2"></div>
+    <div class="orb orb-3"></div>
+
+    <div class="feedback-page">
+
+        <!-- Header -->
+        <div class="feedback-header">
+            <span class="tag">⭐ Share Your Experience</span>
+            <h1>Your Feedback Matters</h1>
+            <p>Help us improve by sharing your honest thoughts about Chitkara Grocery Store.</p>
+        </div>
+
+        <!-- Card -->
+        <div class="feedback-card">
+
+            <!-- Left: Illustration -->
+            <div class="feedback-left">
+                <div class="emoji-big">🛒</div>
+                <h3>How was your experience?</h3>
+                <p>Your feedback helps us serve you better. Rate your experience and tell us what you think!</p>
+                <div class="perks">
+                    <div class="perk">✅ Fresh products delivered</div>
+                    <div class="perk">✅ Fast delivery service</div>
+                    <div class="perk">✅ Best prices guaranteed</div>
+                    <div class="perk">✅ 24/7 customer support</div>
+                </div>
+            </div>
+
+            <!-- Right: Form -->
+            <div class="feedback-right">
+                <h2>Leave Your Feedback</h2>
+
+                <div id="error_msg"   class="alert alert-error"></div>
+                <div id="success_msg" class="alert alert-success"></div>
+
+                <form id="feedbackForm">
+
+                    <div class="input-group">
+                        <input type="text" id="fname" placeholder="👤  Your Name" required>
+                    </div>
+
+                    <div class="input-group">
+                        <input type="email" id="femail" placeholder="📧  Your Email" required>
+                    </div>
+
+                    <!-- Star Rating -->
+                    <div class="rating-section">
+                        <label>⭐ Rate Your Experience</label>
+                        <div class="stars">
+                            <input type="radio" name="rating" id="s5" value="5">
+                            <label for="s5" title="Excellent">★</label>
+                            <input type="radio" name="rating" id="s4" value="4">
+                            <label for="s4" title="Good">★</label>
+                            <input type="radio" name="rating" id="s3" value="3">
+                            <label for="s3" title="Average">★</label>
+                            <input type="radio" name="rating" id="s2" value="2">
+                            <label for="s2" title="Poor">★</label>
+                            <input type="radio" name="rating" id="s1" value="1">
+                            <label for="s1" title="Terrible">★</label>
+                        </div>
+                        <div class="rating-text" id="ratingText">Click a star to rate</div>
+                    </div>
+
+                    <!-- Category -->
+                    <div class="input-group">
+                        <select id="fcategory">
+                            <option value="" disabled selected>📦  Select Category</option>
+                            <option value="Product Quality">Product Quality</option>
+                            <option value="Delivery Speed">Delivery Speed</option>
+                            <option value="Customer Service">Customer Service</option>
+                            <option value="Website Experience">Website Experience</option>
+                            <option value="Pricing">Pricing</option>
+                            <option value="Other">Other</option>
+                        </select>
+                    </div>
+
+                    <div class="input-group">
+                        <textarea id="fmessage" placeholder="💬  Write your feedback here..." required></textarea>
+                    </div>
+
+                    <button type="submit" class="submit-btn">
+                        <span>🚀 Submit Feedback</span>
+                    </button>
+
+                </form>
+            </div>
+
+        </div>
+
+    </div>
+
+    <script>
+        // Star rating text
+        const ratingLabels = { 1:'Terrible 😞', 2:'Poor 😕', 3:'Average 😐', 4:'Good 😊', 5:'Excellent 🤩' };
+        document.querySelectorAll('.stars input').forEach(input => {
+            input.addEventListener('change', () => {
+                document.getElementById('ratingText').textContent = ratingLabels[input.value];
+                document.getElementById('ratingText').style.color = '#fdcc0d';
+            });
+        });
+
+        // Pre-fill from localStorage if logged in
+        const _name  = localStorage.getItem('cgs_user_name') || '';
+        const _email = localStorage.getItem('cgs_email') ||
+                       localStorage.getItem('cgs_user_contact') || '';
+        if (_name)  document.getElementById('fname').value  = _name;
+        if (_email && _email.includes('@')) document.getElementById('femail').value = _email;
+
+        // Form submit
+        document.getElementById('feedbackForm').addEventListener('submit', function(e) {
+            e.preventDefault();
+
+            const name     = document.getElementById('fname').value.trim();
+            const email    = document.getElementById('femail').value.trim();
+            const message  = document.getElementById('fmessage').value.trim();
+            const rating   = document.querySelector('.stars input:checked');
+            const category = document.getElementById('fcategory').value;
+
+            const errEl = document.getElementById('error_msg');
+            const sucEl = document.getElementById('success_msg');
+
+            if (name.length < 3) { showAlert(errEl, '⚠️ Please enter a valid name'); return; }
+            if (!email.includes('@')) { showAlert(errEl, '⚠️ Please enter a valid email'); return; }
+            if (!rating) { showAlert(errEl, '⚠️ Please select a star rating'); return; }
+            if (message.length < 5) { showAlert(errEl, '⚠️ Please write a feedback message'); return; }
+
+            errEl.classList.remove('show');
+
+            // Link feedback to logged-in user account
+            const userContact = localStorage.getItem('cgs_user_contact') ||
+                                 localStorage.getItem('cgs_email') || '';
+
+            const feedbackData = {
+                name,
+                email,
+                userContact,
+                rating:   parseInt(rating.value),
+                category: category || '',
+                message
+            };
+
+            // Save rating for confirmation page
+            localStorage.setItem('cgs_feedback_rating', rating.value);
+
+            fetch('/api/feedback', {
+                method:  'POST',
+                headers: { 'Content-Type': 'application/json' },
+                body:    JSON.stringify(feedbackData)
+            })
+            .then(r => r.json())
+            .then(data => {
+                if (data.autoReply) {
+                    localStorage.setItem('cgs_last_feedback_reply', data.autoReply);
+                }
+                showAlert(sucEl, '✅ Thank you! Your feedback has been submitted.');
+                document.getElementById('feedbackForm').reset();
+                document.getElementById('ratingText').textContent = 'Click a star to rate';
+                document.getElementById('ratingText').style.color = '';
+                setTimeout(() => { window.location.href = 'Feedback Form Confirm HTML and CSS.html'; }, 2000);
+            })
+            .catch(() => {
+                showAlert(sucEl, '✅ Thank you! Your feedback has been submitted.');
+                document.getElementById('feedbackForm').reset();
+                setTimeout(() => { window.location.href = 'Feedback Form Confirm HTML and CSS.html'; }, 2000);
+            });
+        });
+
+        function showAlert(el, msg) {
+            el.textContent = msg;
+            el.classList.add('show');
+            setTimeout(() => el.classList.remove('show'), 4000);
+        }
+    </script>
+
+</body>
+</html>

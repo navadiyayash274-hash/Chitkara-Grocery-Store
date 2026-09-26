@@ -1,0 +1,501 @@
+﻿<!DOCTYPE html>
+<html>
+<head>
+    <title>Shopping Cart - Chitkara Grocery Store</title>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="stylesheet" href="Shopping Cart CSS.css">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css">
+    <script src="Cart JS.js" defer></script>
+
+    <style>
+        /* ===== EMPTY CART POPUP ===== */
+        .popup-overlay {
+            position: fixed;
+            top: 0; left: 0;
+            width: 100%; height: 100%;
+            background: rgba(0,0,0,0.7);
+            backdrop-filter: blur(6px);
+            z-index: 9999;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            opacity: 0;
+            pointer-events: none;
+            transition: opacity 0.4s ease;
+        }
+
+        .popup-overlay.show {
+            opacity: 1;
+            pointer-events: all;
+        }
+
+        .popup-box {
+            background: rgba(255,255,255,0.06);
+            backdrop-filter: blur(25px);
+            border: 1px solid rgba(255,80,80,0.4);
+            border-radius: 28px;
+            padding: 50px 45px;
+            text-align: center;
+            max-width: 420px;
+            width: 90%;
+            box-shadow: 0 30px 80px rgba(0,0,0,0.6), 0 0 40px rgba(255,80,80,0.15);
+            transform: scale(0.6) translateY(40px);
+            transition: all 0.5s cubic-bezier(0.175, 0.885, 0.32, 1.275);
+        }
+
+        .popup-overlay.show .popup-box {
+            transform: scale(1) translateY(0);
+        }
+
+        .popup-emoji {
+            font-size: 4.5rem;
+            display: block;
+            margin-bottom: 15px;
+            animation: shakeCart 0.6s ease 0.5s both;
+        }
+
+        @keyframes shakeCart {
+            0%,100% { transform: rotate(0deg); }
+            20%      { transform: rotate(-15deg); }
+            40%      { transform: rotate(15deg); }
+            60%      { transform: rotate(-10deg); }
+            80%      { transform: rotate(10deg); }
+        }
+
+        .popup-box h2 {
+            font-size: 1.8rem;
+            font-weight: 900;
+            background: linear-gradient(90deg, #ff6b6b, #ff8e53);
+            background-size: 200%;
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            background-clip: text;
+            animation: redShine 2s linear infinite;
+            letter-spacing: 2px;
+            margin-bottom: 12px;
+        }
+
+        @keyframes redShine {
+            0%   { background-position: 0%; }
+            100% { background-position: 200%; }
+        }
+
+        .popup-box p {
+            color: #9ca3af;
+            font-size: 0.95rem;
+            line-height: 1.7;
+            margin-bottom: 30px;
+        }
+
+        .popup-box p span {
+            color: #ff6b6b;
+            font-weight: 600;
+        }
+
+        .popup-btns {
+            display: flex;
+            gap: 12px;
+            justify-content: center;
+            flex-wrap: wrap;
+        }
+
+        .btn-shop {
+            padding: 13px 28px;
+            background: linear-gradient(120deg, #4eb060, #2e7d32);
+            color: #fff;
+            border: none;
+            border-radius: 50px;
+            font-size: 0.9rem;
+            font-weight: 700;
+            cursor: pointer;
+            text-decoration: none;
+            display: inline-block;
+            transition: all 0.3s ease;
+            box-shadow: 0 8px 20px rgba(78,176,96,0.4);
+            letter-spacing: 0.5px;
+        }
+
+        .btn-shop:hover {
+            transform: translateY(-3px);
+            box-shadow: 0 12px 30px rgba(78,176,96,0.6);
+            letter-spacing: 1px;
+        }
+
+        .btn-close {
+            padding: 13px 28px;
+            background: rgba(255,255,255,0.08);
+            color: #e0e0e0;
+            border: 1px solid rgba(255,255,255,0.2);
+            border-radius: 50px;
+            font-size: 0.9rem;
+            font-weight: 600;
+            cursor: pointer;
+            transition: all 0.3s ease;
+        }
+
+        .btn-close:hover {
+            background: rgba(255,80,80,0.15);
+            border-color: rgba(255,80,80,0.4);
+            color: #ff6b6b;
+            transform: translateY(-3px);
+        }
+
+        /* Pulse ring around emoji */
+        .emoji-wrapper {
+            position: relative;
+            display: inline-block;
+            margin-bottom: 15px;
+        }
+
+        .emoji-wrapper::before {
+            content: '';
+            position: absolute;
+            top: 50%; left: 50%;
+            transform: translate(-50%, -50%);
+            width: 90px; height: 90px;
+            border-radius: 50%;
+            border: 2px solid rgba(255,80,80,0.3);
+            animation: pulseRing 1.5s ease-out infinite;
+        }
+
+        .emoji-wrapper::after {
+            content: '';
+            position: absolute;
+            top: 50%; left: 50%;
+            transform: translate(-50%, -50%);
+            width: 90px; height: 90px;
+            border-radius: 50%;
+            border: 2px solid rgba(255,80,80,0.2);
+            animation: pulseRing 1.5s ease-out 0.4s infinite;
+        }
+
+        @keyframes pulseRing {
+            from { width: 70px; height: 70px; opacity: 1; }
+            to   { width: 120px; height: 120px; opacity: 0; }
+        }
+    </style>
+<script src="Auth JS.js"></script>
+</head>
+<body>
+
+    <!-- Background orbs -->
+    <div class="orb-green"></div>
+
+    <!-- ===== EMPTY CART POPUP ===== -->
+    <div class="popup-overlay" id="emptyCartPopup">
+        <div class="popup-box">
+            <div class="emoji-wrapper">
+                <span class="popup-emoji">🛒</span>
+            </div>
+            <h2>Cart is Empty!</h2>
+            <p>Oops! You haven't added anything to your cart yet.<br>
+            <span>Add some items</span> before proceeding to checkout.</p>
+            <div class="popup-btns">
+                <a href="Home Page HTML.html" class="btn-shop">🛍️ Start Shopping</a>
+                <button class="btn-close" onclick="closePopup()">✕ Close</button>
+            </div>
+        </div>
+    </div>
+
+    <div class="container">
+
+        <!-- Page Title -->
+        <h1>🛒 Shopping Cart</h1>
+
+        <div class="cart">
+
+            <!-- Products List — filled by Cart JS.js -->
+            <div class="products"></div>
+
+            <!-- Cart Total Panel -->
+            <div class="cart-total">
+
+                <h3>🧾 Order Summary</h3>
+
+                <p>
+                    <span>Subtotal</span>
+                    <span id="cart-total-price">Rs. 0</span>
+                </p>
+                <p>
+                    <span>No. of Items</span>
+                    <span id="cart-total-items">0</span>
+                </p>
+                <p>
+                    <span>Delivery</span>
+                    <span style="color:#4eb060; font-weight:700;">FREE 🎉</span>
+                </p>
+                <p id="discount-row" style="display:none;">
+                    <span>Coupon Discount</span>
+                    <span id="coupon-discount-val" style="color:#4eb060; font-weight:700;">- Rs. 0</span>
+                </p>
+                <p>
+                    <span>You Save</span>
+                    <span id="cart-total-save" style="color:#fdcc0d;">Rs. 0</span>
+                </p>
+
+                <!-- Divider -->
+                <div style="border-top:1px solid rgba(78,176,96,0.2); margin:10px 0;"></div>
+
+                <!-- Grand Total -->
+                <p style="font-size:1.05rem;">
+                    <span style="font-weight:700; color:#e0e0e0;">Grand Total</span>
+                    <span id="grand-total" style="font-weight:800; background:linear-gradient(90deg,#4eb060,#a5d6a7); -webkit-background-clip:text; -webkit-text-fill-color:transparent; background-clip:text; font-size:1.2rem;">Rs. 0</span>
+                </p>
+
+                <!-- ===== COUPON SECTION ===== -->
+                <div class="coupon-section">
+                    <div class="coupon-header">
+                        <span>🏷️ Apply Coupon</span>
+                        <button onclick="toggleCoupons()" id="toggle-coupon-btn" style="background:none; border:none; color:#4eb060; cursor:pointer; font-size:0.8rem; font-weight:600;">View Coupons ▼</button>
+                    </div>
+
+                    <!-- Available Coupons List -->
+                    <div id="coupon-list" style="display:none;">
+                        <div class="coupon-card" onclick="applyCouponCode('CGS10')">
+                            <div class="coupon-left">
+                                <span class="coupon-code">CGS10</span>
+                                <span class="coupon-desc">10% off on orders above Rs. 100</span>
+                            </div>
+                            <button class="coupon-apply-btn">Apply</button>
+                        </div>
+                        <div class="coupon-card" onclick="applyCouponCode('SAVE20')">
+                            <div class="coupon-left">
+                                <span class="coupon-code">SAVE20</span>
+                                <span class="coupon-desc">Flat Rs. 20 off on any order</span>
+                            </div>
+                            <button class="coupon-apply-btn">Apply</button>
+                        </div>
+                        <div class="coupon-card" onclick="applyCouponCode('FRESH15')">
+                            <div class="coupon-left">
+                                <span class="coupon-code">FRESH15</span>
+                                <span class="coupon-desc">15% off on orders above Rs. 200</span>
+                            </div>
+                            <button class="coupon-apply-btn">Apply</button>
+                        </div>
+                        <div class="coupon-card" onclick="applyCouponCode('DAIRY50')">
+                            <div class="coupon-left">
+                                <span class="coupon-code">DAIRY50</span>
+                                <span class="coupon-desc">Flat Rs. 50 off on orders above Rs. 300</span>
+                            </div>
+                            <button class="coupon-apply-btn">Apply</button>
+                        </div>
+                        <div class="coupon-card" onclick="applyCouponCode('NEWUSER')">
+                            <div class="coupon-left">
+                                <span class="coupon-code">NEWUSER</span>
+                                <span class="coupon-desc">25% off for new users — any order</span>
+                            </div>
+                            <button class="coupon-apply-btn">Apply</button>
+                        </div>
+                    </div>
+
+                    <!-- Manual coupon input -->
+                    <div class="coupon-input-row">
+                        <input type="text" id="coupon-input" placeholder="Enter coupon code" 
+                            style="flex:1; padding:11px 14px; background:rgba(255,255,255,0.07); border:1px solid rgba(78,176,96,0.3) !important; border-radius:10px; color:#e0e0e0; font-size:0.88rem; text-transform:uppercase; letter-spacing:1px;"
+                            oninput="this.value=this.value.toUpperCase()">
+                        <button onclick="applyManualCoupon()" style="padding:11px 18px; background:linear-gradient(120deg,#4eb060,#2e7d32); color:#fff; border:none; border-radius:10px; font-size:0.88rem; font-weight:700; cursor:pointer; transition:all 0.3s ease; white-space:nowrap;"
+                            onmouseover="this.style.opacity='0.85'" onmouseout="this.style.opacity='1'">
+                            Apply
+                        </button>
+                    </div>
+
+                    <!-- Coupon status message -->
+                    <div id="coupon-msg" style="display:none; margin-top:8px; padding:10px 14px; border-radius:10px; font-size:0.82rem; font-weight:600; text-align:center;"></div>
+
+                    <!-- Applied coupon tag -->
+                    <div id="applied-coupon-tag" style="display:none; margin-top:10px; background:rgba(78,176,96,0.12); border:1px solid rgba(78,176,96,0.35); border-radius:10px; padding:10px 14px; display:none; align-items:center; justify-content:space-between;">
+                        <span style="color:#4eb060; font-size:0.85rem; font-weight:700;">✅ <span id="applied-code-text"></span> Applied!</span>
+                        <button onclick="removeCoupon()" style="background:rgba(255,80,80,0.15); border:1px solid rgba(255,80,80,0.3); color:#ff6b6b; padding:4px 10px; border-radius:8px; cursor:pointer; font-size:0.78rem; font-weight:600;">✕ Remove</button>
+                    </div>
+                </div>
+
+                <!-- Checkout button — checks if cart is empty -->
+                <a href="#" onclick="checkCartAndProceed(event)">
+                    🚀 Proceed to Checkout
+                </a>
+
+                <a href="Home Page HTML.html" class="continue-shopping">
+                    ← Continue Shopping
+                </a>
+
+            </div>
+
+        </div>
+
+    </div>
+
+    <script>
+        // Check cart before proceeding to checkout
+        function checkCartAndProceed(e) {
+            e.preventDefault();
+            const cart = JSON.parse(localStorage.getItem('cgs_cart')) || [];
+            if (cart.length === 0) {
+                document.getElementById('emptyCartPopup').classList.add('show');
+            } else {
+                window.location.href = 'Details For Checkout HTML.html';
+            }
+        }
+
+        // Close popup
+        function closePopup() {
+            document.getElementById('emptyCartPopup').classList.remove('show');
+        }
+
+        document.getElementById('emptyCartPopup').addEventListener('click', function(e) {
+            if (e.target === this) closePopup();
+        });
+
+        document.addEventListener('keydown', function(e) {
+            if (e.key === 'Escape') closePopup();
+        });
+
+        // ===== COUPON SYSTEM =====
+        const COUPONS = {
+            'CGS10':    { type: 'percent', value: 10,  minOrder: 100,  desc: '10% off'       },
+            'SAVE20':   { type: 'flat',    value: 20,  minOrder: 0,    desc: 'Rs.20 off'     },
+            'FRESH15':  { type: 'percent', value: 15,  minOrder: 200,  desc: '15% off'       },
+            'DAIRY50':  { type: 'flat',    value: 50,  minOrder: 300,  desc: 'Rs.50 off'     },
+            'NEWUSER':  { type: 'percent', value: 25,  minOrder: 0,    desc: '25% off'       }
+        };
+
+        let appliedCoupon = null;
+
+        function toggleCoupons() {
+            const list = document.getElementById('coupon-list');
+            const btn  = document.getElementById('toggle-coupon-btn');
+            if (list.style.display === 'none') {
+                list.style.display = 'block';
+                btn.textContent = 'Hide Coupons ▲';
+            } else {
+                list.style.display = 'none';
+                btn.textContent = 'View Coupons ▼';
+            }
+        }
+
+        function applyCouponCode(code) {
+            document.getElementById('coupon-input').value = code;
+            applyManualCoupon();
+            // Hide list after applying
+            document.getElementById('coupon-list').style.display = 'none';
+            document.getElementById('toggle-coupon-btn').textContent = 'View Coupons ▼';
+        }
+
+        function applyManualCoupon() {
+            const input = document.getElementById('coupon-input').value.trim().toUpperCase();
+            const msg   = document.getElementById('coupon-msg');
+            const tag   = document.getElementById('applied-coupon-tag');
+
+            // Already applied — only one coupon allowed
+            if (appliedCoupon) {
+                showCouponMsg('⚠️ Only one coupon allowed per order. Remove existing coupon first.', 'warn');
+                return;
+            }
+
+            if (!input) {
+                showCouponMsg('⚠️ Please enter a coupon code.', 'error');
+                return;
+            }
+
+            const coupon = COUPONS[input];
+
+            if (!coupon) {
+                showCouponMsg('❌ Invalid coupon code! Please check and try again.', 'error');
+                document.getElementById('coupon-input').style.borderColor = 'rgba(255,80,80,0.6)';
+                return;
+            }
+
+            // Check minimum order
+            const subtotal = getCartSubtotal();
+            if (subtotal < coupon.minOrder) {
+                showCouponMsg(`❌ Minimum order Rs.${coupon.minOrder} required for this coupon.`, 'error');
+                return;
+            }
+
+            // Apply coupon
+            appliedCoupon = { code: input, ...coupon };
+            localStorage.setItem('cgs_coupon', JSON.stringify(appliedCoupon));
+
+            document.getElementById('coupon-input').style.borderColor = 'rgba(78,176,96,0.6)';
+            document.getElementById('applied-code-text').textContent = input + ' — ' + coupon.desc;
+            tag.style.display = 'flex';
+
+            showCouponMsg('✅ Coupon applied successfully!', 'success');
+            updateTotalsWithCoupon();
+        }
+
+        function removeCoupon() {
+            appliedCoupon = null;
+            localStorage.removeItem('cgs_coupon');
+            document.getElementById('coupon-input').value = '';
+            document.getElementById('coupon-input').style.borderColor = '';
+            document.getElementById('applied-coupon-tag').style.display = 'none';
+            document.getElementById('discount-row').style.display = 'none';
+            showCouponMsg('Coupon removed.', 'warn');
+            renderCart();
+        }
+
+        function getCartSubtotal() {
+            const cart = JSON.parse(localStorage.getItem('cgs_cart')) || [];
+            return cart.reduce((sum, item) => sum + (item.price * item.qty), 0);
+        }
+
+        function updateTotalsWithCoupon() {
+            if (!appliedCoupon) return;
+            const subtotal = getCartSubtotal();
+            let discount = 0;
+
+            if (appliedCoupon.type === 'percent') {
+                discount = Math.round(subtotal * appliedCoupon.value / 100);
+            } else {
+                discount = appliedCoupon.value;
+            }
+
+            const grandTotal = Math.max(0, subtotal - discount);
+
+            document.getElementById('cart-total-price').textContent  = 'Rs. ' + subtotal;
+            document.getElementById('discount-row').style.display     = 'flex';
+            document.getElementById('coupon-discount-val').textContent = '- Rs. ' + discount;
+            document.getElementById('grand-total').textContent         = 'Rs. ' + grandTotal;
+            document.getElementById('cart-total-save').textContent     = 'Rs. ' + discount;
+
+            // Save discount for invoice
+            localStorage.setItem('cgs_discount', discount);
+            localStorage.setItem('cgs_grand_total', grandTotal);
+        }
+
+        function showCouponMsg(text, type) {
+            const msg = document.getElementById('coupon-msg');
+            msg.textContent = text;
+            msg.style.display = 'block';
+            if (type === 'success') {
+                msg.style.background = 'rgba(78,176,96,0.15)';
+                msg.style.color = '#4eb060';
+                msg.style.border = '1px solid rgba(78,176,96,0.3)';
+            } else if (type === 'error') {
+                msg.style.background = 'rgba(255,80,80,0.15)';
+                msg.style.color = '#ff6b6b';
+                msg.style.border = '1px solid rgba(255,80,80,0.3)';
+            } else {
+                msg.style.background = 'rgba(253,204,13,0.1)';
+                msg.style.color = '#fdcc0d';
+                msg.style.border = '1px solid rgba(253,204,13,0.3)';
+            }
+            clearTimeout(msg._t);
+            msg._t = setTimeout(() => { msg.style.display = 'none'; }, 3500);
+        }
+
+        // Restore coupon on page load
+        document.addEventListener('DOMContentLoaded', () => {
+            const saved = localStorage.getItem('cgs_coupon');
+            if (saved) {
+                appliedCoupon = JSON.parse(saved);
+                document.getElementById('applied-code-text').textContent = appliedCoupon.code + ' — ' + appliedCoupon.desc;
+                document.getElementById('applied-coupon-tag').style.display = 'flex';
+                setTimeout(updateTotalsWithCoupon, 300);
+            }
+        });
+    </script>
+
+</body>
+</html>

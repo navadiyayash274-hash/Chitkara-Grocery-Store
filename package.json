@@ -1,0 +1,21 @@
+{
+  "name": "chitkara-grocery-store",
+  "version": "1.0.0",
+  "description": "Chitkara Grocery Store Backend",
+  "main": "server.js",
+  "scripts": {
+    "start": "node server.js",
+    "seed:beverages": "node scripts/seed-beverages.js",
+    "seed:household": "node scripts/seed-household-cleaning.js",
+    "seed:snacks": "node scripts/seed-snacks-biscuits.js",
+    "seed:all": "node scripts/seed-beverages.js && node scripts/seed-household-cleaning.js && node scripts/seed-snacks-biscuits.js"
+  },
+  "dependencies": {
+    "cors": "^2.8.5",
+    "dotenv": "^16.4.5",
+    "express": "^4.18.2",
+    "mongoose": "^8.2.3",
+    "nodemailer": "^7.0.0",
+    "twilio": "^5.3.0"
+  }
+}

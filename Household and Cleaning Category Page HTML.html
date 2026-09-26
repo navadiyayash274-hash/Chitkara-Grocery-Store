@@ -1,0 +1,572 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Household & Cleaning - Chitkara Grocery Store</title>
+    <link rel="stylesheet" href="Category Shared CSS.css">
+    <style>
+        .cat-hero .cat-tag { background:rgba(120,144,156,0.12); border:1px solid rgba(120,144,156,0.35); color:#78909c; }
+        .cat-hero h1 { background:linear-gradient(90deg,#78909c,#ffffff,#cfd8dc,#78909c); }
+        .product-card:hover { border-color:rgba(120,144,156,0.5); box-shadow:0 20px 50px rgba(120,144,156,0.2); }
+        .disc-price { background:linear-gradient(90deg,#78909c,#cfd8dc); -webkit-background-clip:text; -webkit-text-fill-color:transparent; background-clip:text; }
+        .save-tag { background:rgba(120,144,156,0.15); color:#78909c; border:1px solid rgba(120,144,156,0.3); }
+        .add-cart-btn { background:linear-gradient(120deg,#607d8b,#455a64); color:#fff; box-shadow:0 6px 20px rgba(96,125,139,0.4); }
+        .add-cart-btn:hover { background:linear-gradient(120deg,#78909c,#37474f); box-shadow:0 10px 30px rgba(96,125,139,0.6); }
+        .toolbar { max-width:1200px; margin:20px auto 0; padding:0 30px; display:flex; flex-wrap:wrap; gap:16px; align-items:center; justify-content:space-between; position:relative; z-index:1; }
+        .toolbar input { flex:1; min-width:220px; padding:12px 18px; border-radius:14px; border:1px solid rgba(120,144,156,0.4); background:rgba(255,255,255,0.04); color:#f5f5f5; font-size:0.95rem; }
+        .toolbar input::placeholder { color:#b9b9b9; }
+        .filter-group { display:flex; flex-wrap:wrap; gap:10px; }
+        .filter-btn { border:none; border-radius:999px; padding:8px 14px; background:rgba(255,255,255,0.08); color:#f0f0f0; cursor:pointer; font-weight:600; }
+        .filter-btn.active { background:linear-gradient(120deg,#cfd8dc,#90a4ae); color:#111; }
+        .view-btn { width:100%; margin-top:10px; padding:10px 12px; border:none; border-radius:12px; background:rgba(255,255,255,0.08); color:#fff; cursor:pointer; font-weight:600; }
+        .view-btn:hover { background:rgba(255,255,255,0.15); }
+        .modal { display:none; position:fixed; inset:0; background:rgba(13,16,24,0.7); z-index:200; justify-content:center; align-items:center; padding:20px; }
+        .modal.show { display:flex; }
+        .modal-content { background:linear-gradient(135deg,#1b1d2d,#101826); border:1px solid rgba(120,144,156,0.5); border-radius:22px; max-width:560px; width:100%; padding:24px; box-shadow:0 20px 60px rgba(0,0,0,0.5); }
+        .modal-content h3 { color:#fff; margin-bottom:12px; }
+        .modal-content p { color:#d7d7d7; margin:6px 0; }
+        .modal-close { float:right; background:none; border:none; color:#fff; font-size:1.4rem; cursor:pointer; }
+    </style>
+    <script src="Auth JS.js"></script>
+</head>
+<body>
+    <nav class="cat-nav">
+        <a href="Home Page HTML.html" class="logo"><span>C</span>GS</a>
+        <span style="color:#78909c;font-weight:700;font-size:1rem;">🧼 Household & Cleaning</span>
+        <a href="Home Page HTML.html" class="home-btn">🏠 Home</a>
+    </nav>
+    <div class="cat-hero">
+        <span class="cat-tag">🧼 CLEAN HOME</span>
+        <h1 style="-webkit-text-fill-color:#78909c;background:none;font-size:2.5rem;font-weight:900;letter-spacing:3px;margin-bottom:10px;">Household & Cleaning</h1>
+        <p>Fast-moving essentials to keep your home clean, fresh, and organized.</p>
+    </div>
+
+    <div class="toolbar">
+        <input type="text" id="householdSearch" placeholder="Search household essentials..." aria-label="Search household cleaning products">
+        <div class="filter-group">
+            <button class="filter-btn active" data-filter="all">All</button>
+            <button class="filter-btn" data-filter="detergent">Detergents</button>
+            <button class="filter-btn" data-filter="cleaner">Cleaners</button>
+            <button class="filter-btn" data-filter="fabric">Fabric Care</button>
+            <button class="filter-btn" data-filter="freshener">Fresheners</button>
+            <button class="filter-btn" data-filter="tools">Tools & Accessories</button>
+        </div>
+    </div>
+
+    <div class="products-grid" id="householdGrid">
+        <div class="product-card" data-category="detergent">
+            <span class="discount-badge">13% OFF</span>
+            <button class="wish-btn" onclick="toggleWishlist('Surf Excel Matic Detergent',399,'/images/household-cleaning/surf-excel-matic-detergent.jpg',this)">❤️</button>
+            <img src="images/household-cleaning/surf-excel-matic-detergent.jpg" alt="Surf Excel Matic Detergent">
+            <div class="card-body">
+                <h3>Surf Excel Matic Detergent</h3><p class="qty">2 kg</p>
+                <div class="price-wrap"><span class="orig-price">Rs. 459</span><span class="disc-price">Rs. 399</span><span class="save-tag">Save Rs.60</span></div>
+                <button class="view-btn" data-name="Surf Excel Matic Detergent" data-price="399" data-original="459" data-image="images/household-cleaning/surf-excel-matic-detergent.jpg" data-qty="2 kg" data-description="Powerful stain-removing detergent for deep cleaning and fresh laundry care across daily loads.">View Details</button>
+                <button class="add-cart-btn" onclick="addToCart('Surf Excel Matic Detergent',399,'/images/household-cleaning/surf-excel-matic-detergent.jpg',459)">🛒 Add to Cart</button>
+            </div>
+        </div>
+        <div class="product-card" data-category="detergent">
+            <span class="discount-badge">12% OFF</span>
+            <button class="wish-btn" onclick="toggleWishlist('Ariel Matic Detergent',420,'/images/household-cleaning/ariel-matic-detergent.jpg',this)">❤️</button>
+            <img src="images/household-cleaning/ariel-matic-detergent.jpg" alt="Ariel Matic Detergent">
+            <div class="card-body">
+                <h3>Ariel Matic Detergent</h3><p class="qty">2 kg</p>
+                <div class="price-wrap"><span class="orig-price">Rs. 475</span><span class="disc-price">Rs. 420</span><span class="save-tag">Save Rs.55</span></div>
+                <button class="view-btn" data-name="Ariel Matic Detergent" data-price="420" data-original="475" data-image="images/household-cleaning/ariel-matic-detergent.jpg" data-qty="2 kg" data-description="High-performance detergent that lifts tough stains while keeping clothes soft, bright, and fresh.">View Details</button>
+                <button class="add-cart-btn" onclick="addToCart('Ariel Matic Detergent',420,'/images/household-cleaning/ariel-matic-detergent.jpg',475)">🛒 Add to Cart</button>
+            </div>
+        </div>
+        <div class="product-card" data-category="detergent">
+            <span class="discount-badge">10% OFF</span>
+            <button class="wish-btn" onclick="toggleWishlist('Tide Plus Detergent',430,'/images/household-cleaning/tide-plus-detergent.jpg',this)">❤️</button>
+            <img src="images/household-cleaning/tide-plus-detergent.jpg" alt="Tide Plus Detergent">
+            <div class="card-body">
+                <h3>Tide Plus Detergent</h3><p class="qty">2 kg</p>
+                <div class="price-wrap"><span class="orig-price">Rs. 480</span><span class="disc-price">Rs. 430</span><span class="save-tag">Save Rs.50</span></div>
+                <button class="view-btn" data-name="Tide Plus Detergent" data-price="430" data-original="480" data-image="images/household-cleaning/tide-plus-detergent.jpg" data-qty="2 kg" data-description="A trusted detergent formula for powerful cleaning, stain control, and long-lasting freshness.">View Details</button>
+                <button class="add-cart-btn" onclick="addToCart('Tide Plus Detergent',430,'/images/household-cleaning/tide-plus-detergent.jpg',480)">🛒 Add to Cart</button>
+            </div>
+        </div>
+        <div class="product-card" data-category="detergent">
+            <span class="discount-badge">13% OFF</span>
+            <button class="wish-btn" onclick="toggleWishlist('Rin Detergent Powder',135,'/images/household-cleaning/rin-detergent-powder.jpg',this)">❤️</button>
+            <img src="images/household-cleaning/rin-detergent-powder.jpg" alt="Rin Detergent Powder">
+            <div class="card-body">
+                <h3>Rin Detergent Powder</h3><p class="qty">1 kg</p>
+                <div class="price-wrap"><span class="orig-price">Rs. 155</span><span class="disc-price">Rs. 135</span><span class="save-tag">Save Rs.20</span></div>
+                <button class="view-btn" data-name="Rin Detergent Powder" data-price="135" data-original="155" data-image="images/household-cleaning/rin-detergent-powder.jpg" data-qty="1 kg" data-description="Everyday detergent powder that removes grime effectively and keeps whites looking bright.">View Details</button>
+                <button class="add-cart-btn" onclick="addToCart('Rin Detergent Powder',135,'/images/household-cleaning/rin-detergent-powder.jpg',155)">🛒 Add to Cart</button>
+            </div>
+        </div>
+        <div class="product-card" data-category="detergent">
+            <span class="discount-badge">15% OFF</span>
+            <button class="wish-btn" onclick="toggleWishlist('Surf Excel Liquid Detergent',179,'/images/household-cleaning/surf-excel-liquid-detergent.jpg',this)">❤️</button>
+            <img src="images/household-cleaning/surf-excel-liquid-detergent.jpg" alt="Surf Excel Liquid Detergent">
+            <div class="card-body">
+                <h3>Surf Excel Liquid Detergent</h3><p class="qty">1 L</p>
+                <div class="price-wrap"><span class="orig-price">Rs. 210</span><span class="disc-price">Rs. 179</span><span class="save-tag">Save Rs.31</span></div>
+                <button class="view-btn" data-name="Surf Excel Liquid Detergent" data-price="179" data-original="210" data-image="images/household-cleaning/surf-excel-liquid-detergent.jpg" data-qty="1 L" data-description="Liquid detergent with deep-clean performance and freshness for regular machine and hand washing.">View Details</button>
+                <button class="add-cart-btn" onclick="addToCart('Surf Excel Liquid Detergent',179,'/images/household-cleaning/surf-excel-liquid-detergent.jpg',210)">🛒 Add to Cart</button>
+            </div>
+        </div>
+        <div class="product-card" data-category="detergent">
+            <span class="discount-badge">15% OFF</span>
+            <button class="wish-btn" onclick="toggleWishlist('Ariel Liquid Detergent',188,'/images/household-cleaning/ariel-liquid-detergent.jpg',this)">❤️</button>
+            <img src="images/household-cleaning/ariel-liquid-detergent.jpg" alt="Ariel Liquid Detergent">
+            <div class="card-body">
+                <h3>Ariel Liquid Detergent</h3><p class="qty">1 L</p>
+                <div class="price-wrap"><span class="orig-price">Rs. 220</span><span class="disc-price">Rs. 188</span><span class="save-tag">Save Rs.32</span></div>
+                <button class="view-btn" data-name="Ariel Liquid Detergent" data-price="188" data-original="220" data-image="images/household-cleaning/ariel-liquid-detergent.jpg" data-qty="1 L" data-description="High-efficiency liquid detergent that removes tough stains while keeping fabric soft and fresh.">View Details</button>
+                <button class="add-cart-btn" onclick="addToCart('Ariel Liquid Detergent',188,'/images/household-cleaning/ariel-liquid-detergent.jpg',220)">🛒 Add to Cart</button>
+            </div>
+        </div>
+        <div class="product-card" data-category="cleaner">
+            <span class="discount-badge">10% OFF</span>
+            <button class="wish-btn" onclick="toggleWishlist('Vim Dishwash Liquid',90,'/images/household-cleaning/vim-dishwash-liquid.jpg',this)">❤️</button>
+            <img src="images/household-cleaning/vim-dishwash-liquid.jpg" alt="Vim Dishwash Liquid">
+            <div class="card-body">
+                <h3>Vim Dishwash Liquid</h3><p class="qty">500 ml</p>
+                <div class="price-wrap"><span class="orig-price">Rs. 100</span><span class="disc-price">Rs. 90</span><span class="save-tag">Save Rs.10</span></div>
+                <button class="view-btn" data-name="Vim Dishwash Liquid" data-price="90" data-original="100" data-image="images/household-cleaning/vim-dishwash-liquid.jpg" data-qty="500 ml" data-description="Grease-cutting dishwash liquid designed for spotless cookware, utensils, and kitchen surfaces.">View Details</button>
+                <button class="add-cart-btn" onclick="addToCart('Vim Dishwash Liquid',90,'/images/household-cleaning/vim-dishwash-liquid.jpg',100)">🛒 Add to Cart</button>
+            </div>
+        </div>
+        <div class="product-card" data-category="cleaner">
+            <span class="discount-badge">13% OFF</span>
+            <button class="wish-btn" onclick="toggleWishlist('Vim Dishwash Bar',42,'/images/household-cleaning/vim-dishwash-bar.jpg',this)">❤️</button>
+            <img src="images/household-cleaning/vim-dishwash-bar.jpg" alt="Vim Dishwash Bar">
+            <div class="card-body">
+                <h3>Vim Dishwash Bar</h3><p class="qty">200 g</p>
+                <div class="price-wrap"><span class="orig-price">Rs. 48</span><span class="disc-price">Rs. 42</span><span class="save-tag">Save Rs.6</span></div>
+                <button class="view-btn" data-name="Vim Dishwash Bar" data-price="42" data-original="48" data-image="images/household-cleaning/vim-dishwash-bar.jpg" data-qty="200 g" data-description="Tough-on-grease bar for quick cleaning of utensils, counters, and stubborn kitchen messes.">View Details</button>
+                <button class="add-cart-btn" onclick="addToCart('Vim Dishwash Bar',42,'/images/household-cleaning/vim-dishwash-bar.jpg',48)">🛒 Add to Cart</button>
+            </div>
+        </div>
+        <div class="product-card" data-category="cleaner">
+            <span class="discount-badge">12% OFF</span>
+            <button class="wish-btn" onclick="toggleWishlist('Harpic Toilet Cleaner',110,'/images/household-cleaning/harpic-toilet-cleaner.jpg',this)">❤️</button>
+            <img src="images/household-cleaning/harpic-toilet-cleaner.jpg" alt="Harpic Toilet Cleaner">
+            <div class="card-body">
+                <h3>Harpic Toilet Cleaner</h3><p class="qty">500 ml</p>
+                <div class="price-wrap"><span class="orig-price">Rs. 125</span><span class="disc-price">Rs. 110</span><span class="save-tag">Save Rs.15</span></div>
+                <button class="view-btn" data-name="Harpic Toilet Cleaner" data-price="110" data-original="125" data-image="images/household-cleaning/harpic-toilet-cleaner.jpg" data-qty="500 ml" data-description="Bathroom cleaning solution that removes stains, freshens the toilet, and helps maintain hygiene.">View Details</button>
+                <button class="add-cart-btn" onclick="addToCart('Harpic Toilet Cleaner',110,'/images/household-cleaning/harpic-toilet-cleaner.jpg',125)">🛒 Add to Cart</button>
+            </div>
+        </div>
+        <div class="product-card" data-category="cleaner">
+            <span class="discount-badge">13% OFF</span>
+            <button class="wish-btn" onclick="toggleWishlist('Domex Toilet Cleaner',105,'/images/household-cleaning/domex-toilet-cleaner.jpg',this)">❤️</button>
+            <img src="images/household-cleaning/domex-toilet-cleaner.jpg" alt="Domex Toilet Cleaner">
+            <div class="card-body">
+                <h3>Domex Toilet Cleaner</h3><p class="qty">500 ml</p>
+                <div class="price-wrap"><span class="orig-price">Rs. 120</span><span class="disc-price">Rs. 105</span><span class="save-tag">Save Rs.15</span></div>
+                <button class="view-btn" data-name="Domex Toilet Cleaner" data-price="105" data-original="120" data-image="images/household-cleaning/domex-toilet-cleaner.jpg" data-qty="500 ml" data-description="Effective toilet disinfectant that tackles hard stains and leaves a fresh, hygienic finish.">View Details</button>
+                <button class="add-cart-btn" onclick="addToCart('Domex Toilet Cleaner',105,'/images/household-cleaning/domex-toilet-cleaner.jpg',120)">🛒 Add to Cart</button>
+            </div>
+        </div>
+        <div class="product-card" data-category="cleaner">
+            <span class="discount-badge">11% OFF</span>
+            <button class="wish-btn" onclick="toggleWishlist('Lizol Floor Cleaner',170,'/images/household-cleaning/lizol-floor-cleaner.jpg',this)">❤️</button>
+            <img src="images/household-cleaning/lizol-floor-cleaner.jpg" alt="Lizol Floor Cleaner">
+            <div class="card-body">
+                <h3>Lizol Floor Cleaner</h3><p class="qty">1 L</p>
+                <div class="price-wrap"><span class="orig-price">Rs. 190</span><span class="disc-price">Rs. 170</span><span class="save-tag">Save Rs.20</span></div>
+                <button class="view-btn" data-name="Lizol Floor Cleaner" data-price="170" data-original="190" data-image="images/household-cleaning/lizol-floor-cleaner.jpg" data-qty="1 L" data-description="Disinfecting floor cleaner that removes dirt while leaving a clean shine and fresh scent.">View Details</button>
+                <button class="add-cart-btn" onclick="addToCart('Lizol Floor Cleaner',170,'/images/household-cleaning/lizol-floor-cleaner.jpg',190)">🛒 Add to Cart</button>
+            </div>
+        </div>
+        <div class="product-card" data-category="cleaner">
+            <span class="discount-badge">11% OFF</span>
+            <button class="wish-btn" onclick="toggleWishlist('Colin Glass Cleaner',120,'/images/household-cleaning/colin-glass-cleaner.jpg',this)">❤️</button>
+            <img src="images/household-cleaning/colin-glass-cleaner.jpg" alt="Colin Glass Cleaner">
+            <div class="card-body">
+                <h3>Colin Glass Cleaner</h3><p class="qty">500 ml</p>
+                <div class="price-wrap"><span class="orig-price">Rs. 135</span><span class="disc-price">Rs. 120</span><span class="save-tag">Save Rs.15</span></div>
+                <button class="view-btn" data-name="Colin Glass Cleaner" data-price="120" data-original="135" data-image="images/household-cleaning/colin-glass-cleaner.jpg" data-qty="500 ml" data-description="Streak-free glass and surface cleaner for sparkling windows, mirrors, and polished surfaces.">View Details</button>
+                <button class="add-cart-btn" onclick="addToCart('Colin Glass Cleaner',120,'/images/household-cleaning/colin-glass-cleaner.jpg',135)">🛒 Add to Cart</button>
+            </div>
+        </div>
+        <div class="product-card" data-category="cleaner">
+            <span class="discount-badge">11% OFF</span>
+            <button class="wish-btn" onclick="toggleWishlist('Dettol Floor Cleaner',164,'/images/household-cleaning/dettol-floor-cleaner.jpg',this)">❤️</button>
+            <img src="images/household-cleaning/dettol-floor-cleaner.jpg" alt="Dettol Floor Cleaner">
+            <div class="card-body">
+                <h3>Dettol Floor Cleaner</h3><p class="qty">1 L</p>
+                <div class="price-wrap"><span class="orig-price">Rs. 185</span><span class="disc-price">Rs. 164</span><span class="save-tag">Save Rs.21</span></div>
+                <button class="view-btn" data-name="Dettol Floor Cleaner" data-price="164" data-original="185" data-image="images/household-cleaning/dettol-floor-cleaner.jpg" data-qty="1 L" data-description="Disinfecting floor cleaner that keeps floors hygienic, shiny, and free from everyday grime.">View Details</button>
+                <button class="add-cart-btn" onclick="addToCart('Dettol Floor Cleaner',164,'/images/household-cleaning/dettol-floor-cleaner.jpg',185)">🛒 Add to Cart</button>
+            </div>
+        </div>
+        <div class="product-card" data-category="cleaner">
+            <span class="discount-badge">13% OFF</span>
+            <button class="wish-btn" onclick="toggleWishlist('Vim Power & Shine',96,'/images/household-cleaning/vim-power-and-shine.jpg',this)">❤️</button>
+            <img src="images/household-cleaning/vim-power-and-shine.jpg" alt="Vim Power & Shine">
+            <div class="card-body">
+                <h3>Vim Power & Shine</h3><p class="qty">500 ml</p>
+                <div class="price-wrap"><span class="orig-price">Rs. 110</span><span class="disc-price">Rs. 96</span><span class="save-tag">Save Rs.14</span></div>
+                <button class="view-btn" data-name="Vim Power & Shine" data-price="96" data-original="110" data-image="images/household-cleaning/vim-power-and-shine.jpg" data-qty="500 ml" data-description="Kitchen cleaner that cuts through grease and shines surfaces with a polished, streak-free finish.">View Details</button>
+                <button class="add-cart-btn" onclick="addToCart('Vim Power & Shine',96,'/images/household-cleaning/vim-power-and-shine.jpg',110)">🛒 Add to Cart</button>
+            </div>
+        </div>
+        <div class="product-card" data-category="fabric">
+            <span class="discount-badge">9% OFF</span>
+            <button class="wish-btn" onclick="toggleWishlist('Dettol Liquid',68,'/images/household-cleaning/dettol-liquid.jpg',this)">❤️</button>
+            <img src="images/household-cleaning/dettol-liquid.jpg" alt="Dettol Liquid">
+            <div class="card-body">
+                <h3>Dettol Liquid</h3><p class="qty">250 ml</p>
+                <div class="price-wrap"><span class="orig-price">Rs. 75</span><span class="disc-price">Rs. 68</span><span class="save-tag">Save Rs.7</span></div>
+                <button class="view-btn" data-name="Dettol Liquid" data-price="68" data-original="75" data-image="images/household-cleaning/dettol-liquid.jpg" data-qty="250 ml" data-description="Trusted antiseptic liquid for washing, cleaning, and maintaining hygiene in day-to-day routines.">View Details</button>
+                <button class="add-cart-btn" onclick="addToCart('Dettol Liquid',68,'/images/household-cleaning/dettol-liquid.jpg',75)">🛒 Add to Cart</button>
+            </div>
+        </div>
+        <div class="product-card" data-category="fabric">
+            <span class="discount-badge">12% OFF</span>
+            <button class="wish-btn" onclick="toggleWishlist('Dettol Disinfectant Spray',145,'/images/household-cleaning/dettol-disinfectant-spray.jpg',this)">❤️</button>
+            <img src="images/household-cleaning/dettol-disinfectant-spray.jpg" alt="Dettol Disinfectant Spray">
+            <div class="card-body">
+                <h3>Dettol Disinfectant Spray</h3><p class="qty">225 ml</p>
+                <div class="price-wrap"><span class="orig-price">Rs. 165</span><span class="disc-price">Rs. 145</span><span class="save-tag">Save Rs.20</span></div>
+                <button class="view-btn" data-name="Dettol Disinfectant Spray" data-price="145" data-original="165" data-image="images/household-cleaning/dettol-disinfectant-spray.jpg" data-qty="225 ml" data-description="Quick disinfectant spray that helps freshen and sanitize high-touch points and surfaces.">View Details</button>
+                <button class="add-cart-btn" onclick="addToCart('Dettol Disinfectant Spray',145,'/images/household-cleaning/dettol-disinfectant-spray.jpg',165)">🛒 Add to Cart</button>
+            </div>
+        </div>
+        <div class="product-card" data-category="fabric">
+            <span class="discount-badge">13% OFF</span>
+            <button class="wish-btn" onclick="toggleWishlist('Comfort Fabric Conditioner',210,'/images/household-cleaning/comfort-fabric-conditioner.jpg',this)">❤️</button>
+            <img src="images/household-cleaning/comfort-fabric-conditioner.jpg" alt="Comfort Fabric Conditioner">
+            <div class="card-body">
+                <h3>Comfort Fabric Conditioner</h3><p class="qty">860 ml</p>
+                <div class="price-wrap"><span class="orig-price">Rs. 240</span><span class="disc-price">Rs. 210</span><span class="save-tag">Save Rs.30</span></div>
+                <button class="view-btn" data-name="Comfort Fabric Conditioner" data-price="210" data-original="240" data-image="images/household-cleaning/comfort-fabric-conditioner.jpg" data-qty="860 ml" data-description="Softening fabric conditioner that keeps clothes fresh, smooth, and comfortable after every wash.">View Details</button>
+                <button class="add-cart-btn" onclick="addToCart('Comfort Fabric Conditioner',210,'/images/household-cleaning/comfort-fabric-conditioner.jpg',240)">🛒 Add to Cart</button>
+            </div>
+        </div>
+        <div class="product-card" data-category="fabric">
+            <span class="discount-badge">13% OFF</span>
+            <button class="wish-btn" onclick="toggleWishlist('Easy Wash Fabric Conditioner',195,'/images/household-cleaning/easy-wash-fabric-conditioner.jpg',this)">❤️</button>
+            <img src="images/household-cleaning/easy-wash-fabric-conditioner.jpg" alt="Easy Wash Fabric Conditioner">
+            <div class="card-body">
+                <h3>Easy Wash Fabric Conditioner</h3><p class="qty">800 ml</p>
+                <div class="price-wrap"><span class="orig-price">Rs. 225</span><span class="disc-price">Rs. 195</span><span class="save-tag">Save Rs.30</span></div>
+                <button class="view-btn" data-name="Easy Wash Fabric Conditioner" data-price="195" data-original="225" data-image="images/household-cleaning/easy-wash-fabric-conditioner.jpg" data-qty="800 ml" data-description="Budget-friendly conditioner with lasting softness and fresh fragrance for everyday laundry care.">View Details</button>
+                <button class="add-cart-btn" onclick="addToCart('Easy Wash Fabric Conditioner',195,'/images/household-cleaning/easy-wash-fabric-conditioner.jpg',225)">🛒 Add to Cart</button>
+            </div>
+        </div>
+        <div class="product-card" data-category="freshener">
+            <span class="discount-badge">11% OFF</span>
+            <button class="wish-btn" onclick="toggleWishlist('Odonil Room Freshener',62,'/images/household-cleaning/odonil-room-freshener.jpg',this)">❤️</button>
+            <img src="images/household-cleaning/odonil-room-freshener.jpg" alt="Odonil Room Freshener">
+            <div class="card-body">
+                <h3>Odonil Room Freshener</h3><p class="qty">75 g</p>
+                <div class="price-wrap"><span class="orig-price">Rs. 70</span><span class="disc-price">Rs. 62</span><span class="save-tag">Save Rs.8</span></div>
+                <button class="view-btn" data-name="Odonil Room Freshener" data-price="62" data-original="70" data-image="images/household-cleaning/odonil-room-freshener.jpg" data-qty="75 g" data-description="Long-lasting room freshener that keeps homes feeling clean, pleasant, and refreshing.">View Details</button>
+                <button class="add-cart-btn" onclick="addToCart('Odonil Room Freshener',62,'/images/household-cleaning/odonil-room-freshener.jpg',70)">🛒 Add to Cart</button>
+            </div>
+        </div>
+        <div class="product-card" data-category="freshener">
+            <span class="discount-badge">13% OFF</span>
+            <button class="wish-btn" onclick="toggleWishlist('Godrej Aer Room Freshener',118,'/images/household-cleaning/godrej-aer-room-freshener.jpg',this)">❤️</button>
+            <img src="images/household-cleaning/godrej-aer-room-freshener.jpg" alt="Godrej Aer Room Freshener">
+            <div class="card-body">
+                <h3>Godrej Aer Room Freshener</h3><p class="qty">240 g</p>
+                <div class="price-wrap"><span class="orig-price">Rs. 135</span><span class="disc-price">Rs. 118</span><span class="save-tag">Save Rs.17</span></div>
+                <button class="view-btn" data-name="Godrej Aer Room Freshener" data-price="118" data-original="135" data-image="images/household-cleaning/godrej-aer-room-freshener.jpg" data-qty="240 g" data-description="Fragrant room spray that fills the air with a pleasant, clean-smelling finish for any space.">View Details</button>
+                <button class="add-cart-btn" onclick="addToCart('Godrej Aer Room Freshener',118,'/images/household-cleaning/godrej-aer-room-freshener.jpg',135)">🛒 Add to Cart</button>
+            </div>
+        </div>
+        <div class="product-card" data-category="cleaner">
+            <span class="discount-badge">12% OFF</span>
+            <button class="wish-btn" onclick="toggleWishlist('Hit Anti-Roach Spray',180,'/images/household-cleaning/hit-anti-roach-spray.jpg',this)">❤️</button>
+            <img src="images/household-cleaning/hit-anti-roach-spray.jpg" alt="Hit Anti-Roach Spray">
+            <div class="card-body">
+                <h3>Hit Anti-Roach Spray</h3><p class="qty">400 ml</p>
+                <div class="price-wrap"><span class="orig-price">Rs. 205</span><span class="disc-price">Rs. 180</span><span class="save-tag">Save Rs.25</span></div>
+                <button class="view-btn" data-name="Hit Anti-Roach Spray" data-price="180" data-original="205" data-image="images/household-cleaning/hit-anti-roach-spray.jpg" data-qty="400 ml" data-description="Targeted insect control spray to help repel cockroaches and keep living spaces hygienic.">View Details</button>
+                <button class="add-cart-btn" onclick="addToCart('Hit Anti-Roach Spray',180,'/images/household-cleaning/hit-anti-roach-spray.jpg',205)">🛒 Add to Cart</button>
+            </div>
+        </div>
+        <div class="product-card" data-category="cleaner">
+            <span class="discount-badge">11% OFF</span>
+            <button class="wish-btn" onclick="toggleWishlist('Good Knight Mosquito Repellent',134,'/images/household-cleaning/good-knight-mosquito-repellent.jpg',this)">❤️</button>
+            <img src="images/household-cleaning/good-knight-mosquito-repellent.jpg" alt="Good Knight Mosquito Repellent">
+            <div class="card-body">
+                <h3>Good Knight Mosquito Repellent</h3><p class="qty">45 ml</p>
+                <div class="price-wrap"><span class="orig-price">Rs. 150</span><span class="disc-price">Rs. 134</span><span class="save-tag">Save Rs.16</span></div>
+                <button class="view-btn" data-name="Good Knight Mosquito Repellent" data-price="134" data-original="150" data-image="images/household-cleaning/good-knight-mosquito-repellent.jpg" data-qty="45 ml" data-description="Mosquito repellent that helps protect rooms and families from insect bites during the evening hours.">View Details</button>
+                <button class="add-cart-btn" onclick="addToCart('Good Knight Mosquito Repellent',134,'/images/household-cleaning/good-knight-mosquito-repellent.jpg',150)">🛒 Add to Cart</button>
+            </div>
+        </div>
+        <div class="product-card" data-category="cleaner">
+            <span class="discount-badge">11% OFF</span>
+            <button class="wish-btn" onclick="toggleWishlist('Mortein Insect Killer',170,'/images/household-cleaning/mortein-insect-killer.jpg',this)">❤️</button>
+            <img src="images/household-cleaning/mortein-insect-killer.jpg" alt="Mortein Insect Killer">
+            <div class="card-body">
+                <h3>Mortein Insect Killer</h3><p class="qty">320 ml</p>
+                <div class="price-wrap"><span class="orig-price">Rs. 190</span><span class="disc-price">Rs. 170</span><span class="save-tag">Save Rs.20</span></div>
+                <button class="view-btn" data-name="Mortein Insect Killer" data-price="170" data-original="190" data-image="images/household-cleaning/mortein-insect-killer.jpg" data-qty="320 ml" data-description="Effective insect killer spray that helps control household pests and keep rooms safe and clean.">View Details</button>
+                <button class="add-cart-btn" onclick="addToCart('Mortein Insect Killer',170,'/images/household-cleaning/mortein-insect-killer.jpg',190)">🛒 Add to Cart</button>
+            </div>
+        </div>
+        <div class="product-card" data-category="tools">
+            <span class="discount-badge">13% OFF</span>
+            <button class="wish-btn" onclick="toggleWishlist('Scotch-Brite Scrub Pad',96,'/images/household-cleaning/scotch-brite-scrub-pad.jpg',this)">❤️</button>
+            <img src="images/household-cleaning/scotch-brite-scrub-pad.jpg" alt="Scotch-Brite Scrub Pad">
+            <div class="card-body">
+                <h3>Scotch-Brite Scrub Pad</h3><p class="qty">Pack of 3</p>
+                <div class="price-wrap"><span class="orig-price">Rs. 110</span><span class="disc-price">Rs. 96</span><span class="save-tag">Save Rs.14</span></div>
+                <button class="view-btn" data-name="Scotch-Brite Scrub Pad" data-price="96" data-original="110" data-image="images/household-cleaning/scotch-brite-scrub-pad.jpg" data-qty="Pack of 3" data-description="Durable scrub pad set for scrubbing cookware, sinks, and greasy surfaces without much effort.">View Details</button>
+                <button class="add-cart-btn" onclick="addToCart('Scotch-Brite Scrub Pad',96,'/images/household-cleaning/scotch-brite-scrub-pad.jpg',110)">🛒 Add to Cart</button>
+            </div>
+        </div>
+        <div class="product-card" data-category="tools">
+            <span class="discount-badge">10% OFF</span>
+            <button class="wish-btn" onclick="toggleWishlist('Scotch-Brite Floor Wiper',260,'/images/household-cleaning/scotch-brite-floor-wiper.jpg',this)">❤️</button>
+            <img src="images/household-cleaning/scotch-brite-floor-wiper.jpg" alt="Scotch-Brite Floor Wiper">
+            <div class="card-body">
+                <h3>Scotch-Brite Floor Wiper</h3><p class="qty">1 Piece</p>
+                <div class="price-wrap"><span class="orig-price">Rs. 290</span><span class="disc-price">Rs. 260</span><span class="save-tag">Save Rs.30</span></div>
+                <button class="view-btn" data-name="Scotch-Brite Floor Wiper" data-price="260" data-original="290" data-image="images/household-cleaning/scotch-brite-floor-wiper.jpg" data-qty="1 Piece" data-description="High-efficiency floor wiper designed to clean wide surfaces quickly with minimal effort.">View Details</button>
+                <button class="add-cart-btn" onclick="addToCart('Scotch-Brite Floor Wiper',260,'/images/household-cleaning/scotch-brite-floor-wiper.jpg',290)">🛒 Add to Cart</button>
+            </div>
+        </div>
+        <div class="product-card" data-category="tools">
+            <span class="discount-badge">11% OFF</span>
+            <button class="wish-btn" onclick="toggleWishlist('Gala Floor Mop',420,'/images/household-cleaning/gala-floor-mop.jpg',this)">❤️</button>
+            <img src="images/household-cleaning/gala-floor-mop.jpg" alt="Gala Floor Mop">
+            <div class="card-body">
+                <h3>Gala Floor Mop</h3><p class="qty">1 Piece</p>
+                <div class="price-wrap"><span class="orig-price">Rs. 470</span><span class="disc-price">Rs. 420</span><span class="save-tag">Save Rs.50</span></div>
+                <button class="view-btn" data-name="Gala Floor Mop" data-price="420" data-original="470" data-image="images/household-cleaning/gala-floor-mop.jpg" data-qty="1 Piece" data-description="Practical floor mop for convenient wet cleaning, quick drying, and easy home maintenance.">View Details</button>
+                <button class="add-cart-btn" onclick="addToCart('Gala Floor Mop',420,'/images/household-cleaning/gala-floor-mop.jpg',470)">🛒 Add to Cart</button>
+            </div>
+        </div>
+        <div class="product-card" data-category="tools">
+            <span class="discount-badge">13% OFF</span>
+            <button class="wish-btn" onclick="toggleWishlist('Gala Broom',280,'/images/household-cleaning/gala-broom.jpg',this)">❤️</button>
+            <img src="images/household-cleaning/gala-broom.jpg" alt="Gala Broom">
+            <div class="card-body">
+                <h3>Gala Broom</h3><p class="qty">1 Piece</p>
+                <div class="price-wrap"><span class="orig-price">Rs. 320</span><span class="disc-price">Rs. 280</span><span class="save-tag">Save Rs.40</span></div>
+                <button class="view-btn" data-name="Gala Broom" data-price="280" data-original="320" data-image="images/household-cleaning/gala-broom.jpg" data-qty="1 Piece" data-description="Sturdy household broom built for daily sweeping, corners, and quick room cleanup.">View Details</button>
+                <button class="add-cart-btn" onclick="addToCart('Gala Broom',280,'/images/household-cleaning/gala-broom.jpg',320)">🛒 Add to Cart</button>
+            </div>
+        </div>
+        <div class="product-card" data-category="tools">
+            <span class="discount-badge">13% OFF</span>
+            <button class="wish-btn" onclick="toggleWishlist('Garbage Bags',140,'/images/household-cleaning/garbage-bags.jpg',this)">❤️</button>
+            <img src="images/household-cleaning/garbage-bags.jpg" alt="Garbage Bags">
+            <div class="card-body">
+                <h3>Garbage Bags</h3><p class="qty">Pack of 30</p>
+                <div class="price-wrap"><span class="orig-price">Rs. 160</span><span class="disc-price">Rs. 140</span><span class="save-tag">Save Rs.20</span></div>
+                <button class="view-btn" data-name="Garbage Bags" data-price="140" data-original="160" data-image="images/household-cleaning/garbage-bags.jpg" data-qty="Pack of 30" data-description="Strong, leak-resistant garbage bags designed for daily home and kitchen waste disposal.">View Details</button>
+                <button class="add-cart-btn" onclick="addToCart('Garbage Bags',140,'/images/household-cleaning/garbage-bags.jpg',160)">🛒 Add to Cart</button>
+            </div>
+        </div>
+        <div class="product-card" data-category="tools">
+            <span class="discount-badge">10% OFF</span>
+            <button class="wish-btn" onclick="toggleWishlist('Kitchen Tissue Roll',90,'/images/household-cleaning/kitchen-tissue-roll.jpg',this)">❤️</button>
+            <img src="images/household-cleaning/kitchen-tissue-roll.jpg" alt="Kitchen Tissue Roll">
+            <div class="card-body">
+                <h3>Kitchen Tissue Roll</h3><p class="qty">2 Rolls</p>
+                <div class="price-wrap"><span class="orig-price">Rs. 100</span><span class="disc-price">Rs. 90</span><span class="save-tag">Save Rs.10</span></div>
+                <button class="view-btn" data-name="Kitchen Tissue Roll" data-price="90" data-original="100" data-image="images/household-cleaning/kitchen-tissue-roll.jpg" data-qty="2 Rolls" data-description="Absorbent kitchen tissue for quick spill cleanup and convenient daily kitchen care.">View Details</button>
+                <button class="add-cart-btn" onclick="addToCart('Kitchen Tissue Roll',90,'/images/household-cleaning/kitchen-tissue-roll.jpg',100)">🛒 Add to Cart</button>
+            </div>
+        </div>
+        <div class="product-card" data-category="tools">
+            <span class="discount-badge">12% OFF</span>
+            <button class="wish-btn" onclick="toggleWishlist('Toilet Tissue Roll',136,'/images/household-cleaning/toilet-tissue-roll.jpg',this)">❤️</button>
+            <img src="images/household-cleaning/toilet-tissue-roll.jpg" alt="Toilet Tissue Roll">
+            <div class="card-body">
+                <h3>Toilet Tissue Roll</h3><p class="qty">Pack of 4</p>
+                <div class="price-wrap"><span class="orig-price">Rs. 155</span><span class="disc-price">Rs. 136</span><span class="save-tag">Save Rs.19</span></div>
+                <button class="view-btn" data-name="Toilet Tissue Roll" data-price="136" data-original="155" data-image="images/household-cleaning/toilet-tissue-roll.jpg" data-qty="Pack of 4" data-description="Soft and absorbent bathroom tissue pack for everyday hygiene and comfort in the home.">View Details</button>
+                <button class="add-cart-btn" onclick="addToCart('Toilet Tissue Roll',136,'/images/household-cleaning/toilet-tissue-roll.jpg',155)">🛒 Add to Cart</button>
+            </div>
+        </div>
+    </div>
+
+    <div id="householdDetailsModal" class="modal" aria-hidden="true">
+        <div class="modal-content">
+            <button class="modal-close" type="button" aria-label="Close details">×</button>
+            <img id="modalImage" src="" alt="Product" style="width:100%; max-height:250px; object-fit:contain; border-radius:18px; background:rgba(255,255,255,0.04); padding:16px; margin-bottom:16px;">
+            <h3 id="modalName"></h3>
+            <p id="modalQty"></p>
+            <p id="modalPrice"></p>
+            <p id="modalDescription"></p>
+            <button class="add-cart-btn" id="modalAddToCart" style="margin-top:16px;">🛒 Add to Cart</button>
+        </div>
+    </div>
+
+    <script>
+        const householdSearch = document.getElementById('householdSearch');
+        const filterButtons = document.querySelectorAll('.filter-btn');
+        const householdCards = document.querySelectorAll('.product-card');
+        const householdModal = document.getElementById('householdDetailsModal');
+        const modalClose = document.querySelector('.modal-close');
+        const modalImage = document.getElementById('modalImage');
+        const modalName = document.getElementById('modalName');
+        const modalQty = document.getElementById('modalQty');
+        const modalPrice = document.getElementById('modalPrice');
+        const modalDescription = document.getElementById('modalDescription');
+        const modalAddToCart = document.getElementById('modalAddToCart');
+
+        function applyHouseholdFilter() {
+            const query = (householdSearch.value || '').trim().toLowerCase();
+            const activeFilter = document.querySelector('.filter-btn.active')?.dataset.filter || 'all';
+
+            householdCards.forEach((card) => {
+                const text = card.querySelector('h3').textContent.toLowerCase();
+                const category = card.dataset.category;
+                const matchesText = !query || text.includes(query);
+                const matchesFilter = activeFilter === 'all' || category === activeFilter;
+                card.style.display = matchesText && matchesFilter ? 'block' : 'none';
+            });
+        }
+
+        householdSearch.addEventListener('input', applyHouseholdFilter);
+
+        filterButtons.forEach((button) => {
+            button.addEventListener('click', () => {
+                filterButtons.forEach((btn) => btn.classList.toggle('active', btn === button));
+                applyHouseholdFilter();
+            });
+        });
+
+        document.querySelectorAll('.view-btn').forEach((button) => {
+            button.addEventListener('click', () => {
+                const product = {
+                    name: button.dataset.name,
+                    price: Number(button.dataset.price),
+                    original: Number(button.dataset.original),
+                    image: button.dataset.image,
+                    qty: button.dataset.qty,
+                    description: button.dataset.description
+                };
+
+                modalImage.src = product.image;
+                modalImage.alt = product.name;
+                modalName.textContent = product.name;
+                modalQty.textContent = `Quantity: ${product.qty}`;
+                modalPrice.textContent = `Price: Rs. ${product.price} (Original: Rs. ${product.original})`;
+                modalDescription.textContent = product.description;
+                modalAddToCart.onclick = () => {
+                    addToCart(product.name, product.price, product.image, product.original);
+                    householdModal.classList.remove('show');
+                };
+                householdModal.classList.add('show');
+                householdModal.setAttribute('aria-hidden', 'false');
+            });
+        });
+
+        function closeHouseholdModal() {
+            householdModal.classList.remove('show');
+            householdModal.setAttribute('aria-hidden', 'true');
+        }
+
+        modalClose.addEventListener('click', closeHouseholdModal);
+        householdModal.addEventListener('click', (event) => {
+            if (event.target === householdModal) closeHouseholdModal();
+        });
+    </script>
+
+    <script>
+        (function () {
+            const maxProducts = 10;
+            const cutToLimit = () => {
+                const cards = Array.from(document.querySelectorAll('.product-card'));
+                cards.forEach((card, index) => {
+                    card.style.display = index < maxProducts ? '' : 'none';
+                });
+            };
+            if (document.readyState === 'loading') {
+                document.addEventListener('DOMContentLoaded', cutToLimit);
+            } else {
+                cutToLimit();
+            }
+        })();
+    </script>
+    <script>
+        (function () {
+            const localProductImages = {
+                'Amul Butter': '/images/grocery_category_images/Amul Butter.jpeg',
+                'Amul Gold Milk': '/images/grocery_category_images/Amul Gold Mlik.jpeg',
+                'Amul Taaza Milk': '/images/grocery_category_images/Amul Taza Mlik.jpg',
+                'Amul Masti Dahi': '/images/grocery_category_images/Amul Masti Dahi.jpeg',
+                'Amul Malai Paneer': '/images/grocery_category_images/Amul Malai Panner.jpeg',
+                'Amul Cheese Slices': '/images/grocery_category_images/Amul Chesse Slices.jpeg',
+                'Amul Cheese Block': '/images/grocery_category_images/Amul Cheese Block.jpeg',
+                'Amul Fresh Cream': '/images/grocery_category_images/Amul Fresh Cream.jpeg',
+                'Amul Lassi': '/images/grocery_category_images/Amul Lassi.jpeg',
+                'Amul Buttermilk': '/images/grocery_category_images/Amul Buttermlik.jpeg',
+                'Coca-Cola': '/images/grocery_category_images/Coca-Cola.jpeg',
+                'Thums Up': '/images/grocery_category_images/Thums up.jpeg',
+                'Sprite': '/images/grocery_category_images/Sprite.jpeg',
+                'Fanta Orange': '/images/grocery_category_images/Fanta Orange.jpeg',
+                'Maaza Mango Drink': '/images/grocery_category_images/Mazza Mango Drink.jpeg',
+                'Real Mixed Fruit Juice': '/images/grocery_category_images/Real Mixed Fruit Juice.jpeg',
+                'Tata Tea': '/images/grocery_category_images/Tata Tea.jpeg',
+                'Nescafé Classic Coffee': '/images/grocery_category_images/Neacafe` Classic Coffee.jpeg',
+                'Bournvita': '/images/grocery_category_images/Bournvita.jpeg',
+                'Tang Orange Drink': '/images/grocery_category_images/Tang Orange Drink.jpeg',
+                'Surf Excel Matic Detergent': '/images/grocery_category_images/Surf Excel Matic Detergent.jpeg',
+                'Ariel Matic Detergent': '/images/grocery_category_images/Ariel Matic detergent.jpeg',
+                'Tide Plus Detergent': '/images/grocery_category_images/Tide Plus Detergent.jpeg',
+                'Rin Detergent Powder': '/images/grocery_category_images/Rin Detergent Powder.jpeg',
+                'Surf Excel Liquid Detergent': '/images/grocery_category_images/Surf Excel Liquid Detergent.jpeg',
+                'Ariel Liquid Detergent': '/images/grocery_category_images/Ariel Liquid Detergent.jpeg',
+                'Vim Dishwash Liquid': '/images/grocery_category_images/Vim Dishwash Liquid.jpeg',
+                'Vim Dishwash Bar': '/images/grocery_category_images/Vim Dishwash Bar.jpeg',
+                'Harpic Toilet Cleaner': '/images/grocery_category_images/Harpic Toilet Cleaner.jpeg',
+                'Domex Toilet Cleaner': '/images/grocery_category_images/Domex Toilet Cleaner.jpeg',
+                'India Gate Basmati Rice': '/images/grocery_category_images/India Gate Basmati Rice.jpeg',
+                'Fortune Chakki Fresh Atta': '/images/grocery_category_images/Fortune Chakki Fresh Atta.jpeg',
+                'Toor Dal': '/images/grocery_category_images/Toor Dal.jpeg',
+                'Moong Dal': '/images/grocery_category_images/Moong Dal.jpeg',
+                'Masoor Dal': '/images/grocery_category_images/Masoor Dal.jpeg',
+                'Chana Dal': '/images/grocery_category_images/Chana Dal.jpeg',
+                'Poha': '/images/grocery_category_images/Poha.jpeg',
+                'Suji / Rava': '/images/grocery_category_images/Suji - Rawa.jpeg',
+                'Rajma': '/images/grocery_category_images/Rajma.jpeg',
+                'Kabuli Chana': '/images/grocery_category_images/Kabuli Chana.jpeg',
+                'Britannia Bourbon': '/images/grocery_category_images/Britannia Bourbon.jpeg',
+                'Good Day': '/images/grocery_category_images/britannia Good Day.jpeg',
+                'Marie Gold': '/images/grocery_category_images/Britannia Marie Gold.jpeg',
+                'NutriChoice': '/images/grocery_category_images/Britannia Nutrichoice.jpeg',
+                'Hide & Seek': '/images/grocery_category_images/Hide & Seek.jpeg',
+                'Oreo Original': '/images/grocery_category_images/Oreo Original.jpeg',
+                'Parle-G Biscuits': '/images/grocery_category_images/Parle-G Biscuits.jpeg',
+                'Krackjack': '/images/grocery_category_images/Krackjack.jpeg',
+                'Sunfeast Dark Fantasy': '/images/grocery_category_images/Sunfeast Dark Fantasy.jpeg',
+                'Sunfeast Marie Light': '/images/grocery_category_images/Sunfeast Marie Light.jpeg'
+            };
+
+            function normalizeName(value) {
+                return (value || '').toLowerCase().replace(/[^a-z0-9]+/g, ' ').trim();
+            }
+
+            function findLocalImage(name) {
+                if (!name) return '';
+                if (localProductImages[name]) return localProductImages[name];
+                const normalized = normalizeName(name);
+                for (const [productName, imagePath] of Object.entries(localProductImages)) {
+                    if (normalizeName(productName) === normalized) return imagePath;
+                }
+                return '';
+            }
+
+            document.querySelectorAll('.product-card img').forEach((img) => {
+                const card = img.closest('.product-card');
+                const title = card?.querySelector('h3')?.textContent || img.alt || '';
+                const localImage = findLocalImage(title.trim());
+                if (localImage) {
+                    img.src = localImage;
+                }
+            });
+        })();
+    </script>
+    <script src="Cart JS.js"></script>
+    <script src="Wishlist JS.js"></script>
+</body>
+</html>

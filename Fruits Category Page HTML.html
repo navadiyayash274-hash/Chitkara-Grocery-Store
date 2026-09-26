@@ -1,0 +1,215 @@
+﻿<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Fruits & Vegetables - Chitkara Grocery Store</title>
+    <link rel="stylesheet" href="Category Shared CSS.css">
+    <style>
+        .cat-hero .cat-tag { background:rgba(78,176,96,0.12); border:1px solid rgba(78,176,96,0.35); color:#4eb060; }
+        .cat-hero h1 { background:linear-gradient(90deg,#4eb060,#ffffff,#a5d6a7,#4eb060); }
+        .product-card:hover { border-color:rgba(78,176,96,0.5); box-shadow:0 20px 50px rgba(78,176,96,0.2); }
+        .disc-price { background:linear-gradient(90deg,#4eb060,#a5d6a7); -webkit-background-clip:text; -webkit-text-fill-color:transparent; background-clip:text; }
+        .save-tag { background:rgba(78,176,96,0.15); color:#4eb060; border:1px solid rgba(78,176,96,0.3); }
+        .add-cart-btn { background:linear-gradient(120deg,#4eb060,#2e7d32); color:#fff; box-shadow:0 6px 20px rgba(78,176,96,0.4); }
+        .add-cart-btn:hover { background:linear-gradient(120deg,#66bb6a,#388e3c); box-shadow:0 10px 30px rgba(78,176,96,0.6); }
+    </style>
+<script src="Auth JS.js"></script>
+</head>
+<body>
+    <nav class="cat-nav">
+        <a href="Home Page HTML.html" class="logo"><span>C</span>GS</a>
+        <span style="color:#4eb060;font-weight:700;font-size:1rem;">🥦 Fruits & Vegetables</span>
+        <a href="Home Page HTML.html" class="home-btn">🏠 Home</a>
+    </nav>
+    <div class="cat-hero">
+        <span class="cat-tag">🥦 FRESH PRODUCE</span>
+        <h1 style="-webkit-text-fill-color:#4eb060;background:none;font-size:2.5rem;font-weight:900;letter-spacing:3px;margin-bottom:10px;">Fruits & Vegetables</h1>
+        <p>Farm fresh fruits and vegetables delivered to your doorstep every day</p>
+    </div>
+    <div class="products-grid" id="fruits-grid"></div>
+
+    <style>
+        .variant-group {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 8px;
+            margin: 12px 0 10px;
+        }
+        .variant-btn {
+            border: 1px solid #c8e6c9;
+            background: rgba(78,176,96,0.05);
+            color: #2e7d32;
+            border-radius: 999px;
+            padding: 7px 10px;
+            font-size: 0.72rem;
+            font-weight: 700;
+            cursor: pointer;
+            transition: all 0.2s ease;
+        }
+        .variant-btn.active {
+            background: linear-gradient(120deg, #4eb060, #2e7d32);
+            color: #fff;
+            border-color: transparent;
+            box-shadow: 0 8px 18px rgba(78,176,96,0.25);
+        }
+    </style>
+
+    <script>
+        const productImageMap = {
+            Cabbage: 'images/grocery_category_images/Cabbage.jpeg',
+            Cauliflower: 'images/grocery_category_images/cauliflower.jpeg',
+            Capsicum: 'images/grocery_category_images/capsicum.jpeg',
+            Cucumber: 'images/grocery_category_images/cucumber.jpeg',
+            'Lady Finger': 'images/grocery_category_images/Lady finger.jpeg',
+            Brinjal: 'images/grocery_category_images/Brinjal.jpeg',
+            'Green Peas': 'images/grocery_category_images/Green Peas.jpeg',
+            Coriander: 'images/grocery_category_images/Coriander.jpeg',
+            Ginger: 'images/grocery_category_images/Ginger.jpeg',
+            Lemon: 'images/grocery_category_images/Lemon.jpeg',
+            Papaya: 'images/grocery_category_images/Papaya.jpeg',
+            Watermelon: 'images/grocery_category_images/Watermelon.jpeg',
+            Pomegranate: 'images/grocery_category_images/Pomegranate.jpeg',
+            Guava: 'images/grocery_category_images/Guava.jpeg',
+            Grapes: 'images/grocery_category_images/Grapes.jpeg',
+            Pineapple: 'images/grocery_category_images/Pineapple.jpeg',
+            Apple: 'images/images/apple.png',
+            Orange: 'images/Oranges.jpg',
+            Mango: 'images/Mango.png',
+            Kiwi: 'images/grocery_category_images/Kiwi.jpeg',
+            Pear: 'images/grocery_category_images/Pear.jpeg',
+            Blueberry: 'images/grocery_category_images/Blueberry.jpeg',
+            Tomato: 'images/grocery_category_images/Tamato.jpeg',
+            Onion: 'images/grocery_category_images/Onion.jpeg',
+            Potato: 'images/grocery_category_images/Potato.jpeg',
+            Banana: 'images/images/Mango.png',
+            Carrot: 'images/grocery_category_images/Ginger.jpeg',
+            Spinach: 'images/grocery_category_images/Coriander.jpeg',
+            Strawberry: 'images/grocery_category_images/Blueberry.jpeg'
+        };
+
+        const fruitsVegetablesProducts = [
+            { name: 'Banana', category: 'Fruits & Vegetables', variants: [{ label: '250 g', price: 15 }, { label: '500 g', price: 28 }, { label: '1 kg', price: 52 }], price: 15, originalPrice: 18, discount: '15% OFF', save: 3 },
+            { name: 'Carrot', category: 'Fruits & Vegetables', variants: [{ label: '250 g', price: 25 }, { label: '500 g', price: 45 }, { label: '1 kg', price: 85 }], price: 25, originalPrice: 30, discount: '15% OFF', save: 5 },
+            { name: 'Cabbage', category: 'Fruits & Vegetables', variants: [{ label: '500 g', price: 20 }, { label: '1 kg', price: 38 }, { label: '2 kg', price: 70 }], price: 20, originalPrice: 24, discount: '15% OFF', save: 4 },
+            { name: 'Cauliflower', category: 'Fruits & Vegetables', variants: [{ label: '500 g', price: 30 }, { label: '1 kg', price: 55 }, { label: '2 kg', price: 100 }], price: 30, originalPrice: 35, discount: '14% OFF', save: 5 },
+            { name: 'Capsicum', category: 'Fruits & Vegetables', variants: [{ label: '250 g', price: 30 }, { label: '500 g', price: 55 }, { label: '1 kg', price: 105 }], price: 30, originalPrice: 36, discount: '17% OFF', save: 6 },
+            { name: 'Cucumber', category: 'Fruits & Vegetables', variants: [{ label: '250 g', price: 18 }, { label: '500 g', price: 32 }, { label: '1 kg', price: 60 }], price: 18, originalPrice: 22, discount: '18% OFF', save: 4 },
+            { name: 'Spinach', category: 'Fruits & Vegetables', variants: [{ label: '250 g', price: 18 }, { label: '500 g', price: 32 }, { label: '1 kg', price: 58 }], price: 18, originalPrice: 22, discount: '18% OFF', save: 4 },
+            { name: 'Lady Finger', category: 'Fruits & Vegetables', variants: [{ label: '250 g', price: 28 }, { label: '500 g', price: 52 }, { label: '1 kg', price: 98 }], price: 28, originalPrice: 33, discount: '15% OFF', save: 5 },
+            { name: 'Brinjal', category: 'Fruits & Vegetables', variants: [{ label: '250 g', price: 22 }, { label: '500 g', price: 40 }, { label: '1 kg', price: 75 }], price: 22, originalPrice: 26, discount: '15% OFF', save: 4 },
+            { name: 'Green Peas', category: 'Fruits & Vegetables', variants: [{ label: '250 g', price: 35 }, { label: '500 g', price: 65 }, { label: '1 kg', price: 120 }], price: 35, originalPrice: 42, discount: '17% OFF', save: 7 },
+            { name: 'Coriander', category: 'Fruits & Vegetables', variants: [{ label: '100 g', price: 12 }, { label: '250 g', price: 25 }, { label: '500 g', price: 45 }], price: 12, originalPrice: 15, discount: '20% OFF', save: 3 },
+            { name: 'Ginger', category: 'Fruits & Vegetables', variants: [{ label: '100 g', price: 15 }, { label: '250 g', price: 32 }, { label: '500 g', price: 60 }], price: 15, originalPrice: 18, discount: '17% OFF', save: 3 },
+            { name: 'Lemon', category: 'Fruits & Vegetables', variants: [{ label: '250 g', price: 25 }, { label: '500 g', price: 45 }, { label: '1 kg', price: 85 }], price: 25, originalPrice: 30, discount: '17% OFF', save: 5 },
+            { name: 'Papaya', category: 'Fruits & Vegetables', variants: [{ label: '500 g', price: 35 }, { label: '1 kg', price: 65 }, { label: '2 kg', price: 120 }], price: 35, originalPrice: 42, discount: '17% OFF', save: 7 },
+            { name: 'Watermelon', category: 'Fruits & Vegetables', variants: [{ label: '1 kg', price: 35 }, { label: '2 kg', price: 65 }, { label: '5 kg', price: 150 }], price: 35, originalPrice: 42, discount: '17% OFF', save: 7 },
+            { name: 'Pomegranate', category: 'Fruits & Vegetables', variants: [{ label: '250 g', price: 55 }, { label: '500 g', price: 105 }, { label: '1 kg', price: 195 }], price: 55, originalPrice: 65, discount: '15% OFF', save: 10 },
+            { name: 'Guava', category: 'Fruits & Vegetables', variants: [{ label: '250 g', price: 30 }, { label: '500 g', price: 55 }, { label: '1 kg', price: 100 }], price: 30, originalPrice: 35, discount: '14% OFF', save: 5 },
+            { name: 'Grapes', category: 'Fruits & Vegetables', variants: [{ label: '250 g', price: 35 }, { label: '500 g', price: 65 }, { label: '1 kg', price: 120 }], price: 35, originalPrice: 42, discount: '17% OFF', save: 7 },
+            { name: 'Pineapple', category: 'Fruits & Vegetables', variants: [{ label: '500 g', price: 45 }, { label: '1 kg', price: 80 }, { label: '2 kg', price: 150 }], price: 45, originalPrice: 55, discount: '18% OFF', save: 10 },
+            { name: 'Apple', category: 'Fruits & Vegetables', variants: [{ label: '250 g', price: 50 }, { label: '500 g', price: 90 }, { label: '1 kg', price: 170 }], price: 50, originalPrice: 60, discount: '15% OFF', save: 10 },
+            { name: 'Orange', category: 'Fruits & Vegetables', variants: [{ label: '250 g', price: 35 }, { label: '500 g', price: 62 }, { label: '1 kg', price: 110 }], price: 35, originalPrice: 42, discount: '17% OFF', save: 7 },
+            { name: 'Mango', category: 'Fruits & Vegetables', variants: [{ label: '250 g', price: 40 }, { label: '500 g', price: 75 }, { label: '1 kg', price: 140 }], price: 40, originalPrice: 48, discount: '17% OFF', save: 8 },
+            { name: 'Strawberry', category: 'Fruits & Vegetables', variants: [{ label: '200 g', price: 55 }, { label: '500 g', price: 120 }, { label: '1 kg', price: 220 }], price: 55, originalPrice: 65, discount: '15% OFF', save: 10 },
+            { name: 'Kiwi', category: 'Fruits & Vegetables', variants: [{ label: '1 piece', price: 30 }, { label: '250 g', price: 70 }, { label: '500 g', price: 130 }], price: 30, originalPrice: 35, discount: '14% OFF', save: 5 },
+            { name: 'Pear', category: 'Fruits & Vegetables', variants: [{ label: '250 g', price: 40 }, { label: '500 g', price: 75 }, { label: '1 kg', price: 140 }], price: 40, originalPrice: 48, discount: '17% OFF', save: 8 },
+            { name: 'Blueberry', category: 'Fruits & Vegetables', variants: [{ label: '150 g', price: 68 }, { label: '300 g', price: 120 }, { label: '500 g', price: 190 }], price: 68, originalPrice: 80, discount: '15% OFF', save: 12 },
+            { name: 'Tomato', category: 'Fruits & Vegetables', variants: [{ label: '250 g', price: 18 }, { label: '500 g', price: 32 }, { label: '1 kg', price: 58 }], price: 18, originalPrice: 22, discount: '18% OFF', save: 4 },
+            { name: 'Onion', category: 'Fruits & Vegetables', variants: [{ label: '250 g', price: 16 }, { label: '500 g', price: 28 }, { label: '1 kg', price: 52 }], price: 16, originalPrice: 20, discount: '20% OFF', save: 4 },
+            { name: 'Potato', category: 'Fruits & Vegetables', variants: [{ label: '250 g', price: 18 }, { label: '500 g', price: 32 }, { label: '1 kg', price: 60 }], price: 18, originalPrice: 22, discount: '18% OFF', save: 4 }
+        ];
+
+        function renderFruitsVegetablesProducts() {
+            const productsGrid = document.getElementById('fruits-grid');
+            if (!productsGrid) return;
+
+            productsGrid.innerHTML = fruitsVegetablesProducts.map((product) => {
+                const image = productImageMap[product.name] || 'images/images/apple.png';
+                const firstVariant = product.variants[0] || { label: '1 item', price: product.price };
+                const currentOriginal = product.originalPrice || firstVariant.price;
+
+                return `
+                    <div class="product-card" data-product-name="${product.name}" data-product-image="${image}">
+                        <span class="discount-badge">${product.discount}</span>
+                        <button class="wish-btn" onclick="toggleWishlist('${product.name}', ${firstVariant.price}, '${image}', this)">❤️</button>
+                        <img src="${image}" alt="${product.name}">
+                        <div class="card-body">
+                            <h3>${product.name}</h3>
+                            <div class="variant-group">
+                                ${product.variants.map((variant, index) => `
+                                    <button class="variant-btn ${index === 0 ? 'active' : ''}" data-weight="${variant.label}" data-price="${variant.price}" data-original="${Math.max(variant.price + 5, product.originalPrice)}">
+                                        ${variant.label} - Rs. ${variant.price}
+                                    </button>
+                                `).join('')}
+                            </div>
+                            <p class="qty">${firstVariant.label}</p>
+                            <div class="price-wrap">
+                                <span class="orig-price">Rs. ${currentOriginal}</span>
+                                <span class="disc-price">Rs. ${firstVariant.price}</span>
+                                <span class="save-tag">Save Rs.${product.save}</span>
+                            </div>
+                            <button class="add-cart-btn" data-base-name="${product.name}" data-img="${image}">🛒 Add to Cart</button>
+                        </div>
+                    </div>
+                `;
+            }).join('');
+
+            document.querySelectorAll('.product-card').forEach(card => {
+                const buttons = card.querySelectorAll('.variant-btn');
+                const qty = card.querySelector('.qty');
+                const orig = card.querySelector('.orig-price');
+                const disc = card.querySelector('.disc-price');
+                const save = card.querySelector('.save-tag');
+                const addBtn = card.querySelector('.add-cart-btn');
+                const wishBtn = card.querySelector('.wish-btn');
+
+                if (!buttons.length || !qty || !orig || !disc || !save || !addBtn) return;
+
+                const updateSelected = () => {
+                    let selected = null;
+                    buttons.forEach(button => {
+                        if (button.classList.contains('active')) selected = button;
+                    });
+                    if (!selected) selected = buttons[0];
+
+                    const weight = selected.dataset.weight;
+                    const price = Number(selected.dataset.price);
+                    const original = Number(selected.dataset.original || price);
+                    const saveAmount = original - price;
+
+                    qty.textContent = weight;
+                    orig.textContent = 'Rs. ' + original;
+                    disc.textContent = 'Rs. ' + price;
+                    save.textContent = 'Save Rs.' + saveAmount;
+
+                    const productName = card.dataset.productName || addBtn.dataset.baseName;
+                    const imageSrc = card.dataset.productImage || addBtn.dataset.img;
+
+                    addBtn.onclick = function () {
+                        addToCart(productName, price, imageSrc, original, weight);
+                    };
+
+                    if (wishBtn) {
+                        wishBtn.setAttribute('onclick', "toggleWishlist('" + productName + "'," + price + ",'" + imageSrc + "',this)");
+                    }
+                };
+
+                buttons.forEach(button => {
+                    button.addEventListener('click', () => {
+                        buttons.forEach(btn => btn.classList.remove('active'));
+                        button.classList.add('active');
+                        updateSelected();
+                    });
+                });
+
+                updateSelected();
+            });
+        }
+
+        document.addEventListener('DOMContentLoaded', renderFruitsVegetablesProducts);
+    </script>
+    <script src="Cart JS.js"></script>
+    <script src="Wishlist JS.js"></script>
+</body>
+</html>

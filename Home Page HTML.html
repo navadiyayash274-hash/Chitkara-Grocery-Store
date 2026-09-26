@@ -1,0 +1,683 @@
+﻿<DOCTYPE html>
+
+<html>
+
+    <head>
+
+    <meta charset="utf-8">
+
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+    <!--==Title==================================-->
+    <title>
+
+        Chitkara Grocery Store
+
+    </title>
+
+    <!--==Stylesheet=============================-->
+    <link rel="stylesheet" type="text/css" href="Home Page CSS.css">
+
+    <!--==Fav-icon===============================-->
+    <link rel="shortcut icon" href="images/fav-icon.png"/>
+
+    <!--==Using-Font-Awesome=====================-->
+    <script src="https://kit.fontawesome.com/5471644867.js" crossorigin="anonymous"></script>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css">
+
+    <script src = 'Home Page JS.js' defer></script>
+    <script src = 'Cart JS.js' defer></script>
+    <script src = 'Wishlist JS.js' defer></script>
+    <script src = 'Auth JS.js'></script>
+    <script>
+        // Force server usage — file:// protocol means server is not running
+        if (window.location.protocol === 'file:') {
+            document.body.innerHTML = '<div style="min-height:100vh;display:flex;align-items:center;justify-content:center;background:#0b1a0d;font-family:Poppins,sans-serif;"><div style="text-align:center;padding:40px;"><h2 style="color:#ff6b6b;font-size:1.5rem;margin-bottom:16px;">⚠️ Start the server first</h2><p style="color:#e0e0e0;margin-bottom:20px;">Run <code style=\'background:rgba(78,176,96,0.2);color:#4eb060;padding:4px 10px;border-radius:6px;\'>node server.js</code> then open <a href=\'http://localhost:5000\' style=\'color:#4eb060;\'>http://localhost:5000</a></p></div></div>';
+        }
+        document.addEventListener('DOMContentLoaded', function() {
+            const cart = JSON.parse(localStorage.getItem('cgs_cart')) || [];
+            const cartCount = cart.reduce((sum, item) => sum + item.qty, 0);
+            const cartBadge = document.getElementById('cart-count');
+            if (cartBadge) cartBadge.textContent = cartCount;
+        });
+    </script>
+	    
+   <link rel="shortcut icon" type="image/jpg" href="C:\Users\hp\Desktop\College\First Semester\Introduction To Web Technologies\Notepad ++ Files\Project\favicon.ico"/>
+
+    </head>
+
+    <body>
+
+        
+
+        <!--==Navigation================================-->
+
+        
+
+        <nav class="navigation">
+
+            <!--logo-------->
+            <a href="#" class="logo">
+
+                <span>C</span>GS
+
+            </a>
+
+            <!--menu-btn---->
+            <input type="checkbox" class="menu-btn" id="menu-btn">
+
+            <label for="menu-btn" class="menu-icon">
+
+                <span class="nav-icon"></span>
+
+            </label>
+
+            <!--menu-------->
+            <ul class="menu">
+
+                <li>
+                    <a href="Home Page HTML.html" class="active">
+                        
+                        Home
+
+                    </a>
+                
+                </li>
+
+                <li>
+
+                    <a href="#category">
+
+                        Categories
+                    
+                    </a>
+                
+                </li>
+
+                <li>
+
+                    <a href="#popular-bundle-pack">
+                        
+                        Packages
+                    
+                    </a>
+                
+                </li>
+
+                <li>
+                    
+                    <a href="Contact Form HTML.html">
+                        
+                        Contact&nbsp;Us
+                    
+                    </a>
+                
+                </li>
+				
+				<li>
+
+					<a href="About Us HTML.html">
+
+						About&nbsp;us
+
+					</a>
+
+                </li>
+
+                <li>
+                    
+                    <a href="#download-app">
+                        
+                        App
+                    
+                    </a>
+                
+                </li>
+
+				</ul>
+
+            <!--right-nav-(cart-like)-->
+            <div class="right-nav">
+
+                <!--like----->
+                <a href="Wishlist HTML.html" class="like">
+                    <!-- Heart icon -->
+                    <svg xmlns="http://www.w3.org/2000/svg" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                        <path d="M20.84 4.61a5.5 5.5 0 0 0-7.78 0L12 5.67l-1.06-1.06a5.5 5.5 0 0 0-7.78 7.78l1.06 1.06L12 21.23l7.78-7.78 1.06-1.06a5.5 5.5 0 0 0 0-7.78z"/>
+                    </svg>
+                    <span id="wishlist-count">0</span>
+                </a>
+
+                <!--cart----->
+                <a href="Shopping Cart HTML.html" class="cart">
+                    <!-- Cart icon -->
+                    <svg xmlns="http://www.w3.org/2000/svg" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                        <circle cx="9" cy="21" r="1"/><circle cx="20" cy="21" r="1"/>
+                        <path d="M1 1h4l2.68 13.39a2 2 0 0 0 2 1.61h9.72a2 2 0 0 0 2-1.61L23 6H6"/>
+                    </svg>
+                    <span id="cart-count">0</span>
+                </a>
+
+                <!--profile----->
+                <div class="profile-dropdown">
+                    <button type="button" class="user-profile profile-trigger" aria-label="Open profile menu" aria-expanded="false">
+                    <!-- User icon -->
+                    <svg xmlns="http://www.w3.org/2000/svg" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                        <path d="M20 21v-2a4 4 0 0 0-4-4H8a4 4 0 0 0-4 4v2"/>
+                        <circle cx="12" cy="7" r="4"/>
+                    </svg>
+                    <span>1</span>
+                    </button>
+                    <div class="profile-dropdown-panel">
+                        <div class="profile-dropdown-heading">Hello <strong id="menu-user-name">Customer</strong></div>
+                        <a href="Profile HTML.html">Profile</a>
+                        <a href="My Orders HTML.html">📦 My Orders</a>
+                        <a href="Wishlist HTML.html">❤️ Wishlist</a>
+                        <a href="Personal Info HTML.html">👤 My Profile</a>
+                        <a href="Feedback Form HTML.html">⭐ Feedback</a>
+                        <a href="My Feedbacks HTML.html">💬 My Feedbacks</a>
+                        <a href="Contact Form HTML.html">📩 Contact Us</a>
+                        <a href="Login And Registration HTML.html">🚪 Login / Sign up</a>
+                    </div>
+                </div>
+
+            </div>
+
+        </nav>
+
+        <script>
+            const profileTrigger = document.querySelector('.profile-trigger');
+            const profileDropdown = document.querySelector('.profile-dropdown');
+            profileTrigger.addEventListener('click', () => {
+                const isOpen = profileDropdown.classList.toggle('open');
+                profileTrigger.setAttribute('aria-expanded', String(isOpen));
+            });
+            document.addEventListener('click', event => {
+                if (!profileDropdown.contains(event.target)) {
+                    profileDropdown.classList.remove('open');
+                    profileTrigger.setAttribute('aria-expanded', 'false');
+                }
+            });
+            document.getElementById('menu-user-name').textContent = localStorage.getItem('cgs_user_name') || 'Customer';
+        </script>
+
+        <!--nav-end--------------------->
+        <!--==Search-banner=======================================-->
+        <section id="search-banner">
+
+            <!--bg--------->
+            <img alt="bg" class="bg-1" src="https://i.imgur.com/h8pXo1s.png">
+
+            <img alt="bg" class="bg-1_rev" src="https://i.imgur.com/h8pXo1s.png">
+
+            <img alt="bg-2" class="bg-2" src="https://i.imgur.com/2smuQIz.png">
+
+            <!--text------->
+            <div class="search-banner-text">
+
+                <h1>
+                    
+                    Order Your daily Groceries
+                
+                </h1>
+
+                <strong>
+                    
+                    #Free Delivery
+                
+                </strong>
+
+                <!--search-box------>
+                <form action="" class="search-box">
+
+                    <!--icon------>
+                    <i class="fas fa-search"></i>
+
+                    <!--input----->
+                    <input type="text" class="search-input" placeholder="Search" name="search" size = "80px" required>
+
+                    <!--btn------->
+                    <input type="submit" class="search-btn" value="Search">
+
+                </form>
+
+                <br>
+
+                <div id="search-result-msg" style="
+                    display: none;
+                    margin-top: 10px;
+                    font-size: 0.9rem;
+                    font-weight: 500;
+                    padding: 8px 16px;
+                    border-radius: 20px;
+                    background: rgba(255,255,255,0.08);
+                    backdrop-filter: blur(10px);
+                    border: 1px solid rgba(78,176,96,0.2);
+                    width: fit-content;
+                "></div>
+
+                <br>
+
+                <h3>
+
+                    <a href = 'Best Deals HTML.html' style = 'color: #40aa54'>
+
+                        Click here to learn about today's best deals
+
+                    </a>
+
+                </h3>
+
+            </div>
+
+        </section>
+
+        <!--search-banner-end--------------->
+
+        <!--==category=========================================-->
+        <section id="category">
+
+            <!--heading---------------->
+            <div class="category-heading">
+
+                <h2>
+                    
+                    Category
+                
+                </h2>
+
+                <span>
+                    
+                    All
+                
+                </span>
+
+            </div>
+
+            <!--box-container---------->
+            <div class="category-container">
+
+                <!--box---------------->
+                <a class="category-box" href='Fruits Category Page HTML.html'>
+                    <img alt="Fruits and Vegetables" src="images/grocery_category_images/01_fruits_and_vegetables.png">
+                    <span>Fruits & <br> Vegetables</span>
+                </a>
+                <!--box---------------->
+                <a class="category-box" href='Dairy Category Page HTML.html'>
+                    <img alt="Dairy" src="images/grocery_category_images/02_dairy.png">
+                    <span>Dairy</span>
+                </a>
+                <!--box---------------->
+                <a class="category-box" href='Staples and Grains Category Page HTML.html'>
+                    <img alt="Staples & Grains" src="images/grocery_category_images/03_staples_and_grains.png">
+                    <span>Staples & <br> Grains</span>
+                </a>
+                <!--box---------------->
+                <a class="category-box" href='Beverage Category Page HTML.html'>
+                    <img alt="Beverage" src="images/grocery_category_images/04_beverage.png">
+                    <span>Beverage</span>
+                </a>
+                <!--box---------------->
+                <a class="category-box" href='Snacks and Biscuit Category Page HTML.html'>
+                    <img alt="Snacks & Biscuit" src="images/grocery_category_images/05_snacks_and_biscuits.png">
+                    <span>Snacks & <br> Biscuit</span>
+                </a>
+                <!--box---------------->
+                <a class="category-box" href='Household and Cleaning Category Page HTML.html'>
+                    <img alt="Household & Cleaning" src="images/grocery_category_images/06_household_and_cleaning.png">
+                    <span>Household & <br> Cleaning</span>
+                </a>
+                <!--box---------------->
+                <a class="category-box" href='Baby Care Category Page HTML.html'>
+                    <img alt="Baby Care Products" src="images/grocery_category_images/07_baby_care.png">
+                    <span>Baby Care</span>
+                </a>
+                <!--box---------------->
+                <a class="category-box" href='Beauty Category Page HTML.html'>
+                    <img alt="Personal Care Products" src="images/grocery_category_images/08_personal_care.png">
+                    <span>Personal Care</span>
+                </a>
+            </div>
+            
+        </section>
+        <!--category-end----------------------------------->
+        <!--==Products====================================-->
+        <section id="popular-product">
+            <!--heading----------->
+            <div class="product-heading">
+                <h3>Popular Product</h3>
+                <span>All</span>
+            </div>
+            <!--box-container------>
+            <div class="product-container">
+                <!--box---------->
+                <div class="product-box">
+                    <img alt="Apple" src="images/images/apple.png">
+                    <strong>Apple</strong>
+                    <span class="quantity">1 KG</span>
+                    <span class="discount-badge">15% OFF</span>
+                    <div class="price-group">
+                        <span class="original-price">Rs. 100</span>
+                        <span class="price">Rs. 85</span>
+                    </div>
+                    <a href="#" onclick="addToCart('Apple', 85, 'images/images/apple.png'); return false;" class="cart-btn">
+                        <i class="fas fa-shopping-bag"></i> Add to Cart
+                    </a>
+                    <a class="like-btn" href="#" onclick="toggleWishlist('Apple', 85, 'images/images/apple.png', this); return false;" title="Add to Wishlist"><svg xmlns="http://www.w3.org/2000/svg" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M20.84 4.61a5.5 5.5 0 0 0-7.78 0L12 5.67l-1.06-1.06a5.5 5.5 0 0 0-7.78 7.78l1.06 1.06L12 21.23l7.78-7.78 1.06-1.06a5.5 5.5 0 0 0 0-7.78z"/></svg></a>
+                </div>
+                <!--box---------->
+                <div class="product-box">
+                    <img alt="Chilli" src="images/images/chili.png">
+                    <strong>Chilli</strong>
+                    <span class="quantity">1 KG</span>
+                    <span class="discount-badge">15% OFF</span>
+                    <div class="price-group">
+                        <span class="original-price">Rs. 80</span>
+                        <span class="price">Rs. 68</span>
+                    </div>
+                    <a href="#" onclick="addToCart('Chilli', 68, 'images/images/chili.png', 80); return false;" class="cart-btn">
+                        <i class="fas fa-shopping-bag"></i> Add to Cart
+                    </a>
+                    <a class="like-btn" href="#" onclick="toggleWishlist('Chilli', 68, 'images/images/chili.png', this); return false;" title="Add to Wishlist"><svg xmlns="http://www.w3.org/2000/svg" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M20.84 4.61a5.5 5.5 0 0 0-7.78 0L12 5.67l-1.06-1.06a5.5 5.5 0 0 0-7.78 7.78l1.06 1.06L12 21.23l7.78-7.78 1.06-1.06a5.5 5.5 0 0 0 0-7.78z"/></svg></a>
+                </div>
+                <!--box---------->
+                <div class="product-box">
+                    <img alt="Amul Paneer" src="images/grocery_category_images/Amul Malai Panner.jpeg">
+                    <strong>Amul Paneer</strong>
+                    <span class="quantity">200 g</span>
+                    <span class="discount-badge">10% OFF</span>
+                    <div class="price-group">
+                        <span class="original-price">Rs. 99</span>
+                        <span class="price">Rs. 88</span>
+                    </div>
+                    <a href="#" onclick="addToCart('Amul Paneer', 88, 'images/grocery_category_images/Amul Malai Panner.jpeg', 99); return false;" class="cart-btn">
+                        <i class="fas fa-shopping-bag"></i> Add to Cart
+                    </a>
+                    <a class="like-btn" href="#" onclick="toggleWishlist('Amul Paneer', 88, 'images/grocery_category_images/Amul Malai Panner.jpeg', this); return false;" title="Add to Wishlist"><svg xmlns="http://www.w3.org/2000/svg" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M20.84 4.61a5.5 5.5 0 0 0-7.78 0L12 5.67l-1.06-1.06a5.5 5.5 0 0 0-7.78 7.78l1.06 1.06L12 21.23l7.78-7.78 1.06-1.06a5.5 5.5 0 0 0 0-7.78z"/></svg></a>
+                </div>
+                <!--box---------->
+                <div class="product-box">
+                    <img alt="Amul Cheese" src="images/grocery_category_images/Amul Cheese Block.jpeg">
+                    <strong>Amul Cheese</strong>
+                    <span class="quantity">200 g</span>
+                    <span class="discount-badge">10% OFF</span>
+                    <div class="price-group">
+                        <span class="original-price">Rs. 80</span>
+                        <span class="price">Rs. 72</span>
+                    </div>
+                    <a href="#" onclick="addToCart('Amul Cheese', 72, 'images/grocery_category_images/Amul Cheese Block.jpeg', 80); return false;" class="cart-btn">
+                        <i class="fas fa-shopping-bag"></i> Add to Cart
+                    </a>
+                    <a class="like-btn" href="#" onclick="toggleWishlist('Amul Cheese', 72, 'images/grocery_category_images/Amul Cheese Block.jpeg', this); return false;" title="Add to Wishlist"><svg xmlns="http://www.w3.org/2000/svg" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M20.84 4.61a5.5 5.5 0 0 0-7.78 0L12 5.67l-1.06-1.06a5.5 5.5 0 0 0-7.78 7.78l1.06 1.06L12 21.23l7.78-7.78 1.06-1.06a5.5 5.5 0 0 0 0-7.78z"/></svg></a>
+                </div>
+                <!--box---------->
+                <div class="product-box">
+                    <img alt="Coca Cola" src="images/grocery_category_images/Coca-Cola.jpeg">
+                    <strong>Coca Cola</strong>
+                    <span class="quantity">600 ml</span>
+                    <span class="discount-badge">12% OFF</span>
+                    <div class="price-group">
+                        <span class="original-price">Rs. 75</span>
+                        <span class="price">Rs. 66</span>
+                    </div>
+                    <a href="#" onclick="addToCart('Coca Cola', 66, 'images/grocery_category_images/Coca-Cola.jpeg', 75); return false;" class="cart-btn">
+                        <i class="fas fa-shopping-bag"></i> Add to Cart
+                    </a>
+                    <a class="like-btn" href="#" onclick="toggleWishlist('Coca Cola', 66, 'images/grocery_category_images/Coca-Cola.jpeg', this); return false;" title="Add to Wishlist"><svg xmlns="http://www.w3.org/2000/svg" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M20.84 4.61a5.5 5.5 0 0 0-7.78 0L12 5.67l-1.06-1.06a5.5 5.5 0 0 0-7.78 7.78l1.06 1.06L12 21.23l7.78-7.78 1.06-1.06a5.5 5.5 0 0 0 0-7.78z"/></svg></a>
+                </div>
+                <!--box---------->
+                <div class="product-box">
+                    <img alt="Parle-G Biscuits" src="images/grocery_category_images/Parle-G Biscuits.jpeg">
+                    <strong>Parle-G Biscuits</strong>
+                    <span class="quantity">800 g</span>
+                    <span class="discount-badge">10% OFF</span>
+                    <div class="price-group">
+                        <span class="original-price">Rs. 80</span>
+                        <span class="price">Rs. 72</span>
+                    </div>
+                    <a href="#" onclick="addToCart('Parle-G Biscuits', 72, 'images/grocery_category_images/Parle-G Biscuits.jpeg', 80); return false;" class="cart-btn">
+                        <i class="fas fa-shopping-bag"></i> Add to Cart
+                    </a>
+                    <a class="like-btn" href="#" onclick="toggleWishlist('Parle-G Biscuits', 72, 'images/grocery_category_images/Parle-G Biscuits.jpeg', this); return false;" title="Add to Wishlist"><svg xmlns="http://www.w3.org/2000/svg" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M20.84 4.61a5.5 5.5 0 0 0-7.78 0L12 5.67l-1.06-1.06a5.5 5.5 0 0 0-7.78 7.78l1.06 1.06L12 21.23l7.78-7.78 1.06-1.06a5.5 5.5 0 0 0 0-7.78z"/></svg></a>
+                </div>
+            </div>
+        </section>
+        <!--popular-product-end--------------------->
+        <!--Popular-bundle-pack===================================-->
+        <section id="popular-bundle-pack">
+            <!--heading-------------->
+            <div class="product-heading">
+                <h3>Popular Bundle Pack</h3>
+            </div>
+            <!--box-container------>
+            <div class="product-container">
+                <!--box---------->
+                <div class="product-box">
+                    <img alt="pack" src="https://i.imgur.com/Zm8Xo2j.png">
+                    <strong>Big Pack</strong>
+                    <span class="quantity">Lemon, Tomato, Potato,+4</span>
+                    <span class="price">Rs. 500</span>
+                    <a href="#" onclick="addToCart('Big Pack', 500, 'https://i.imgur.com/Zm8Xo2j.png'); return false;" class="cart-btn">
+                        <i class="fas fa-shopping-bag"></i> Add to Cart
+                    </a>
+                    <a class="like-btn" href="#" onclick="toggleWishlist('Big Pack', 500, 'https://i.imgur.com/Zm8Xo2j.png', this); return false;" title="Add to Wishlist"><svg xmlns="http://www.w3.org/2000/svg" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M20.84 4.61a5.5 5.5 0 0 0-7.78 0L12 5.67l-1.06-1.06a5.5 5.5 0 0 0-7.78 7.78l1.06 1.06L12 21.23l7.78-7.78 1.06-1.06a5.5 5.5 0 0 0 0-7.78z"/></svg></a>
+                </div>
+                <!--box---------->
+                <div class="product-box">
+                    <img alt="apple" src="https://i.imgur.com/vMA9mRm.jpg">
+                    <strong>Large Pack</strong>
+                    <span class="quantity">Lemon, Tomato, Potato,+2</span>
+                    <span class="price">Rs. 800</span>
+                    <a href="#" onclick="addToCart('Large Pack', 800, 'https://i.imgur.com/vMA9mRm.jpg'); return false;" class="cart-btn">
+                        <i class="fas fa-shopping-bag"></i> Add to Cart
+                    </a>
+                    <a class="like-btn" href="#" onclick="toggleWishlist('Large Pack', 800, 'https://i.imgur.com/vMA9mRm.jpg', this); return false;" title="Add to Wishlist"><svg xmlns="http://www.w3.org/2000/svg" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M20.84 4.61a5.5 5.5 0 0 0-7.78 0L12 5.67l-1.06-1.06a5.5 5.5 0 0 0-7.78 7.78l1.06 1.06L12 21.23l7.78-7.78 1.06-1.06a5.5 5.5 0 0 0 0-7.78z"/></svg></a>
+                </div>
+                <!--box---------->
+                <div class="product-box">
+                    <img alt="apple" src="https://i.imgur.com/CeVqxe2.png">
+                    <strong>Small Pack</strong>
+                    <span class="quantity">Lemon, Tomato, Potato</span>
+                    <span class="price">Rs. 300</span>
+                    <a href="#" onclick="addToCart('Small Pack', 300, 'https://i.imgur.com/CeVqxe2.png'); return false;" class="cart-btn">
+                        <i class="fas fa-shopping-bag"></i> Add to Cart
+                    </a>
+                    <a class="like-btn" href="#" onclick="toggleWishlist('Small Pack', 300, 'https://i.imgur.com/CeVqxe2.png', this); return false;" title="Add to Wishlist"><svg xmlns="http://www.w3.org/2000/svg" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M20.84 4.61a5.5 5.5 0 0 0-7.78 0L12 5.67l-1.06-1.06a5.5 5.5 0 0 0-7.78 7.78l1.06 1.06L12 21.23l7.78-7.78 1.06-1.06a5.5 5.5 0 0 0 0-7.78z"/></svg></a>
+                </div>
+                <!--box---------->
+                <div class="product-box">
+                    <img alt="pack" src="https://i.imgur.com/Zm8Xo2j.png">
+                    <strong>Big Pack Premium</strong>
+                    <span class="quantity">Lemon, Tomato, Potato,+4</span>
+                    <span class="price">Rs. 900</span>
+                    <a href="#" onclick="addToCart('Big Pack Premium', 900, 'https://i.imgur.com/Zm8Xo2j.png'); return false;" class="cart-btn">
+                        <i class="fas fa-shopping-bag"></i> Add to Cart
+                    </a>
+                    <a class="like-btn" href="#" onclick="toggleWishlist('Big Pack Premium', 900, 'https://i.imgur.com/Zm8Xo2j.png', this); return false;" title="Add to Wishlist"><svg xmlns="http://www.w3.org/2000/svg" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M20.84 4.61a5.5 5.5 0 0 0-7.78 0L12 5.67l-1.06-1.06a5.5 5.5 0 0 0-7.78 7.78l1.06 1.06L12 21.23l7.78-7.78 1.06-1.06a5.5 5.5 0 0 0 0-7.78z"/></svg></a>
+                </div>
+                <!--box---------->
+                <div class="product-box">
+                    <img alt="apple" src="https://i.imgur.com/vMA9mRm.jpg">
+                    <strong>Large Pack Plus</strong>
+                    <span class="quantity">Lemon, Tomato, Potato,+2</span>
+                    <span class="price">Rs. 700</span>
+                    <a href="#" onclick="addToCart('Large Pack Plus', 700, 'https://i.imgur.com/vMA9mRm.jpg'); return false;" class="cart-btn">
+                        <i class="fas fa-shopping-bag"></i> Add to Cart
+                    </a>
+                    <a class="like-btn" href="#" onclick="toggleWishlist('Large Pack Plus', 700, 'https://i.imgur.com/vMA9mRm.jpg', this); return false;" title="Add to Wishlist"><svg xmlns="http://www.w3.org/2000/svg" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M20.84 4.61a5.5 5.5 0 0 0-7.78 0L12 5.67l-1.06-1.06a5.5 5.5 0 0 0-7.78 7.78l1.06 1.06L12 21.23l7.78-7.78 1.06-1.06a5.5 5.5 0 0 0 0-7.78z"/></svg></a>
+                </div>
+                <!--box---------->
+                <div class="product-box">
+                    <img alt="apple" src="https://i.imgur.com/CeVqxe2.png">
+                    <strong>Small Pack Plus</strong>
+                    <span class="quantity">Lemon, Tomato, Potato</span>
+                    <span class="price">Rs. 400</span>
+                    <a href="#" onclick="addToCart('Small Pack Plus', 400, 'https://i.imgur.com/CeVqxe2.png'); return false;" class="cart-btn">
+                        <i class="fas fa-shopping-bag"></i> Add to Cart
+                    </a>
+                    <a class="like-btn" href="#" onclick="toggleWishlist('Small Pack Plus', 400, 'https://i.imgur.com/CeVqxe2.png', this); return false;" title="Add to Wishlist"><svg xmlns="http://www.w3.org/2000/svg" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M20.84 4.61a5.5 5.5 0 0 0-7.78 0L12 5.67l-1.06-1.06a5.5 5.5 0 0 0-7.78 7.78l1.06 1.06L12 21.23l7.78-7.78 1.06-1.06a5.5 5.5 0 0 0 0-7.78z"/></svg></a>
+                </div>
+            </div>
+        </section>
+        <!--popular-bundle-pack-end-------------------------------->
+        <!--==Clients===============================================-->
+        <section id="clients">
+            <!--heading---------------->
+            <div class="client-heading">
+                <h3>What Our Clients Say</h3>
+            </div>
+            <!--box-container---------->
+            <div class="client-box-container">
+                <!--box------------->
+                <div class="client-box">
+                    <!--==profile===-->
+                    <div class="client-profile">
+                        <!--img--->
+                        <img alt="client" src="https://i.imgur.com/FNVH9z6.jpg">
+                        <!--text-->
+                        <div class="profile-text">
+                            <strong>Yash Navadiya</strong>
+                            <span>CEO</span>
+                        </div>
+                    </div>
+                    <!--==Rating======-->
+                    <div class="rating">
+                        <i class="fas fa-star"></i>
+                        <i class="fas fa-star"></i>
+                        <i class="fas fa-star"></i>
+                        <i class="fas fa-star"></i>
+                        <i class="fas fa-star"></i>
+                    </div>
+                    <!--==comments===-->
+                    <p>Chitkara Grocery Store is the best. CGS never fails to dissapoint me. Grocery shopping has become so easy with Chitkara Grocery Store.</Str></p>
+                </div>
+                <!--box------------->
+                <div class="client-box">
+                    <!--==profile===-->
+                    <div class="client-profile">
+                        <!--img--->
+                        <img alt="client" src="https://i.imgur.com/3yv9Hkj.jpg">
+                        <!--text-->
+                        <div class="profile-text">
+                            <strong>Sameer Sharma</strong>
+                            <span>Software Developer</span>
+                        </div>
+                    </div>
+                    <!--==Rating======-->
+                    <div class="rating">
+                        <i class="fas fa-star"></i>
+                        <i class="fas fa-star"></i>
+                        <i class="fas fa-star"></i>
+                        <i class="fas fa-star"></i>
+                        <i class="fas fa-star"></i>
+                    </div>
+                    <!--==comments===-->
+                    <p>Chitkara Grocery Store is just amazing. I can buy all my groceries from a single place. The groceries are available at very affordable prices. And, the groceries are delivered at the time slot you choose and prefer.</p>
+                </div>
+                <!--box------------->
+                <div class="client-box">
+                    <!--==profile===-->
+                    <div class="client-profile">
+                        <!--img--->
+                        <img alt="client" src="https://i.imgur.com/Rk5RDey.jpg">
+                        <!--text-->
+                        <div class="profile-text">
+                            <strong>Ava Alex</strong>
+                            <span>Marketer</span>
+                        </div>
+                    </div>
+                    <!--==Rating======-->
+                    <div class="rating">
+                        <i class="fas fa-star"></i>
+                        <i class="fas fa-star"></i>
+                        <i class="fas fa-star"></i>
+                        <i class="fas fa-star"></i>
+                        <i class="fas fa-star"></i>
+                    </div>
+                    <!--==comments===-->
+                    <p>At Chitkara Grocery Store, you can get fresh fruits and vegetables. And it is not only about fruits or vegetables, you can buy all kinds of stuff here.</p>
+                </div>
+            </div>
+        </section>
+        <!--client-section-end---------->
+        <!--==Partnre-logo================================-->
+        <section id="partner">
+            <!--heading------------>
+            <div class="partner-heading">
+                <h3>Our Trusted Partner</h3>
+            </div>
+            <!--logo-container----->
+            <div class="logo-container">
+                <img alt="logo" src="https://i.imgur.com/iUOPVpm.png">
+                <img alt="logo" src="https://i.imgur.com/kyp2UKO.png">
+                <img alt="logo" src="https://i.imgur.com/072qc5v.png">
+                <img alt="logo" src="https://i.imgur.com/AADIKZS.png">
+            </div>
+        </section>
+        <!--logo-section-end--------------------->
+        <!--==download-app====================================-->
+        <section id="download-app">
+            <!--img----------------------->
+            <div class="app-img">
+                <img alt="app" src="https://i.imgur.com/nxe85eq.png">
+            </div>
+            <!--text---------------------->
+            <div class="download-app-text">
+                <strong>Download App</strong>
+                <p>Grocery shopping made easier. Now, you don't need to open the website for placing orders. Download the <b>Chitkara Grocery Store</b> app from Play Store and App Store to start shopping easily and faster. <br> HAPPY SHOPPING!</b></p>
+                <!--btns------->
+                <div class="download-btns">
+                    <a href="https://www.apple.com/in/app-store/"><img alt="" src="https://i.imgur.com/dMsRGJH.png"></a>
+                    <a href="https://play.google.com/store"><img alt="" src="https://i.imgur.com/puDrZNe.png"></a>
+                </div>
+            </div>
+        </section>
+        <!--download-app-section-end------------------------->
+        <!--==Footer=============================================-->
+        <footer>
+            <div class="footer-container">
+                <!--logo-container------>
+                <div class="footer-logo">
+                    <a href="file:///C:/Users/RAGHAV/Desktop/Coding/Grocery/Logo.png"><span>C</span>GS</a>
+                    <!--social----->
+                    <div class="footer-social">
+                        <a href="https://www.facebook.com/"><i class="fab fa-facebook-f"></i></a>
+                        <a href="https://twitter.com/?lang=en-in"><i class="fab fa-twitter"></i></a>
+                        <a href="https://www.instagram.com/"><i class="fab fa-instagram"></i></a>
+                        <a href="https://www.youtube.com/"><i class="fab fa-youtube"></i></a>
+                    </div>
+                </div>
+                <!--links------------------------->
+            <div class="footer-links">
+                <strong>Product</strong>
+                <ul>
+                    <li><a href="#">Grocery</a></li>
+                    <li><a href="#">Packages</a></li>
+                    <li><a href="#">Popular</a></li>
+                    <li><a href="#">New</a></li>
+                </ul>
+            </div>
+            <!--links------------------------->
+            <div class="footer-links">
+                <strong>Category</strong>
+                <ul>
+                    <li><a href="#">Fruits & Vegetables</a></li>
+                    <li><a href="#">Dairy</a></li>
+                    <li><a href="#">Staples & Grains</a></li>
+                    <li><a href="#">Personal Care</a></li>
+                </ul>
+            </div>
+            <!--links-------------------------->
+            <div class="footer-links">
+                <strong>Contact</strong>
+                <ul>
+                    <li><a href="#">Phone : +123456789</a></li>
+                    <li><a href="#">Email : chitkaragrocery@gmail.com</a></li>
+                    <li><a href="#">Cities we serve</a></li>
+                </ul>
+				<br><p style="color: aliceblue;">Copyright ©2022 | All Rights Reserved</p>
+            </div>
+            </div>
+        </footer>
+    </body>
+</html>

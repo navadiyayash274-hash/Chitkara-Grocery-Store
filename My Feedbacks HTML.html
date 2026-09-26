@@ -1,0 +1,280 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>My Feedbacks - Chitkara Grocery Store</title>
+    <script src="Auth JS.js"></script>
+    <style>
+        @import url('https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;700;800;900&display=swap');
+        *{margin:0;padding:0;box-sizing:border-box;font-family:'Poppins',sans-serif;}
+
+        body{
+            min-height:100vh;
+            background:linear-gradient(135deg,#0b1a0d 0%,#0d1f3c 35%,#1a0b2e 70%,#0b1a0d 100%);
+            background-size:400% 400%;animation:bgAnim 12s ease infinite;
+            padding-bottom:60px;
+        }
+        @keyframes bgAnim{0%{background-position:0% 50%}50%{background-position:100% 50%}100%{background-position:0% 50%}}
+
+        /* NAV */
+        .top-nav{
+            display:flex;justify-content:space-between;align-items:center;
+            padding:16px 40px;background:rgba(255,255,255,0.06);
+            backdrop-filter:blur(20px);border-bottom:1px solid rgba(78,176,96,0.2);
+            position:sticky;top:0;z-index:100;
+        }
+        .top-nav .logo{font-size:1.3rem;font-weight:900;color:#e0e0e0;text-decoration:none;}
+        .top-nav .logo span{color:#4eb060;}
+        .nav-right{display:flex;gap:12px;align-items:center;}
+        .nav-btn{
+            padding:9px 20px;background:linear-gradient(135deg,#4eb060,#2e7d32);
+            color:#fff;text-decoration:none;border-radius:30px;font-size:0.82rem;font-weight:600;
+            transition:all 0.3s;box-shadow:0 4px 15px rgba(78,176,96,0.3);
+        }
+        .nav-btn:hover{transform:translateY(-2px);box-shadow:0 8px 20px rgba(78,176,96,0.5);}
+        .nav-btn.outline{background:transparent;border:1px solid rgba(78,176,96,0.4);color:#4eb060;box-shadow:none;}
+        .nav-btn.outline:hover{background:rgba(78,176,96,0.1);}
+
+        /* HEADER */
+        .page-header{text-align:center;padding:40px 20px 24px;animation:fadeDown 0.6s ease both;}
+        @keyframes fadeDown{from{opacity:0;transform:translateY(-20px)}to{opacity:1;transform:translateY(0)}}
+        .page-header h1{
+            font-size:2rem;font-weight:900;letter-spacing:3px;
+            background:linear-gradient(90deg,#fdcc0d,#fff,#fdcc0d);background-size:300%;
+            -webkit-background-clip:text;-webkit-text-fill-color:transparent;background-clip:text;
+            animation:shine 4s linear infinite;
+        }
+        @keyframes shine{0%{background-position:0%}100%{background-position:300%}}
+        .page-header p{color:#9ca3af;font-size:0.88rem;margin-top:8px;}
+
+        /* NEW FEEDBACK BTN */
+        .new-feedback-wrap{
+            max-width:800px;margin:0 auto 24px;padding:0 20px;
+            display:flex;justify-content:flex-end;
+        }
+        .new-feedback-btn{
+            padding:11px 28px;background:linear-gradient(120deg,#fdcc0d,#f39c12);
+            color:#1a1a2e;border:none;border-radius:30px;font-size:0.88rem;font-weight:800;
+            cursor:pointer;text-decoration:none;display:inline-flex;align-items:center;gap:8px;
+            box-shadow:0 6px 20px rgba(253,204,13,0.35);transition:all 0.3s;font-family:'Poppins',sans-serif;
+        }
+        .new-feedback-btn:hover{transform:translateY(-3px);box-shadow:0 10px 30px rgba(253,204,13,0.55);}
+
+        /* CONTAINER */
+        .feedbacks-container{max-width:800px;margin:0 auto;padding:0 20px;}
+
+        /* EMPTY STATE */
+        .empty-state{
+            text-align:center;padding:70px 20px;
+            background:rgba(255,255,255,0.04);border:1px solid rgba(253,204,13,0.15);
+            border-radius:24px;
+        }
+        .empty-state .icon{font-size:4rem;margin-bottom:14px;display:block;animation:bounce 3s ease-in-out infinite;}
+        @keyframes bounce{0%,100%{transform:translateY(0)}50%{transform:translateY(-12px)}}
+        .empty-state h3{color:#e0e0e0;font-size:1.3rem;font-weight:700;margin-bottom:8px;}
+        .empty-state p{color:#9ca3af;font-size:0.88rem;margin-bottom:24px;}
+
+        /* FEEDBACK CARD */
+        .feedback-card{
+            background:rgba(255,255,255,0.05);backdrop-filter:blur(15px);
+            border:1px solid rgba(253,204,13,0.15);border-radius:20px;
+            margin-bottom:16px;overflow:hidden;
+            transition:all 0.3s ease;animation:fadeUp 0.5s ease both;
+        }
+        @keyframes fadeUp{from{opacity:0;transform:translateY(16px)}to{opacity:1;transform:translateY(0)}}
+        .feedback-card:hover{border-color:rgba(253,204,13,0.35);box-shadow:0 12px 35px rgba(253,204,13,0.1);}
+
+        .feedback-header{
+            display:flex;justify-content:space-between;align-items:center;
+            padding:18px 22px 14px;flex-wrap:wrap;gap:10px;
+        }
+        .feedback-meta{display:flex;align-items:center;gap:14px;flex-wrap:wrap;}
+        .stars-display{display:flex;gap:2px;}
+        .stars-display span{font-size:1.1rem;}
+        .feedback-date{color:#9ca3af;font-size:0.75rem;}
+        .category-tag{
+            padding:3px 12px;border-radius:20px;font-size:0.72rem;font-weight:700;
+            background:rgba(253,204,13,0.12);color:#fdcc0d;border:1px solid rgba(253,204,13,0.25);
+        }
+
+        .feedback-body{padding:0 22px 18px;}
+        .feedback-message{
+            color:#c8e6c9;font-size:0.88rem;line-height:1.6;
+            padding:12px 14px;background:rgba(255,255,255,0.04);
+            border-radius:10px;border-left:3px solid rgba(253,204,13,0.4);
+        }
+
+        /* Admin Reply Box */
+        .reply-box{
+            margin:12px 22px 18px;padding:14px 16px;
+            border-radius:14px;border:1px solid rgba(78,176,96,0.3);
+            background:rgba(78,176,96,0.06);
+        }
+        .reply-box .reply-label{
+            display:flex;align-items:center;gap:8px;
+            color:#4eb060;font-size:0.78rem;font-weight:700;
+            text-transform:uppercase;letter-spacing:1px;margin-bottom:8px;
+        }
+        .reply-box .reply-text{color:#c8e6c9;font-size:0.88rem;line-height:1.6;}
+        .reply-box .reply-time{color:#9ca3af;font-size:0.72rem;margin-top:6px;}
+
+        /* Auto-reply badge */
+        .auto-badge{
+            display:inline-block;padding:2px 10px;border-radius:20px;
+            background:rgba(41,182,246,0.12);color:#29b6f6;
+            border:1px solid rgba(41,182,246,0.3);font-size:0.68rem;font-weight:700;
+            margin-left:8px;vertical-align:middle;
+        }
+
+        /* Pending reply notice */
+        .pending-reply{
+            margin:12px 22px 18px;padding:12px 16px;
+            border-radius:12px;border:1px solid rgba(253,204,13,0.2);
+            background:rgba(253,204,13,0.06);
+            color:#fdcc0d;font-size:0.82rem;display:flex;align-items:center;gap:8px;
+        }
+
+        /* Scrollbar */
+        ::-webkit-scrollbar{width:7px;}
+        ::-webkit-scrollbar-track{background:#0b1a0d;}
+        ::-webkit-scrollbar-thumb{background:linear-gradient(#fdcc0d,#4eb060);border-radius:10px;}
+    </style>
+</head>
+<body>
+
+    <!-- Nav -->
+    <nav class="top-nav">
+        <a href="Home Page HTML.html" class="logo"><span>C</span>GS</a>
+        <span style="color:#fdcc0d;font-weight:700;">⭐ My Feedbacks</span>
+        <div class="nav-right">
+            <a href="Feedback Form HTML.html" class="nav-btn">+ New Feedback</a>
+            <a href="Home Page HTML.html" class="nav-btn outline">🏠 Home</a>
+        </div>
+    </nav>
+
+    <!-- Header -->
+    <div class="page-header">
+        <h1>⭐ MY FEEDBACKS</h1>
+        <p>View all your submitted feedbacks and admin replies</p>
+    </div>
+
+    <!-- New feedback shortcut -->
+    <div class="new-feedback-wrap">
+        <a href="Feedback Form HTML.html" class="new-feedback-btn">✏️ Write New Feedback</a>
+    </div>
+
+    <!-- Feedbacks list -->
+    <div class="feedbacks-container" id="feedbacks-container">
+        <div style="text-align:center;padding:50px;color:#9ca3af;">
+            <span style="font-size:2rem;display:block;margin-bottom:10px;">⏳</span>
+            Loading your feedbacks…
+        </div>
+    </div>
+
+    <script>
+    const contact = localStorage.getItem('cgs_user_contact') ||
+                    localStorage.getItem('cgs_email') || '';
+    const container = document.getElementById('feedbacks-container');
+
+    function starsHTML(rating) {
+        const r = parseInt(rating) || 0;
+        return Array.from({ length: 5 }, (_, i) =>
+            `<span style="color:${i < r ? '#fdcc0d' : 'rgba(255,255,255,0.15)'};font-size:1.1rem;">★</span>`
+        ).join('');
+    }
+
+    function formatDate(v) {
+        if (!v) return '--';
+        return new Date(v).toLocaleDateString('en-IN', {
+            day:'2-digit', month:'short', year:'numeric',
+            hour:'2-digit', minute:'2-digit'
+        });
+    }
+
+    function escapeHtml(v) {
+        return String(v || '').replace(/[&<>"']/g, c =>
+            ({ '&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#039;' }[c])
+        );
+    }
+
+    function renderCard(fb, idx) {
+        const hasReply = fb.adminReply && fb.adminReply.trim();
+
+        const replySection = hasReply ? `
+            <div class="reply-box">
+                <div class="reply-label">
+                    🏪 Store Response
+                    ${fb.autoReplied ? '<span class="auto-badge">Auto Reply</span>' : ''}
+                </div>
+                <div class="reply-text">${escapeHtml(fb.adminReply)}</div>
+                <div class="reply-time">Replied on ${formatDate(fb.repliedAt)}</div>
+            </div>` : `
+            <div class="pending-reply">
+                ⏳ Waiting for store response…
+            </div>`;
+
+        const catTag = fb.category
+            ? `<span class="category-tag">${escapeHtml(fb.category)}</span>` : '';
+
+        return `
+        <div class="feedback-card" style="animation-delay:${idx * 0.07}s">
+            <div class="feedback-header">
+                <div class="feedback-meta">
+                    <div class="stars-display">${starsHTML(fb.rating)}</div>
+                    ${catTag}
+                    <span class="feedback-date">${formatDate(fb.createdAt)}</span>
+                </div>
+            </div>
+            <div class="feedback-body">
+                <div class="feedback-message">${escapeHtml(fb.message)}</div>
+            </div>
+            ${replySection}
+        </div>`;
+    }
+
+    async function loadFeedbacks() {
+        if (!contact) {
+            container.innerHTML = `
+                <div class="empty-state">
+                    <span class="icon">🔐</span>
+                    <h3>Sign In Required</h3>
+                    <p>Please sign in to view your feedbacks.</p>
+                    <a href="Login And Registration HTML.html" class="new-feedback-btn">🔐 Sign In</a>
+                </div>`;
+            return;
+        }
+
+        try {
+            const res = await fetch('/api/feedback/user/' + encodeURIComponent(contact));
+            if (!res.ok) throw new Error('Failed to load');
+            const feedbacks = await res.json();
+
+            if (!feedbacks.length) {
+                container.innerHTML = `
+                    <div class="empty-state">
+                        <span class="icon">💬</span>
+                        <h3>No Feedbacks Yet</h3>
+                        <p>You haven't submitted any feedback yet.<br>Share your experience with us!</p>
+                        <a href="Feedback Form HTML.html" class="new-feedback-btn">✏️ Write Feedback</a>
+                    </div>`;
+                return;
+            }
+
+            container.innerHTML = feedbacks.map((fb, i) => renderCard(fb, i)).join('');
+        } catch(e) {
+            container.innerHTML = `
+                <div class="empty-state">
+                    <span class="icon">⚠️</span>
+                    <h3>Could Not Load Feedbacks</h3>
+                    <p>Make sure the server is running at <strong>http://localhost:5000</strong></p>
+                    <button onclick="loadFeedbacks()" class="new-feedback-btn">🔄 Try Again</button>
+                </div>`;
+        }
+    }
+
+    loadFeedbacks();
+    </script>
+
+</body>
+</html>

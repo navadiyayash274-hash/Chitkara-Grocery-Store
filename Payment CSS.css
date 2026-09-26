@@ -1,0 +1,540 @@
+@import url('https://fonts.googleapis.com/css2?family=Poppins:wght@200;300;400;500;600;700;800&display=swap');
+
+* {
+    font-family: 'Poppins', sans-serif;
+    margin: 0; padding: 0;
+    box-sizing: border-box;
+    outline: none; border: none;
+    text-decoration: none;
+    text-transform: uppercase;
+}
+
+/* ===== ANIMATED BACKGROUND ===== */
+.container {
+    min-height: 100vh;
+    background: linear-gradient(135deg, #0b0f1a 0%, #1a0b2e 35%, #0b1a10 70%, #0b0f1a 100%);
+    background-size: 400% 400%;
+    animation: bgAnim 10s ease infinite;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    flex-flow: column;
+    padding: 40px 20px 60px 20px;
+    position: relative;
+    overflow: hidden;
+}
+
+@keyframes bgAnim {
+    0%   { background-position: 0% 50%; }
+    50%  { background-position: 100% 50%; }
+    100% { background-position: 0% 50%; }
+}
+
+/* Moving grid */
+.container::before {
+    content: '';
+    position: fixed;
+    top: 0; left: 0;
+    width: 100%; height: 100%;
+    background-image:
+        linear-gradient(rgba(142,68,173,0.05) 1px, transparent 1px),
+        linear-gradient(90deg, rgba(142,68,173,0.05) 1px, transparent 1px);
+    background-size: 50px 50px;
+    pointer-events: none;
+    z-index: 0;
+    animation: gridMove 20s linear infinite;
+}
+
+@keyframes gridMove {
+    from { transform: translateY(0); }
+    to   { transform: translateY(50px); }
+}
+
+/* Glow orb top right */
+.container::after {
+    content: '';
+    position: fixed;
+    width: 500px; height: 500px;
+    background: radial-gradient(circle, rgba(142,68,173,0.2) 0%, transparent 70%);
+    top: -150px; right: -150px;
+    border-radius: 50%;
+    pointer-events: none;
+    z-index: 0;
+    animation: orbPulse 6s ease-in-out infinite alternate;
+}
+
+@keyframes orbPulse {
+    from { transform: scale(1); opacity: 0.6; }
+    to   { transform: scale(1.3); opacity: 1; }
+}
+
+/* Page title */
+.page-title {
+    font-size: 1.8rem;
+    font-weight: 800;
+    letter-spacing: 4px;
+    background: linear-gradient(90deg, #4eb060, #a78bfa, #ffffff, #a78bfa, #4eb060);
+    background-size: 300%;
+    -webkit-background-clip: text;
+    -webkit-text-fill-color: transparent;
+    background-clip: text;
+    animation: textShine 4s linear infinite;
+    margin-bottom: 20px;
+    position: relative;
+    z-index: 1;
+    text-align: center;
+}
+
+@keyframes textShine {
+    0%   { background-position: 0%; }
+    100% { background-position: 300%; }
+}
+
+/* ===== PAYMENT TABS ===== */
+.payment-tabs {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 10px;
+    justify-content: center;
+    margin-bottom: 25px;
+    position: relative;
+    z-index: 1;
+}
+
+.tab-btn {
+    padding: 12px 20px;
+    border-radius: 50px;
+    border: 2px solid rgba(167,139,250,0.3) !important;
+    background: rgba(255,255,255,0.05);
+    backdrop-filter: blur(10px);
+    color: #c8b4fa;
+    font-size: 0.85rem;
+    font-weight: 600;
+    cursor: pointer;
+    transition: all 0.3s ease;
+    text-transform: none;
+    letter-spacing: 0.3px;
+}
+
+.tab-btn:hover {
+    background: rgba(167,139,250,0.15);
+    border-color: rgba(167,139,250,0.6) !important;
+    color: #fff;
+    transform: translateY(-4px);
+    box-shadow: 0 8px 25px rgba(142,68,173,0.4);
+}
+
+.tab-btn.active {
+    background: linear-gradient(120deg, #2980b9, #8e44ad);
+    border-color: transparent !important;
+    color: #fff;
+    box-shadow: 0 8px 25px rgba(142,68,173,0.5);
+    transform: translateY(-2px);
+}
+
+/* ===== TAB CONTENT ===== */
+.tab-content {
+    display: none;
+    width: 100%;
+    max-width: 600px;
+    position: relative;
+    z-index: 1;
+    animation: fadeUp 0.4s ease both;
+}
+
+.tab-content.active { display: block; }
+
+@keyframes fadeUp {
+    from { opacity: 0; transform: translateY(20px); }
+    to   { opacity: 1; transform: translateY(0); }
+}
+
+/* ===== CARD CONTAINER ===== */
+.container .card-container {
+    margin-bottom: -150px;
+    position: relative;
+    height: 250px;
+    width: 400px;
+    z-index: 2;
+}
+
+.container .card-container .front {
+    position: absolute;
+    height: 100%; width: 100%;
+    top: 0; left: 0;
+    background: linear-gradient(135deg, #1a1a2e, #16213e, #0f3460, #533483);
+    border-radius: 20px;
+    backface-visibility: hidden;
+    box-shadow: 0 20px 40px rgba(0,0,0,0.5), 0 0 30px rgba(142,68,173,0.3);
+    padding: 20px;
+    transform: perspective(1000px) rotateY(0deg);
+    transition: transform 0.3s ease-out;
+    border: 1px solid rgba(167,139,250,0.3);
+}
+
+.container .card-container .front .image {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    padding-top: 10px;
+}
+
+.container .card-container .front .image img { height: 50px; }
+
+.container .card-container .front .card-number-box {
+    padding: 30px 0;
+    font-size: 22px;
+    color: #fff;
+    letter-spacing: 3px;
+    text-shadow: 0 0 10px rgba(167,139,250,0.5);
+}
+
+.container .card-container .front .flexbox { display: flex; }
+
+.container .card-container .front .flexbox .box:nth-child(1) { margin-right: auto; }
+.container .card-container .front .flexbox .box { font-size: 15px; color: #fff; }
+
+.container .card-container .back {
+    position: absolute;
+    top: 0; left: 0;
+    height: 100%; width: 100%;
+    background: linear-gradient(135deg, #1a1a2e, #16213e, #0f3460, #533483);
+    border-radius: 20px;
+    padding: 20px 0;
+    text-align: right;
+    backface-visibility: hidden;
+    box-shadow: 0 20px 40px rgba(0,0,0,0.5), 0 0 30px rgba(142,68,173,0.3);
+    transform: perspective(1000px) rotateY(180deg);
+    transition: transform 0.4s ease-out;
+    border: 1px solid rgba(167,139,250,0.3);
+}
+
+.container .card-container .back .stripe {
+    background: rgba(0,0,0,0.6);
+    width: 100%; margin: 10px 0; height: 50px;
+}
+
+.container .card-container .back .box { padding: 0 20px; }
+.container .card-container .back .box span { color: #fff; font-size: 15px; }
+
+.container .card-container .back .box .cvv-box {
+    height: 50px; padding: 10px; margin-top: 5px;
+    color: #333; background: #fff;
+    border-radius: 5px; width: 100%;
+}
+
+.container .card-container .back .box img { margin-top: 30px; height: 30px; }
+
+/* ===== CARD FORM ===== */
+.container form {
+    background: rgba(255,255,255,0.05);
+    backdrop-filter: blur(20px);
+    -webkit-backdrop-filter: blur(20px);
+    border: 1px solid rgba(167,139,250,0.2);
+    border-radius: 20px;
+    box-shadow: 0 20px 50px rgba(0,0,0,0.4);
+    padding: 20px;
+    width: 600px;
+    padding-top: 160px;
+}
+
+.container form .inputBox { margin-top: 20px; }
+
+.container form .inputBox span {
+    display: block;
+    color: #a78bfa;
+    padding-bottom: 5px;
+    font-size: 0.8rem;
+    letter-spacing: 1px;
+}
+
+.container form .inputBox input,
+.container form .inputBox select {
+    width: 100%;
+    padding: 12px 15px;
+    border-radius: 10px;
+    border: 1px solid rgba(167,139,250,0.3) !important;
+    color: #e0e0e0;
+    background: rgba(255,255,255,0.07);
+    font-size: 0.95rem;
+    text-transform: none;
+    transition: all 0.3s ease;
+}
+
+.container form .inputBox input:focus,
+.container form .inputBox select:focus {
+    border-color: rgba(167,139,250,0.7) !important;
+    background: rgba(255,255,255,0.1);
+    box-shadow: 0 0 15px rgba(142,68,173,0.2);
+}
+
+.container form .inputBox select option { background: #1a1a2e; color: #e0e0e0; }
+
+.container form .flexbox { display: flex; gap: 15px; }
+.container form .flexbox .inputBox { flex: 1 1 150px; }
+
+.container form .submit-btn {
+    width: 100%;
+    background: linear-gradient(120deg, #2980b9, #8e44ad);
+    margin-top: 25px;
+    padding: 14px;
+    font-size: 1rem;
+    color: #fff;
+    border-radius: 12px;
+    cursor: pointer;
+    transition: all 0.3s ease;
+    font-weight: 700;
+    letter-spacing: 1px;
+    box-shadow: 0 8px 25px rgba(142,68,173,0.4);
+    text-transform: uppercase;
+}
+
+.container form .submit-btn:hover {
+    opacity: 0.9;
+    transform: translateY(-3px);
+    box-shadow: 0 12px 35px rgba(142,68,173,0.6);
+    letter-spacing: 2px;
+}
+
+/* ===== SHARED SECTION STYLE ===== */
+.upi-section, .netbanking-section, .cod-section, .qr-section {
+    background: rgba(255,255,255,0.05);
+    backdrop-filter: blur(20px);
+    -webkit-backdrop-filter: blur(20px);
+    border: 1px solid rgba(167,139,250,0.2);
+    border-radius: 20px;
+    box-shadow: 0 20px 50px rgba(0,0,0,0.4);
+    padding: 35px 30px;
+    text-align: center;
+}
+
+.upi-section h2, .netbanking-section h2,
+.cod-section h2, .qr-section h2 {
+    font-size: 1.5rem;
+    font-weight: 800;
+    text-transform: none;
+    background: linear-gradient(90deg, #a78bfa, #ffffff);
+    -webkit-background-clip: text;
+    -webkit-text-fill-color: transparent;
+    background-clip: text;
+    margin-bottom: 8px;
+}
+
+.upi-section p, .netbanking-section p,
+.cod-section p, .qr-section p {
+    color: #9ca3af;
+    margin-bottom: 20px;
+    text-transform: none;
+    font-size: 0.9rem;
+}
+
+/* ===== UPI APPS ===== */
+.upi-apps {
+    display: flex;
+    justify-content: center;
+    gap: 15px;
+    flex-wrap: wrap;
+    margin-bottom: 15px;
+}
+
+.upi-app {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 8px;
+    padding: 18px 22px;
+    border-radius: 16px;
+    border: 2px solid rgba(167,139,250,0.25) !important;
+    background: rgba(255,255,255,0.04);
+    cursor: pointer;
+    transition: all 0.35s ease;
+    min-width: 90px;
+    font-size: 0.82rem;
+    color: #c4b5fd;
+    text-transform: none;
+    font-weight: 600;
+}
+
+.upi-app span:last-child { font-size: 1.8rem; }
+
+.upi-app:hover, .upi-app.selected {
+    border-color: rgba(167,139,250,0.7) !important;
+    background: rgba(142,68,173,0.15);
+    transform: translateY(-6px);
+    box-shadow: 0 10px 25px rgba(142,68,173,0.3);
+    color: #fff;
+}
+
+/* ===== NET BANKING ===== */
+.bank-list {
+    display: flex;
+    flex-direction: column;
+    gap: 10px;
+    margin-bottom: 15px;
+    text-align: left;
+}
+
+.bank-item {
+    padding: 14px 20px;
+    border-radius: 12px;
+    border: 1px solid rgba(167,139,250,0.2) !important;
+    background: rgba(255,255,255,0.04);
+    cursor: pointer;
+    font-size: 0.9rem;
+    color: #c4b5fd;
+    text-transform: none;
+    transition: all 0.3s ease;
+    font-weight: 500;
+    display: flex;
+    align-items: center;
+    gap: 10px;
+}
+
+.bank-item:hover, .bank-item.selected {
+    background: rgba(142,68,173,0.15);
+    border-color: rgba(167,139,250,0.6) !important;
+    padding-left: 28px;
+    color: #fff;
+    box-shadow: 0 5px 15px rgba(142,68,173,0.2);
+}
+
+/* ===== INPUTS (UPI & Net Banking) ===== */
+.netbanking-section .inputBox,
+.upi-section .inputBox {
+    text-align: left;
+    margin-top: 15px;
+}
+
+.netbanking-section .inputBox span,
+.upi-section .inputBox span {
+    display: block;
+    color: #a78bfa;
+    font-size: 0.78rem;
+    padding-bottom: 6px;
+    text-transform: uppercase;
+    letter-spacing: 1px;
+}
+
+.netbanking-section .inputBox input,
+.upi-section .inputBox input {
+    width: 100%;
+    padding: 12px 15px;
+    border-radius: 10px;
+    border: 1px solid rgba(167,139,250,0.3) !important;
+    background: rgba(255,255,255,0.06);
+    font-size: 0.9rem;
+    color: #e0e0e0;
+    text-transform: none;
+    transition: all 0.3s ease;
+}
+
+.netbanking-section .inputBox input:focus,
+.upi-section .inputBox input:focus {
+    border-color: rgba(167,139,250,0.7) !important;
+    background: rgba(255,255,255,0.1);
+    box-shadow: 0 0 15px rgba(142,68,173,0.2);
+}
+
+/* ===== COD ===== */
+.cod-icon { font-size: 4.5rem; margin-bottom: 10px; animation: bounce 2s ease-in-out infinite; }
+
+@keyframes bounce {
+    0%,100% { transform: translateY(0); }
+    50%      { transform: translateY(-10px); }
+}
+
+.cod-info {
+    list-style: none;
+    text-align: left;
+    display: inline-block;
+    margin: 15px 0 20px 0;
+    background: rgba(255,255,255,0.04);
+    border: 1px solid rgba(167,139,250,0.2);
+    border-radius: 12px;
+    padding: 15px 20px;
+    width: 100%;
+}
+
+.cod-info li {
+    padding: 8px 0;
+    font-size: 0.9rem;
+    color: #c4b5fd;
+    text-transform: none;
+    font-weight: 500;
+    border-bottom: 1px solid rgba(167,139,250,0.1);
+}
+
+.cod-info li:last-child { border-bottom: none; }
+
+/* ===== QR CODE ===== */
+.qr-box {
+    display: flex;
+    justify-content: center;
+    margin: 20px 0;
+}
+
+.qr-img {
+    width: 200px; height: 200px;
+    border-radius: 16px;
+    border: 4px solid rgba(167,139,250,0.6) !important;
+    box-shadow: 0 0 30px rgba(142,68,173,0.5), 0 8px 25px rgba(0,0,0,0.4);
+    padding: 8px;
+    background: #fff;
+    animation: qrGlow 3s ease-in-out infinite alternate;
+}
+
+@keyframes qrGlow {
+    from { box-shadow: 0 0 20px rgba(142,68,173,0.4); }
+    to   { box-shadow: 0 0 50px rgba(142,68,173,0.8), 0 0 80px rgba(41,128,185,0.3); }
+}
+
+.qr-details {
+    background: rgba(255,255,255,0.05);
+    border: 1px solid rgba(167,139,250,0.2);
+    border-radius: 12px;
+    padding: 16px 20px;
+    margin: 15px 0 20px 0;
+    text-align: left;
+    width: 100%;
+}
+
+.qr-details p {
+    color: #c4b5fd;
+    font-size: 0.88rem;
+    margin-bottom: 6px;
+    text-transform: none;
+}
+
+.qr-details strong { color: #a78bfa; }
+
+/* ===== ALL SUBMIT BUTTONS ===== */
+.upi-section .submit-btn,
+.netbanking-section .submit-btn,
+.cod-section .submit-btn,
+.qr-section .submit-btn {
+    width: 100%;
+    background: linear-gradient(120deg, #2980b9, #8e44ad);
+    margin-top: 20px;
+    padding: 14px;
+    font-size: 1rem;
+    color: #fff;
+    border-radius: 12px;
+    cursor: pointer;
+    border: none !important;
+    transition: all 0.3s ease;
+    text-transform: none;
+    font-weight: 700;
+    letter-spacing: 0.5px;
+    box-shadow: 0 8px 25px rgba(142,68,173,0.4);
+}
+
+.upi-section .submit-btn:hover,
+.netbanking-section .submit-btn:hover,
+.cod-section .submit-btn:hover,
+.qr-section .submit-btn:hover {
+    transform: translateY(-3px);
+    box-shadow: 0 12px 35px rgba(142,68,173,0.6);
+    letter-spacing: 1.5px;
+}
+
+a:link { color: white; }

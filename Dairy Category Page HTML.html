@@ -1,0 +1,147 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Dairy - Chitkara Grocery Store</title>
+    <link rel="stylesheet" href="Category Shared CSS.css">
+    <style>
+        .cat-hero .cat-tag { background:rgba(87,178,255,0.12); border:1px solid rgba(87,178,255,0.35); color:#57b2ff; }
+        .cat-hero h1 { background:linear-gradient(90deg,#57b2ff,#ffffff,#bae0ff,#57b2ff); }
+        .product-card:hover { border-color:rgba(87,178,255,0.5); box-shadow:0 20px 50px rgba(87,178,255,0.2); }
+        .disc-price { background:linear-gradient(90deg,#57b2ff,#bae0ff); -webkit-background-clip:text; -webkit-text-fill-color:transparent; background-clip:text; }
+        .save-tag { background:rgba(87,178,255,0.15); color:#57b2ff; border:1px solid rgba(87,178,255,0.3); }
+        .add-cart-btn { background:linear-gradient(120deg,#29b6f6,#0288d1); color:#fff; box-shadow:0 6px 20px rgba(41,182,246,0.4); }
+        .add-cart-btn:hover { background:linear-gradient(120deg,#4fc3f7,#0277bd); box-shadow:0 10px 30px rgba(41,182,246,0.6); }
+    </style>
+    <script src="Auth JS.js"></script>
+</head>
+<body>
+    <nav class="cat-nav">
+        <a href="Home Page HTML.html" class="logo"><span>C</span>GS</a>
+        <span style="color:#57b2ff;font-weight:700;font-size:1rem;">🥛 Dairy</span>
+        <a href="Home Page HTML.html" class="home-btn">🏠 Home</a>
+    </nav>
+    <div class="cat-hero">
+        <span class="cat-tag">🥛 DAILY DAIRY</span>
+        <h1 style="-webkit-text-fill-color:#57b2ff;background:none;font-size:2.5rem;font-weight:900;letter-spacing:3px;margin-bottom:10px;">Dairy Essentials</h1>
+        <p>Fresh milk, curd, cheese, and daily essentials for a healthier home.</p>
+    </div>
+    <div class="products-grid">
+
+        <div class="product-card">
+            <span class="discount-badge">10% OFF</span>
+            <button class="wish-btn" onclick="toggleWishlist('Amul Taaza Milk',52,'images/grocery_category_images/Amul Taza Mlik.jpg',this)">❤️</button>
+            <img src="images/grocery_category_images/Amul Taza Mlik.jpg" alt="Amul Taaza Milk" onerror="this.src='images/images/apple.png'">
+            <div class="card-body">
+                <h3>Amul Taaza Milk</h3><p class="qty">1 L</p>
+                <div class="price-wrap"><span class="orig-price">Rs. 58</span><span class="disc-price">Rs. 52</span><span class="save-tag">Save Rs.6</span></div>
+                <button class="add-cart-btn" onclick="addToCart('Amul Taaza Milk',52,'images/grocery_category_images/Amul Taza Mlik.jpg',58)">🛒 Add to Cart</button>
+            </div>
+        </div>
+
+        <div class="product-card">
+            <span class="discount-badge">9% OFF</span>
+            <button class="wish-btn" onclick="toggleWishlist('Amul Gold Milk',66,'images/grocery_category_images/Amul Gold Mlik.jpeg',this)">❤️</button>
+            <img src="images/grocery_category_images/Amul Gold Mlik.jpeg" alt="Amul Gold Milk" onerror="this.src='images/images/apple.png'">
+            <div class="card-body">
+                <h3>Amul Gold Milk</h3><p class="qty">1 L</p>
+                <div class="price-wrap"><span class="orig-price">Rs. 72</span><span class="disc-price">Rs. 66</span><span class="save-tag">Save Rs.6</span></div>
+                <button class="add-cart-btn" onclick="addToCart('Amul Gold Milk',66,'images/grocery_category_images/Amul Gold Mlik.jpeg',72)">🛒 Add to Cart</button>
+            </div>
+        </div>
+
+        <div class="product-card">
+            <span class="discount-badge">12% OFF</span>
+            <button class="wish-btn" onclick="toggleWishlist('Amul Butter',92,'images/grocery_category_images/Amul Butter.jpeg',this)">❤️</button>
+            <img src="images/grocery_category_images/Amul Butter.jpeg" alt="Amul Butter" onerror="this.src='images/images/apple.png'">
+            <div class="card-body">
+                <h3>Amul Butter</h3><p class="qty">500 g</p>
+                <div class="price-wrap"><span class="orig-price">Rs. 105</span><span class="disc-price">Rs. 92</span><span class="save-tag">Save Rs.13</span></div>
+                <button class="add-cart-btn" onclick="addToCart('Amul Butter',92,'images/grocery_category_images/Amul Butter.jpeg',105)">🛒 Add to Cart</button>
+            </div>
+        </div>
+
+        <div class="product-card">
+            <span class="discount-badge">10% OFF</span>
+            <button class="wish-btn" onclick="toggleWishlist('Amul Cheese Slices',72,'images/grocery_category_images/Amul Chesse Slices.jpeg',this)">❤️</button>
+            <img src="images/grocery_category_images/Amul Chesse Slices.jpeg" alt="Amul Cheese Slices" onerror="this.src='images/images/apple.png'">
+            <div class="card-body">
+                <h3>Amul Cheese Slices</h3><p class="qty">200 g</p>
+                <div class="price-wrap"><span class="orig-price">Rs. 80</span><span class="disc-price">Rs. 72</span><span class="save-tag">Save Rs.8</span></div>
+                <button class="add-cart-btn" onclick="addToCart('Amul Cheese Slices',72,'images/grocery_category_images/Amul Chesse Slices.jpeg',80)">🛒 Add to Cart</button>
+            </div>
+        </div>
+
+        <div class="product-card">
+            <span class="discount-badge">11% OFF</span>
+            <button class="wish-btn" onclick="toggleWishlist('Amul Malai Paneer',88,'images/grocery_category_images/Amul Malai Panner.jpeg',this)">❤️</button>
+            <img src="images/grocery_category_images/Amul Malai Panner.jpeg" alt="Amul Malai Paneer" onerror="this.src='images/images/apple.png'">
+            <div class="card-body">
+                <h3>Amul Malai Paneer</h3><p class="qty">200 g</p>
+                <div class="price-wrap"><span class="orig-price">Rs. 99</span><span class="disc-price">Rs. 88</span><span class="save-tag">Save Rs.11</span></div>
+                <button class="add-cart-btn" onclick="addToCart('Amul Malai Paneer',88,'images/grocery_category_images/Amul Malai Panner.jpeg',99)">🛒 Add to Cart</button>
+            </div>
+        </div>
+
+        <div class="product-card">
+            <span class="discount-badge">15% OFF</span>
+            <button class="wish-btn" onclick="toggleWishlist('Amul Masti Dahi',42,'images/grocery_category_images/Amul Masti Dahi.jpeg',this)">❤️</button>
+            <img src="images/grocery_category_images/Amul Masti Dahi.jpeg" alt="Amul Masti Dahi" onerror="this.src='images/images/apple.png'">
+            <div class="card-body">
+                <h3>Amul Masti Dahi</h3><p class="qty">400 g</p>
+                <div class="price-wrap"><span class="orig-price">Rs. 50</span><span class="disc-price">Rs. 42</span><span class="save-tag">Save Rs.8</span></div>
+                <button class="add-cart-btn" onclick="addToCart('Amul Masti Dahi',42,'images/grocery_category_images/Amul Masti Dahi.jpeg',50)">🛒 Add to Cart</button>
+            </div>
+        </div>
+
+        <div class="product-card">
+            <span class="discount-badge">10% OFF</span>
+            <button class="wish-btn" onclick="toggleWishlist('Amul Lassi',28,'images/grocery_category_images/Amul Lassi.jpeg',this)">❤️</button>
+            <img src="images/grocery_category_images/Amul Lassi.jpeg" alt="Amul Lassi" onerror="this.src='images/images/apple.png'">
+            <div class="card-body">
+                <h3>Amul Lassi</h3><p class="qty">200 ml</p>
+                <div class="price-wrap"><span class="orig-price">Rs. 31</span><span class="disc-price">Rs. 28</span><span class="save-tag">Save Rs.3</span></div>
+                <button class="add-cart-btn" onclick="addToCart('Amul Lassi',28,'images/grocery_category_images/Amul Lassi.jpeg',31)">🛒 Add to Cart</button>
+            </div>
+        </div>
+
+        <div class="product-card">
+            <span class="discount-badge">12% OFF</span>
+            <button class="wish-btn" onclick="toggleWishlist('Amul Fresh Cream',74,'images/grocery_category_images/Amul Fresh Cream.jpeg',this)">❤️</button>
+            <img src="images/grocery_category_images/Amul Fresh Cream.jpeg" alt="Amul Fresh Cream" onerror="this.src='images/images/apple.png'">
+            <div class="card-body">
+                <h3>Amul Fresh Cream</h3><p class="qty">250 ml</p>
+                <div class="price-wrap"><span class="orig-price">Rs. 84</span><span class="disc-price">Rs. 74</span><span class="save-tag">Save Rs.10</span></div>
+                <button class="add-cart-btn" onclick="addToCart('Amul Fresh Cream',74,'images/grocery_category_images/Amul Fresh Cream.jpeg',84)">🛒 Add to Cart</button>
+            </div>
+        </div>
+
+        <div class="product-card">
+            <span class="discount-badge">8% OFF</span>
+            <button class="wish-btn" onclick="toggleWishlist('Amul Buttermilk',28,'images/grocery_category_images/Amul Buttermlik.jpeg',this)">❤️</button>
+            <img src="images/grocery_category_images/Amul Buttermlik.jpeg" alt="Amul Buttermilk" onerror="this.src='images/images/apple.png'">
+            <div class="card-body">
+                <h3>Amul Buttermilk</h3><p class="qty">1 L</p>
+                <div class="price-wrap"><span class="orig-price">Rs. 30</span><span class="disc-price">Rs. 28</span><span class="save-tag">Save Rs.2</span></div>
+                <button class="add-cart-btn" onclick="addToCart('Amul Buttermilk',28,'images/grocery_category_images/Amul Buttermlik.jpeg',30)">🛒 Add to Cart</button>
+            </div>
+        </div>
+
+        <div class="product-card">
+            <span class="discount-badge">9% OFF</span>
+            <button class="wish-btn" onclick="toggleWishlist('Amul Cheese Block',94,'images/grocery_category_images/Amul Cheese Block.jpeg',this)">❤️</button>
+            <img src="images/grocery_category_images/Amul Cheese Block.jpeg" alt="Amul Cheese Block" onerror="this.src='images/images/apple.png'">
+            <div class="card-body">
+                <h3>Amul Cheese Block</h3><p class="qty">200 g</p>
+                <div class="price-wrap"><span class="orig-price">Rs. 103</span><span class="disc-price">Rs. 94</span><span class="save-tag">Save Rs.9</span></div>
+                <button class="add-cart-btn" onclick="addToCart('Amul Cheese Block',94,'images/grocery_category_images/Amul Cheese Block.jpeg',103)">🛒 Add to Cart</button>
+            </div>
+        </div>
+
+    </div>
+
+    <script src="Cart JS.js"></script>
+    <script src="Wishlist JS.js"></script>
+</body>
+</html>

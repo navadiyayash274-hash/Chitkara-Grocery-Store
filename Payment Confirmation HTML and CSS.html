@@ -1,0 +1,526 @@
+﻿<!DOCTYPE html>
+<html>
+<head>
+    <title>GST Invoice - Chitkara Grocery Store</title>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <style>
+        @import url('https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;700;800&display=swap');
+
+        * { margin: 0; padding: 0; box-sizing: border-box; font-family: 'Poppins', sans-serif; }
+
+        body {
+            background: linear-gradient(135deg, #0b1a0d 0%, #0d1f3c 50%, #1a0b2e 100%);
+            min-height: 100vh;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+            padding: 30px 15px;
+        }
+
+        /* Success banner */
+        .success-banner {
+            background: linear-gradient(120deg, #2980b9, #8e44ad);
+            color: white;
+            text-align: center;
+            padding: 20px 40px;
+            border-radius: 16px;
+            margin-bottom: 25px;
+            box-shadow: 0 8px 30px rgba(142,68,173,0.4);
+            width: 100%;
+            max-width: 750px;
+        }
+
+        .success-banner h1 { font-size: 2rem; font-weight: 800; letter-spacing: 2px; }
+        .success-banner p  { font-size: 1rem; opacity: 0.9; margin-top: 5px; }
+
+        /* Invoice box */
+        .invoice {
+            background: #ffffff;
+            width: 100%;
+            max-width: 750px;
+            border-radius: 16px;
+            overflow: hidden;
+            box-shadow: 0 20px 60px rgba(0,0,0,0.5);
+        }
+
+        /* Invoice header */
+        .invoice-header {
+            background: linear-gradient(120deg, #2980b9, #8e44ad);
+            padding: 25px 30px;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            color: white;
+        }
+
+        .invoice-header .company h2 { font-size: 1.6rem; font-weight: 800; letter-spacing: 1px; }
+        .invoice-header .company p  { font-size: 0.8rem; opacity: 0.85; margin-top: 3px; }
+
+        .invoice-header .invoice-title { text-align: right; }
+        .invoice-header .invoice-title h3 { font-size: 1.3rem; font-weight: 700; letter-spacing: 2px; }
+        .invoice-header .invoice-title p  { font-size: 0.8rem; opacity: 0.85; margin-top: 4px; }
+
+        /* GST badge */
+        .gst-badge {
+            background: rgba(255,255,255,0.2);
+            border: 1px solid rgba(255,255,255,0.4);
+            border-radius: 6px;
+            padding: 4px 12px;
+            font-size: 0.75rem;
+            font-weight: 600;
+            margin-top: 6px;
+            display: inline-block;
+        }
+
+        /* Invoice body */
+        .invoice-body { padding: 25px 30px; }
+
+        /* Info row */
+        .info-grid {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 20px;
+            margin-bottom: 25px;
+            padding-bottom: 20px;
+            border-bottom: 2px dashed #eee;
+        }
+
+        .info-block h4 {
+            font-size: 0.75rem;
+            color: #999;
+            text-transform: uppercase;
+            letter-spacing: 1px;
+            margin-bottom: 6px;
+        }
+
+        .info-block p {
+            font-size: 0.9rem;
+            color: #333;
+            font-weight: 500;
+            line-height: 1.6;
+        }
+
+        .info-block .highlight {
+            font-size: 1rem;
+            font-weight: 700;
+            color: #8e44ad;
+        }
+
+        /* Items table */
+        .items-table {
+            width: 100%;
+            border-collapse: collapse;
+            margin-bottom: 20px;
+        }
+
+        .items-table thead tr {
+            background: linear-gradient(120deg, #2980b9, #8e44ad);
+            color: white;
+        }
+
+        .items-table thead th {
+            padding: 10px 14px;
+            text-align: left;
+            font-size: 0.8rem;
+            font-weight: 600;
+            text-transform: uppercase;
+            letter-spacing: 0.5px;
+        }
+
+        .items-table tbody tr { border-bottom: 1px solid #f0f0f0; transition: background 0.2s; }
+        .items-table tbody tr:hover { background: #faf5ff; }
+
+        .items-table tbody td {
+            padding: 10px 14px;
+            font-size: 0.88rem;
+            color: #444;
+        }
+
+        .items-table tbody td:last-child { font-weight: 600; color: #333; }
+
+        /* Totals section */
+        .totals {
+            margin-left: auto;
+            width: 300px;
+            border-top: 2px solid #eee;
+            padding-top: 15px;
+        }
+
+        .totals .total-row {
+            display: flex;
+            justify-content: space-between;
+            padding: 6px 0;
+            font-size: 0.88rem;
+            color: #555;
+        }
+
+        .totals .total-row.gst { color: #e67e22; font-weight: 500; }
+
+        .totals .total-row.grand {
+            border-top: 2px solid #8e44ad;
+            margin-top: 8px;
+            padding-top: 10px;
+            font-size: 1.1rem;
+            font-weight: 800;
+            color: #8e44ad;
+        }
+
+        /* Payment method badge */
+        .payment-badge {
+            display: inline-block;
+            background: linear-gradient(120deg, #2980b9, #8e44ad);
+            color: white;
+            padding: 4px 14px;
+            border-radius: 20px;
+            font-size: 0.8rem;
+            font-weight: 600;
+            margin-top: 4px;
+        }
+
+        /* Footer */
+        .invoice-footer {
+            background: #f9f9f9;
+            border-top: 2px dashed #eee;
+            padding: 18px 30px;
+            text-align: center;
+        }
+
+        .invoice-footer p { font-size: 0.8rem; color: #888; line-height: 1.8; }
+        .invoice-footer strong { color: #8e44ad; }
+
+        /* Buttons */
+        .btn-row {
+            display: flex;
+            gap: 15px;
+            justify-content: center;
+            margin-top: 25px;
+            flex-wrap: wrap;
+        }
+
+        .btn {
+            padding: 12px 30px;
+            border-radius: 30px;
+            font-size: 0.95rem;
+            font-weight: 600;
+            cursor: pointer;
+            border: none;
+            transition: all 0.3s ease;
+            text-decoration: none;
+            display: inline-block;
+        }
+
+        .btn-print {
+            background: linear-gradient(120deg, #2980b9, #8e44ad);
+            color: white;
+            box-shadow: 0 6px 20px rgba(142,68,173,0.4);
+        }
+
+        .btn-home {
+            background: white;
+            color: #8e44ad;
+            border: 2px solid #8e44ad;
+        }
+
+        .btn:hover { transform: translateY(-3px); box-shadow: 0 10px 25px rgba(0,0,0,0.2); }
+
+        /* Print styles */
+        @media print {
+            body { background: white; padding: 0; }
+            .success-banner, .btn-row { display: none; }
+            .invoice { box-shadow: none; border: 1px solid #ddd; }
+        }
+    </style>
+<script src="Auth JS.js"></script>
+</head>
+<body>
+
+    <!-- Success Banner -->
+    <div class="success-banner">
+        <h1>✅ Payment Successful!</h1>
+        <p id="customer-order-message">Your payment was received. Your order is waiting for admin approval.</p>
+        <p id="order-save-message" role="status" aria-live="polite" style="margin-top:8px;font-size:.9rem;"></p>
+        <button id="check-order-status" type="button" style="margin-top:12px;padding:9px 18px;border:1px solid rgba(255,255,255,.7);border-radius:20px;background:transparent;color:white;cursor:pointer;">Check order status</button>
+    </div>
+
+    <!-- GST Invoice -->
+    <div class="invoice">
+
+        <!-- Header -->
+        <div class="invoice-header">
+            <div class="company">
+                <h2>CGS</h2>
+                <p>Chitkara Grocery Store</p>
+                <p>Surat, Gujarat - 395001</p>
+                <div class="gst-badge">GSTIN: 24AAACH1234C1Z5</div>
+            </div>
+            <div class="invoice-title">
+                <h3>TAX INVOICE</h3>
+                <p id="invoice-no">Invoice No: CGS-2026-0001</p>
+                <p id="invoice-date">Date: --</p>
+                <div class="gst-badge" id="payment-method-badge">Payment: Card</div>
+            </div>
+        </div>
+
+        <!-- Body -->
+        <div class="invoice-body">
+
+            <!-- Info Grid -->
+            <div class="info-grid">
+                <div class="info-block">
+                    <h4>Billed To</h4>
+                    <p id="customer-name" class="highlight">Customer Name</p>
+                    <p id="customer-address">Address</p>
+                    <p id="customer-phone">Phone</p>
+                    <p id="customer-email">Email</p>
+                </div>
+                <div class="info-block">
+                    <h4>Payment Information</h4>
+                    <p>Method: <strong id="pay-method">--</strong></p>
+                    <p>Details: <strong id="pay-detail">--</strong></p>
+                    <p>Time: <strong id="pay-time">--</strong></p>
+                    <p>Status: <span class="payment-badge">✅ Paid</span></p>
+                </div>
+            </div>
+
+            <!-- Order Details Row -->
+            <div class="info-grid" style="margin-top:-10px;">
+                <div class="info-block">
+                    <h4>Order Details</h4>
+                    <p>Order ID: <strong id="order-id">CGS-ORD-00001</strong></p>
+                    <p>Delivery Date: <strong id="delivery-date">--</strong></p>
+                    <p>Time Slot: <strong id="delivery-time">--</strong></p>
+                    <p>Status: <span id="order-status-badge" class="payment-badge">⏳ Pending admin approval</span></p>
+                </div>
+            </div>
+
+            <!-- Items Table -->
+            <table class="items-table">
+                <thead>
+                    <tr>
+                        <th>#</th>
+                        <th>Item</th>
+                        <th>Qty</th>
+                        <th>Unit Price</th>
+                        <th>GST (5%)</th>
+                        <th>Total</th>
+                    </tr>
+                </thead>
+                <tbody id="invoice-items">
+                    <!-- Filled by JS -->
+                </tbody>
+            </table>
+
+            <!-- Totals -->
+            <div class="totals">
+                <div class="total-row"><span>Subtotal</span><span id="subtotal">Rs. 0</span></div>
+                <div class="total-row gst"><span>GST (5%)</span><span id="gst-amount">Rs. 0</span></div>
+                <div class="total-row"><span>Delivery Charge</span><span>FREE</span></div>
+                <div class="total-row grand"><span>Grand Total</span><span id="grand-total">Rs. 0</span></div>
+            </div>
+
+        </div>
+
+        <!-- Footer -->
+        <div class="invoice-footer">
+            <p>Thank you for shopping at <strong>Chitkara Grocery Store</strong>!</p>
+            <p>For support: <strong>chitkaragrocery@gmail.com</strong> | <strong>+91 123 456 7890</strong></p>
+            <p>This is a computer-generated invoice. No signature required.</p>
+        </div>
+
+    </div>
+
+    <!-- Buttons -->
+    <div class="btn-row">
+        <button class="btn btn-print" onclick="window.print()">🖨️ Print Invoice</button>
+        <a href="Home Page HTML.html" class="btn btn-home">🏠 Back to Home</a>
+    </div>
+
+    <script>
+        // Generate random invoice & order IDs
+        const invNo  = 'CGS-2026-' + Math.floor(1000 + Math.random() * 9000);
+        const ordNo  = 'CGS-ORD-'  + Math.floor(10000 + Math.random() * 90000);
+        const orderId = ordNo; // Fix: define orderId variable
+        const today  = new Date();
+        const dateStr = today.toLocaleDateString('en-IN', { day:'2-digit', month:'short', year:'numeric' });
+
+        document.getElementById('invoice-no').textContent   = 'Invoice No: ' + invNo;
+        document.getElementById('invoice-date').textContent = 'Date: ' + dateStr;
+        document.getElementById('order-id').textContent     = ordNo;
+
+        // Load checkout details from localStorage if available
+        const name    = localStorage.getItem('cgs_name')    || 'Customer';
+        const address = localStorage.getItem('cgs_address') || 'Surat, Gujarat';
+        const phone   = localStorage.getItem('cgs_phone')   || '--';
+        const email   = localStorage.getItem('cgs_email')   || '--';
+        const delDate = localStorage.getItem('cgs_date')    || '--';
+        const delTime   = localStorage.getItem('cgs_time')           || '--';
+        const payMethod = localStorage.getItem('cgs_payment')        || 'Card';
+        const payDetail = localStorage.getItem('cgs_payment_detail') || '--';
+        const payTime   = localStorage.getItem('cgs_payment_time')   || '--';
+
+        document.getElementById('customer-name').textContent    = name;
+        document.getElementById('customer-address').textContent = address;
+        document.getElementById('customer-phone').textContent   = 'Ph: ' + phone;
+        document.getElementById('customer-email').textContent   = email;
+        document.getElementById('delivery-date').textContent    = delDate;
+        document.getElementById('delivery-time').textContent    = delTime;
+        document.getElementById('pay-method').textContent       = payMethod;
+        document.getElementById('pay-detail').textContent       = payDetail;
+        document.getElementById('pay-time').textContent         = payTime;
+        document.getElementById('payment-method-badge').textContent = '💳 ' + payMethod;
+
+        // Load cart items
+        const cart = JSON.parse(localStorage.getItem('cgs_cart')) || [
+            { name: 'Apple',  price: 100, qty: 1 },
+            { name: 'Onion',  price: 50,  qty: 2 },
+            { name: 'Tomato', price: 80,  qty: 1 }
+        ];
+
+        let subtotal = 0;
+        const tbody = document.getElementById('invoice-items');
+
+        cart.forEach((item, i) => {
+            const itemTotal = item.price * item.qty;
+            const gstAmt    = Math.round(itemTotal * 0.05);
+            subtotal += itemTotal;
+
+            const tr = document.createElement('tr');
+            tr.innerHTML = `
+                <td>${i + 1}</td>
+                <td>${item.name}</td>
+                <td>${item.qty}</td>
+                <td>Rs. ${item.price}</td>
+                <td>Rs. ${gstAmt}</td>
+                <td>Rs. ${itemTotal + gstAmt}</td>
+            `;
+            tbody.appendChild(tr);
+        });
+
+        const gstTotal   = Math.round(subtotal * 0.05);
+        const grandTotal = subtotal + gstTotal;
+
+        document.getElementById('subtotal').textContent   = 'Rs. ' + subtotal;
+        document.getElementById('gst-amount').textContent = 'Rs. ' + gstTotal;
+        document.getElementById('grand-total').textContent = 'Rs. ' + grandTotal;
+
+        // Save to localStorage for My Orders page
+        const myOrders = JSON.parse(localStorage.getItem('cgs_my_orders') || '[]');
+        myOrders.push({
+            orderId:    ordNo,
+            invoiceNo:  invNo,
+            date:       dateStr,
+            grandTotal: grandTotal,
+            items:      cart,
+            payment:    { method: payMethod, detail: payDetail, time: payTime },
+            delivery:   { date: delDate, timeSlot: delTime },
+            customer:   { name, email, phone, address }
+        });
+        localStorage.setItem('cgs_my_orders', JSON.stringify(myOrders));
+
+        // ===== SAVE ORDER TO MONGODB =====
+        const orderData = {
+            orderId:   ordNo,
+            invoiceNo: invNo,
+            customer: {
+                name:    name,
+                email:   email !== '--' ? email : (localStorage.getItem('cgs_user_contact') || '--'),
+                phone:   phone !== '--' ? phone : '--',
+                address: address,
+                pincode: localStorage.getItem('cgs_pincode') || '--'
+            },
+            delivery: {
+                date:     delDate,
+                timeSlot: delTime
+            },
+            items: cart,
+            subtotal:   subtotal,
+            gst:        gstTotal,
+            grandTotal: grandTotal,
+            payment: {
+                method: payMethod,
+                detail: payDetail,
+                time:   payTime
+            },
+            status: 'Pending'
+        };
+
+        // ── Guard: must be served via http://localhost:5000, not file:// ──────
+        if (window.location.protocol === 'file:') {
+            document.body.innerHTML = `
+                <div style="min-height:100vh;display:flex;align-items:center;justify-content:center;background:#0b1a0d;font-family:Poppins,sans-serif;padding:20px;">
+                    <div style="background:rgba(255,80,80,0.1);border:2px solid rgba(255,80,80,0.4);border-radius:20px;padding:40px;max-width:500px;text-align:center;">
+                        <div style="font-size:3rem;margin-bottom:16px;">⚠️</div>
+                        <h2 style="color:#ff6b6b;font-size:1.4rem;margin-bottom:12px;">Server Not Running</h2>
+                        <p style="color:#e0e0e0;line-height:1.6;margin-bottom:20px;">
+                            You are opening this page as a local file.<br>
+                            Orders can only be saved when the server is running.<br><br>
+                            <strong style="color:#4eb060;">Start the server first:</strong>
+                        </p>
+                        <code style="display:block;background:rgba(0,0,0,0.4);color:#4eb060;padding:14px;border-radius:10px;font-size:0.85rem;margin-bottom:20px;">
+                            cd "e:\\Chitkara-Grocery-Store-main\\Chitkara-Grocery-Store-main"<br>
+                            node server.js
+                        </code>
+                        <p style="color:#9ca3af;font-size:0.85rem;">Then open: <a href="http://localhost:5000/Home Page HTML.html" style="color:#4eb060;">http://localhost:5000</a></p>
+                    </div>
+                </div>`;
+            throw new Error('Must be served via http://localhost:5000');
+        }
+
+        // Save to MongoDB
+        const orderSaveMessage = document.getElementById('order-save-message');
+        orderSaveMessage.textContent = 'Saving your order…';
+        fetch('/api/orders', {
+            method:  'POST',
+            headers: { 'Content-Type': 'application/json' },
+            body:    JSON.stringify(orderData)
+        })
+        .then(async response => {
+            const result = await response.json();
+            if (!response.ok) throw new Error(result.message || result.error || 'Order could not be saved');
+            return result;
+        })
+        .then(data => {
+            console.log('✅ Order saved to MongoDB:', data.order?.orderId);
+            localStorage.removeItem('cgs_cart');
+            localStorage.setItem('cgs_last_order_id', orderId);
+            orderSaveMessage.textContent = 'Order saved successfully and sent to the store.';
+            showCustomerOrderStatus(data.order || orderData);
+        })
+        .catch(err => {
+            console.error('Could not save order:', err);
+            orderSaveMessage.textContent = 'Order was not saved: ' + err.message + '. Keep this page open and refresh after the server or database is available.';
+        });
+
+        async function checkCustomerOrderStatus() {
+            const contact = email !== '--' ? email : phone;
+            if (!contact) return;
+            const response = await fetch('/api/orders/customer/' + encodeURIComponent(contact));
+            if (!response.ok) return;
+            showCustomerOrderStatus(await response.json());
+        }
+
+        function showCustomerOrderStatus(order) {
+            const message = document.getElementById('customer-order-message');
+            const badge = document.getElementById('order-status-badge');
+            if (!message || !badge) return;
+            if (order.status === 'Rejected') {
+                message.textContent = 'Sorry, your order is cancelled and your payment will be refunded within 24 hours.';
+                badge.textContent = '❌ Rejected';
+                badge.style.background = '#b32727';
+            } else if (order.status === 'Accepted') {
+                message.textContent = 'Your order has been accepted by the store and will be prepared for delivery.';
+                badge.textContent = '✅ Accepted';
+            } else {
+                message.textContent = 'Your payment was received. Your order is waiting for admin approval.';
+                badge.textContent = '⏳ Pending admin approval';
+            }
+        }
+
+        document.getElementById('check-order-status').addEventListener('click', checkCustomerOrderStatus);
+    setInterval(checkCustomerOrderStatus, 10000);
+    </script>
+
+</body>
+</html>

@@ -1,0 +1,781 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Staples & Grains - Chitkara Grocery Store</title>
+    <link rel="stylesheet" href="Category Shared CSS.css">
+    <style>
+        .cat-hero .cat-tag { background:rgba(255,193,7,0.12); border:1px solid rgba(255,193,7,0.35); color:#ffb300; }
+        .cat-hero h1 { background:linear-gradient(90deg,#ffb300,#ffffff,#ffe082,#ffb300); }
+        .product-card:hover { border-color:rgba(255,193,7,0.5); box-shadow:0 20px 50px rgba(255,193,7,0.2); }
+        .disc-price { background:linear-gradient(90deg,#ffb300,#ffe082); -webkit-background-clip:text; -webkit-text-fill-color:transparent; background-clip:text; }
+        .save-tag { background:rgba(255,193,7,0.15); color:#ffb300; border:1px solid rgba(255,193,7,0.3); }
+        .add-cart-btn { background:linear-gradient(120deg,#f9a825,#f57f17); color:#fff; box-shadow:0 6px 20px rgba(249,168,37,0.4); }
+        .add-cart-btn:hover { background:linear-gradient(120deg,#ffb74d,#ef6c00); box-shadow:0 10px 30px rgba(249,168,37,0.6); }
+        .filter-bar { display:flex; flex-wrap:wrap; align-items:center; justify-content:space-between; gap:12px; margin:26px auto 18px; max-width:1200px; padding:0 18px; }
+        .search-wrap { flex:1; min-width:220px; display:flex; align-items:center; gap:10px; background:rgba(255,193,7,0.08); border:1px solid rgba(255,193,7,0.30); border-radius:18px; padding:12px 14px; }
+        .search-wrap input { flex:1; border:none; outline:none; background:transparent; color:#243b3d; font-size:0.95rem; }
+        .filter-tabs { display:flex; flex-wrap:wrap; gap:8px; }
+        .filter-btn { background:#fff7dc; border:1px solid rgba(255,193,7,0.25); color:#8c6a00; border-radius:999px; padding:8px 14px; font-weight:700; cursor:pointer; }
+        .filter-btn.active { background:linear-gradient(120deg,#f9a825,#f57f17); color:#fff; border-color:transparent; }
+        .details-btn { background:#fff; border:1px solid rgba(255,193,7,0.4); color:#7a5a00; border-radius:12px; padding:8px 10px; font-weight:700; cursor:pointer; }
+        .card-actions { display:flex; gap:8px; margin-top:12px; }
+        .details-modal { position:fixed; inset:0; background:rgba(13,17,17,0.55); display:none; align-items:center; justify-content:center; z-index:9999; padding:18px; }
+        .details-modal.open { display:flex; }
+        .details-panel { background:#fff; width:min(520px,100%); border-radius:18px; overflow:hidden; box-shadow:0 25px 60px rgba(0,0,0,0.25); }
+        .details-header { background:linear-gradient(120deg,#f9a825,#f57f17); color:#fff; padding:18px 22px; font-weight:800; font-size:1.1rem; }
+        .details-body { padding:20px; }
+        .details-grid { display:grid; grid-template-columns:130px 1fr; gap:16px; align-items:center; }
+        .details-body img { width:120px; height:120px; object-fit:cover; border-radius:16px; border:1px solid rgba(255,193,7,0.28); }
+        .details-meta { display:flex; flex-wrap:wrap; gap:8px; margin:12px 0; }
+        .details-meta span { background:#fff7dc; color:#7a5a00; border:1px solid rgba(255,193,7,0.2); border-radius:999px; padding:6px 10px; font-size:0.75rem; font-weight:700; }
+        .details-close { margin-top:16px; background:linear-gradient(120deg,#f9a825,#f57f17); color:#fff; border:none; border-radius:12px; padding:10px 18px; font-weight:700; cursor:pointer; }
+    </style>
+    <script src="Auth JS.js"></script>
+</head>
+<body>
+    <nav class="cat-nav">
+        <a href="Home Page HTML.html" class="logo"><span>C</span>GS</a>
+        <span style="color:#ffb300;font-weight:700;font-size:1rem;">🌾 Staples & Grains</span>
+        <a href="Home Page HTML.html" class="home-btn">🏠 Home</a>
+    </nav>
+    <div class="cat-hero">
+        <span class="cat-tag">🌾 ESSENTIALS</span>
+        <h1 style="-webkit-text-fill-color:#ffb300;background:none;font-size:2.5rem;font-weight:900;letter-spacing:3px;margin-bottom:10px;">Staples & Grains</h1>
+        <p>High-quality rice, flour, pulses, and kitchen staples for everyday cooking.</p>
+    </div>
+    <div class="filter-bar">
+        <div class="search-wrap">
+            <span>🔎</span>
+            <input id="staples-search" type="text" placeholder="Search staples, rice, dal, atta..." />
+        </div>
+        <div class="filter-tabs">
+            <button class="filter-btn active" data-filter="all" type="button">All</button>
+            <button class="filter-btn" data-filter="rice" type="button">Rice</button>
+            <button class="filter-btn" data-filter="flour" type="button">Flour</button>
+            <button class="filter-btn" data-filter="pulses" type="button">Pulses</button>
+            <button class="filter-btn" data-filter="breakfast" type="button">Breakfast</button>
+            <button class="filter-btn" data-filter="grains" type="button">Grains</button>
+        </div>
+    </div>
+
+    <div class="products-grid">
+        <div class="product-card">
+            <span class="discount-badge">8% OFF</span>
+            <button class="wish-btn" onclick="toggleWishlist('India Gate Basmati Rice',470,'images/grocery_category_images/India Gate Basmati Rice.jpeg',this)">❤️</button>
+            <img src="images/grocery_category_images/India Gate Basmati Rice.jpeg" alt="India Gate Basmati Rice">
+            <div class="card-body">
+                <h3>India Gate Basmati Rice</h3><p class="qty">5 kg</p>
+                <div class="price-wrap"><span class="orig-price">Rs. 510</span><span class="disc-price">Rs. 470</span><span class="save-tag">Save Rs.40</span></div>
+                <button class="add-cart-btn" onclick="addToCart('India Gate Basmati Rice',470,'images/grocery_category_images/India Gate Basmati Rice.jpeg',510)">🛒 Add to Cart</button>
+            </div>
+        </div>
+        <div class="product-card">
+            <span class="discount-badge">7% OFF</span>
+            <button class="wish-btn" onclick="toggleWishlist('Fortune Chakki Fresh Atta',400,'images/grocery_category_images/Fortune Chakki Fresh Atta.jpeg',this)">❤️</button>
+            <img src="images/grocery_category_images/Fortune Chakki Fresh Atta.jpeg" alt="Fortune Chakki Fresh Atta">
+            <div class="card-body">
+                <h3>Fortune Chakki Fresh Atta</h3><p class="qty">5 kg</p>
+                <div class="price-wrap"><span class="orig-price">Rs. 430</span><span class="disc-price">Rs. 400</span><span class="save-tag">Save Rs.30</span></div>
+                <button class="add-cart-btn" onclick="addToCart('Fortune Chakki Fresh Atta',400,'images/grocery_category_images/Fortune Chakki Fresh Atta.jpeg',430)">🛒 Add to Cart</button>
+            </div>
+        </div>
+        <div class="product-card">
+            <span class="discount-badge">10% OFF</span>
+            <button class="wish-btn" onclick="toggleWishlist('Toor Dal',110,'images/grocery_category_images/Toor Dal.jpeg',this)">❤️</button>
+            <img src="images/grocery_category_images/Toor Dal.jpeg" alt="Toor Dal">
+            <div class="card-body">
+                <h3>Toor Dal</h3><p class="qty">1 kg</p>
+                <div class="price-wrap"><span class="orig-price">Rs. 122</span><span class="disc-price">Rs. 110</span><span class="save-tag">Save Rs.12</span></div>
+                <button class="add-cart-btn" onclick="addToCart('Toor Dal',110,'images/grocery_category_images/Toor Dal.jpeg',122)">🛒 Add to Cart</button>
+            </div>
+        </div>
+        <div class="product-card">
+            <span class="discount-badge">9% OFF</span>
+            <button class="wish-btn" onclick="toggleWishlist('Moong Dal',110,'images/grocery_category_images/Moong Dal.jpeg',this)">❤️</button>
+            <img src="images/grocery_category_images/Moong Dal.jpeg" alt="Moong Dal">
+            <div class="card-body">
+                <h3>Moong Dal</h3><p class="qty">1 kg</p>
+                <div class="price-wrap"><span class="orig-price">Rs. 121</span><span class="disc-price">Rs. 110</span><span class="save-tag">Save Rs.11</span></div>
+                <button class="add-cart-btn" onclick="addToCart('Moong Dal',110,'images/grocery_category_images/Moong Dal.jpeg',121)">🛒 Add to Cart</button>
+            </div>
+        </div>
+        <div class="product-card">
+            <span class="discount-badge">11% OFF</span>
+            <button class="wish-btn" onclick="toggleWishlist('Masoor Dal',108,'images/grocery_category_images/Masoor Dal.jpeg',this)">❤️</button>
+            <img src="images/grocery_category_images/Masoor Dal.jpeg" alt="Masoor Dal">
+            <div class="card-body">
+                <h3>Masoor Dal</h3><p class="qty">1 kg</p>
+                <div class="price-wrap"><span class="orig-price">Rs. 121</span><span class="disc-price">Rs. 108</span><span class="save-tag">Save Rs.13</span></div>
+                <button class="add-cart-btn" onclick="addToCart('Masoor Dal',108,'images/grocery_category_images/Masoor Dal.jpeg',121)">🛒 Add to Cart</button>
+            </div>
+        </div>
+        <div class="product-card">
+            <span class="discount-badge">10% OFF</span>
+            <button class="wish-btn" onclick="toggleWishlist('Chana Dal',95,'images/grocery_category_images/Chana Dal.jpeg',this)">❤️</button>
+            <img src="images/grocery_category_images/Chana Dal.jpeg" alt="Chana Dal">
+            <div class="card-body">
+                <h3>Chana Dal</h3><p class="qty">1 kg</p>
+                <div class="price-wrap"><span class="orig-price">Rs. 105</span><span class="disc-price">Rs. 95</span><span class="save-tag">Save Rs.10</span></div>
+                <button class="add-cart-btn" onclick="addToCart('Chana Dal',95,'images/grocery_category_images/Chana Dal.jpeg',105)">🛒 Add to Cart</button>
+            </div>
+        </div>
+        <div class="product-card">
+            <span class="discount-badge">8% OFF</span>
+            <button class="wish-btn" onclick="toggleWishlist('Poha',58,'images/grocery_category_images/Poha.jpeg',this)">❤️</button>
+            <img src="images/grocery_category_images/Poha.jpeg" alt="Poha">
+            <div class="card-body">
+                <h3>Poha</h3><p class="qty">1 kg</p>
+                <div class="price-wrap"><span class="orig-price">Rs. 63</span><span class="disc-price">Rs. 58</span><span class="save-tag">Save Rs.5</span></div>
+                <button class="add-cart-btn" onclick="addToCart('Poha',58,'images/grocery_category_images/Poha.jpeg',63)">🛒 Add to Cart</button>
+            </div>
+        </div>
+        <div class="product-card">
+            <span class="discount-badge">9% OFF</span>
+            <button class="wish-btn" onclick="toggleWishlist('Suji / Rava',64,'images/grocery_category_images/Suji - Rawa.jpeg',this)">❤️</button>
+            <img src="images/grocery_category_images/Suji - Rawa.jpeg" alt="Suji / Rava">
+            <div class="card-body">
+                <h3>Suji / Rava</h3><p class="qty">500 g</p>
+                <div class="price-wrap"><span class="orig-price">Rs. 70</span><span class="disc-price">Rs. 64</span><span class="save-tag">Save Rs.6</span></div>
+                <button class="add-cart-btn" onclick="addToCart('Suji / Rava',64,'images/grocery_category_images/Suji - Rawa.jpeg',70)">🛒 Add to Cart</button>
+            </div>
+        </div>
+        <div class="product-card">
+            <span class="discount-badge">12% OFF</span>
+            <button class="wish-btn" onclick="toggleWishlist('Rajma',74,'images/grocery_category_images/Moong Dal.jpeg',this)">❤️</button>
+            <img src="images/grocery_category_images/Moong Dal.jpeg" alt="Rajma">
+            <div class="card-body">
+                <h3>Rajma</h3><p class="qty">500 g</p>
+                <div class="price-wrap"><span class="orig-price">Rs. 84</span><span class="disc-price">Rs. 74</span><span class="save-tag">Save Rs.10</span></div>
+                <button class="add-cart-btn" onclick="addToCart('Rajma',74,'images/grocery_category_images/Moong Dal.jpeg',84)">🛒 Add to Cart</button>
+            </div>
+        </div>
+        <div class="product-card">
+            <span class="discount-badge">11% OFF</span>
+            <button class="wish-btn" onclick="toggleWishlist('Kabuli Chana',82,'images/grocery_category_images/Kabuli Chana.jpeg',this)">❤️</button>
+            <img src="images/grocery_category_images/Kabuli Chana.jpeg" alt="Kabuli Chana">
+            <div class="card-body">
+                <h3>Kabuli Chana</h3><p class="qty">500 g</p>
+                <div class="price-wrap"><span class="orig-price">Rs. 92</span><span class="disc-price">Rs. 82</span><span class="save-tag">Save Rs.10</span></div>
+                <button class="add-cart-btn" onclick="addToCart('Kabuli Chana',82,'images/grocery_category_images/Kabuli Chana.jpeg',92)">🛒 Add to Cart</button>
+            </div>
+        </div>
+
+        <div class="product-card staples-product-card" data-name="India Gate Basmati Rice" data-brand="India Gate" data-category="rice" data-image="images/grocery_category_images/India Gate Basmati Rice.jpeg" data-description="Premium long-grain basmati rice with a distinct aroma, fluffy texture, and easy cook quality for everyday meals." data-stock="42" data-rating="4.8" data-reviews="186" data-price="470" data-original="510">
+            <span class="discount-badge">8% OFF</span>
+            <button class="wish-btn" onclick="toggleWishlist('India Gate Basmati Rice',470,'images/grocery_category_images/India Gate Basmati Rice.jpeg',this)">❤️</button>
+            <img src="images/grocery_category_images/India Gate Basmati Rice.jpeg" alt="India Gate Basmati Rice">
+            <div class="card-body">
+                <h3>India Gate Basmati Rice</h3><p class="qty">5 kg</p>
+                <div class="price-wrap"><span class="orig-price">Rs. 510</span><span class="disc-price">Rs. 470</span><span class="save-tag">Save Rs.40</span></div>
+                <div class="card-actions">
+                    <button class="details-btn" type="button">📄 Details</button>
+                    <button class="add-cart-btn" onclick="addToCart('India Gate Basmati Rice',470,'images/grocery_category_images/India Gate Basmati Rice.jpeg',510)">🛒 Add to Cart</button>
+                </div>
+            </div>
+        </div>
+
+        <div class="product-card staples-product-card" data-name="Daawat Basmati Rice" data-brand="Daawat" data-category="rice" data-image="images/grocery_category_images/India Gate Basmati Rice.jpeg" data-description="Daawat basmati rice brings a rich aroma and soft texture, ideal for biryanis, pulao, and family meals." data-stock="36" data-rating="4.7" data-reviews="142" data-price="480" data-original="520">
+            <span class="discount-badge">8% OFF</span>
+            <button class="wish-btn" onclick="toggleWishlist('Daawat Basmati Rice',480,'images/grocery_category_images/India Gate Basmati Rice.jpeg',this)">❤️</button>
+            <img src="images/grocery_category_images/India Gate Basmati Rice.jpeg" alt="Daawat Basmati Rice">
+            <div class="card-body">
+                <h3>Daawat Basmati Rice</h3><p class="qty">5 kg</p>
+                <div class="price-wrap"><span class="orig-price">Rs. 520</span><span class="disc-price">Rs. 480</span><span class="save-tag">Save Rs.40</span></div>
+                <div class="card-actions">
+                    <button class="details-btn" type="button">📄 Details</button>
+                    <button class="add-cart-btn" onclick="addToCart('Daawat Basmati Rice',480,'images/grocery_category_images/India Gate Basmati Rice.jpeg',520)">🛒 Add to Cart</button>
+                </div>
+            </div>
+        </div>
+
+        <div class="product-card staples-product-card" data-name="Fortune Basmati Rice" data-brand="Fortune" data-category="rice" data-image="images/grocery_category_images/India Gate Basmati Rice.jpeg" data-description="Fortune basmati rice offers long grains, easy cooking, and a classic taste for rich Indian curries and rice dishes." data-stock="44" data-rating="4.6" data-reviews="153" data-price="455" data-original="495">
+            <span class="discount-badge">8% OFF</span>
+            <button class="wish-btn" onclick="toggleWishlist('Fortune Basmati Rice',455,'images/grocery_category_images/India Gate Basmati Rice.jpeg',this)">❤️</button>
+            <img src="images/grocery_category_images/India Gate Basmati Rice.jpeg" alt="Fortune Basmati Rice">
+            <div class="card-body">
+                <h3>Fortune Basmati Rice</h3><p class="qty">5 kg</p>
+                <div class="price-wrap"><span class="orig-price">Rs. 495</span><span class="disc-price">Rs. 455</span><span class="save-tag">Save Rs.40</span></div>
+                <div class="card-actions">
+                    <button class="details-btn" type="button">📄 Details</button>
+                    <button class="add-cart-btn" onclick="addToCart('Fortune Basmati Rice',455,'images/grocery_category_images/India Gate Basmati Rice.jpeg',495)">🛒 Add to Cart</button>
+                </div>
+            </div>
+        </div>
+
+        <div class="product-card staples-product-card" data-name="Fortune Chakki Fresh Atta" data-brand="Fortune" data-category="flour" data-image="images/grocery_category_images/Fortune Chakki Fresh Atta.jpeg" data-description="Stone-ground wheat flour for soft rotis and parathas with a fresh, home-made taste." data-stock="51" data-rating="4.7" data-reviews="202" data-price="400" data-original="430">
+            <span class="discount-badge">7% OFF</span>
+            <button class="wish-btn" onclick="toggleWishlist('Fortune Chakki Fresh Atta',400,'images/grocery_category_images/Fortune Chakki Fresh Atta.jpeg',this)">❤️</button>
+            <img src="images/grocery_category_images/Fortune Chakki Fresh Atta.jpeg" alt="Fortune Chakki Fresh Atta">
+            <div class="card-body">
+                <h3>Fortune Chakki Fresh Atta</h3><p class="qty">5 kg</p>
+                <div class="price-wrap"><span class="orig-price">Rs. 430</span><span class="disc-price">Rs. 400</span><span class="save-tag">Save Rs.30</span></div>
+                <div class="card-actions">
+                    <button class="details-btn" type="button">📄 Details</button>
+                    <button class="add-cart-btn" onclick="addToCart('Fortune Chakki Fresh Atta',400,'images/grocery_category_images/Fortune Chakki Fresh Atta.jpeg',430)">🛒 Add to Cart</button>
+                </div>
+            </div>
+        </div>
+
+        <div class="product-card staples-product-card" data-name="Aashirvaad Shudh Chakki Atta" data-brand="Aashirvaad" data-category="flour" data-image="images/grocery_category_images/Fortune Chakki Fresh Atta.jpeg" data-description="Aashirvaad atta is made from selected wheat grains for soft texture and wholesome nutrition for daily meals." data-stock="48" data-rating="4.8" data-reviews="214" data-price="420" data-original="455">
+            <span class="discount-badge">8% OFF</span>
+            <button class="wish-btn" onclick="toggleWishlist('Aashirvaad Shudh Chakki Atta',420,'images/grocery_category_images/Fortune Chakki Fresh Atta.jpeg',this)">❤️</button>
+            <img src="images/grocery_category_images/Fortune Chakki Fresh Atta.jpeg" alt="Aashirvaad Shudh Chakki Atta">
+            <div class="card-body">
+                <h3>Aashirvaad Shudh Chakki Atta</h3><p class="qty">5 kg</p>
+                <div class="price-wrap"><span class="orig-price">Rs. 455</span><span class="disc-price">Rs. 420</span><span class="save-tag">Save Rs.35</span></div>
+                <div class="card-actions">
+                    <button class="details-btn" type="button">📄 Details</button>
+                    <button class="add-cart-btn" onclick="addToCart('Aashirvaad Shudh Chakki Atta',420,'images/grocery_category_images/Fortune Chakki Fresh Atta.jpeg',455)">🛒 Add to Cart</button>
+                </div>
+            </div>
+        </div>
+
+        <div class="product-card staples-product-card" data-name="Pillsbury Chakki Fresh Atta" data-brand="Pillsbury" data-category="flour" data-image="images/grocery_category_images/Fortune Chakki Fresh Atta.jpeg" data-description="Fresh milled wheat flour that gives soft and tasty rotis while retaining amino-rich wheat goodness." data-stock="39" data-rating="4.5" data-reviews="128" data-price="410" data-original="445">
+            <span class="discount-badge">8% OFF</span>
+            <button class="wish-btn" onclick="toggleWishlist('Pillsbury Chakki Fresh Atta',410,'images/grocery_category_images/Fortune Chakki Fresh Atta.jpeg',this)">❤️</button>
+            <img src="images/grocery_category_images/Fortune Chakki Fresh Atta.jpeg" alt="Pillsbury Chakki Fresh Atta">
+            <div class="card-body">
+                <h3>Pillsbury Chakki Fresh Atta</h3><p class="qty">5 kg</p>
+                <div class="price-wrap"><span class="orig-price">Rs. 445</span><span class="disc-price">Rs. 410</span><span class="save-tag">Save Rs.35</span></div>
+                <div class="card-actions">
+                    <button class="details-btn" type="button">📄 Details</button>
+                    <button class="add-cart-btn" onclick="addToCart('Pillsbury Chakki Fresh Atta',410,'images/grocery_category_images/Fortune Chakki Fresh Atta.jpeg',445)">🛒 Add to Cart</button>
+                </div>
+            </div>
+        </div>
+
+        <div class="product-card staples-product-card" data-name="Tata Sampann Toor Dal" data-brand="Tata Sampann" data-category="pulses" data-image="images/grocery_category_images/Toor Dal.jpeg" data-description="Premium toor dal with superior quality and rich taste, ideal for dal tadka and daily comfort meals." data-stock="55" data-rating="4.8" data-reviews="234" data-price="119" data-original="132">
+            <span class="discount-badge">10% OFF</span>
+            <button class="wish-btn" onclick="toggleWishlist('Tata Sampann Toor Dal',119,'images/grocery_category_images/Toor Dal.jpeg',this)">❤️</button>
+            <img src="images/grocery_category_images/Toor Dal.jpeg" alt="Tata Sampann Toor Dal">
+            <div class="card-body">
+                <h3>Tata Sampann Toor Dal</h3><p class="qty">1 kg</p>
+                <div class="price-wrap"><span class="orig-price">Rs. 132</span><span class="disc-price">Rs. 119</span><span class="save-tag">Save Rs.13</span></div>
+                <div class="card-actions">
+                    <button class="details-btn" type="button">📄 Details</button>
+                    <button class="add-cart-btn" onclick="addToCart('Tata Sampann Toor Dal',119,'images/grocery_category_images/Toor Dal.jpeg',132)">🛒 Add to Cart</button>
+                </div>
+            </div>
+        </div>
+
+        <div class="product-card staples-product-card" data-name="Tata Sampann Moong Dal" data-brand="Tata Sampann" data-category="pulses" data-image="images/grocery_category_images/Moong Dal.jpeg" data-description="Clean and protein-rich moong dal that cooks quickly and suits light, healthy meals and soups." data-stock="50" data-rating="4.7" data-reviews="189" data-price="115" data-original="126">
+            <span class="discount-badge">9% OFF</span>
+            <button class="wish-btn" onclick="toggleWishlist('Tata Sampann Moong Dal',115,'images/grocery_category_images/Moong Dal.jpeg',this)">❤️</button>
+            <img src="images/grocery_category_images/Moong Dal.jpeg" alt="Tata Sampann Moong Dal">
+            <div class="card-body">
+                <h3>Tata Sampann Moong Dal</h3><p class="qty">1 kg</p>
+                <div class="price-wrap"><span class="orig-price">Rs. 126</span><span class="disc-price">Rs. 115</span><span class="save-tag">Save Rs.11</span></div>
+                <div class="card-actions">
+                    <button class="details-btn" type="button">📄 Details</button>
+                    <button class="add-cart-btn" onclick="addToCart('Tata Sampann Moong Dal',115,'images/grocery_category_images/Moong Dal.jpeg',126)">🛒 Add to Cart</button>
+                </div>
+            </div>
+        </div>
+
+        <div class="product-card staples-product-card" data-name="Tata Sampann Masoor Dal" data-brand="Tata Sampann" data-category="pulses" data-image="images/grocery_category_images/Masoor Dal.jpeg" data-description="Nutritious masoor dal with a soft finish, perfect for classic daal and curry recipes." data-stock="52" data-rating="4.6" data-reviews="177" data-price="114" data-original="125">
+            <span class="discount-badge">9% OFF</span>
+            <button class="wish-btn" onclick="toggleWishlist('Tata Sampann Masoor Dal',114,'images/grocery_category_images/Masoor Dal.jpeg',this)">❤️</button>
+            <img src="images/grocery_category_images/Masoor Dal.jpeg" alt="Tata Sampann Masoor Dal">
+            <div class="card-body">
+                <h3>Tata Sampann Masoor Dal</h3><p class="qty">1 kg</p>
+                <div class="price-wrap"><span class="orig-price">Rs. 125</span><span class="disc-price">Rs. 114</span><span class="save-tag">Save Rs.11</span></div>
+                <div class="card-actions">
+                    <button class="details-btn" type="button">📄 Details</button>
+                    <button class="add-cart-btn" onclick="addToCart('Tata Sampann Masoor Dal',114,'images/grocery_category_images/Masoor Dal.jpeg',125)">🛒 Add to Cart</button>
+                </div>
+            </div>
+        </div>
+
+        <div class="product-card staples-product-card" data-name="Tata Sampann Chana Dal" data-brand="Tata Sampann" data-category="pulses" data-image="images/grocery_category_images/Chana Dal.jpeg" data-description="Premium chana dal that stays clean, aromatic, and ideal for daily comfort recipes and family meals." data-stock="49" data-rating="4.7" data-reviews="168" data-price="112" data-original="123">
+            <span class="discount-badge">9% OFF</span>
+            <button class="wish-btn" onclick="toggleWishlist('Tata Sampann Chana Dal',112,'images/grocery_category_images/Chana Dal.jpeg',this)">❤️</button>
+            <img src="images/grocery_category_images/Chana Dal.jpeg" alt="Tata Sampann Chana Dal">
+            <div class="card-body">
+                <h3>Tata Sampann Chana Dal</h3><p class="qty">1 kg</p>
+                <div class="price-wrap"><span class="orig-price">Rs. 123</span><span class="disc-price">Rs. 112</span><span class="save-tag">Save Rs.11</span></div>
+                <div class="card-actions">
+                    <button class="details-btn" type="button">📄 Details</button>
+                    <button class="add-cart-btn" onclick="addToCart('Tata Sampann Chana Dal',112,'images/grocery_category_images/Chana Dal.jpeg',123)">🛒 Add to Cart</button>
+                </div>
+            </div>
+        </div>
+
+        <div class="product-card staples-product-card" data-name="Tata Sampann Urad Dal" data-brand="Tata Sampann" data-category="pulses" data-image="images/grocery_category_images/Chana Dal.jpeg" data-description="Urad dal with a rich texture and creamy finish, perfect for sambar, dal, and specialty dishes." data-stock="47" data-rating="4.7" data-reviews="164" data-price="116" data-original="128">
+            <span class="discount-badge">9% OFF</span>
+            <button class="wish-btn" onclick="toggleWishlist('Tata Sampann Urad Dal',116,'images/grocery_category_images/Chana Dal.jpeg',this)">❤️</button>
+            <img src="images/grocery_category_images/Chana Dal.jpeg" alt="Tata Sampann Urad Dal">
+            <div class="card-body">
+                <h3>Tata Sampann Urad Dal</h3><p class="qty">1 kg</p>
+                <div class="price-wrap"><span class="orig-price">Rs. 128</span><span class="disc-price">Rs. 116</span><span class="save-tag">Save Rs.12</span></div>
+                <div class="card-actions">
+                    <button class="details-btn" type="button">📄 Details</button>
+                    <button class="add-cart-btn" onclick="addToCart('Tata Sampann Urad Dal',116,'images/grocery_category_images/Chana Dal.jpeg',128)">🛒 Add to Cart</button>
+                </div>
+            </div>
+        </div>
+
+        <div class="product-card staples-product-card" data-name="Fortune Soya Chunks" data-brand="Fortune" data-category="pulses" data-image="images/grocery_category_images/Green Peas.jpeg" data-description="High-protein soya chunks for quick curries, snacks, and healthy home-cooked meals with a balanced texture." data-stock="58" data-rating="4.4" data-reviews="109" data-price="95" data-original="110">
+            <span class="discount-badge">14% OFF</span>
+            <button class="wish-btn" onclick="toggleWishlist('Fortune Soya Chunks',95,'images/grocery_category_images/Green Peas.jpeg',this)">❤️</button>
+            <img src="images/grocery_category_images/Green Peas.jpeg" alt="Fortune Soya Chunks">
+            <div class="card-body">
+                <h3>Fortune Soya Chunks</h3><p class="qty">200 g</p>
+                <div class="price-wrap"><span class="orig-price">Rs. 110</span><span class="disc-price">Rs. 95</span><span class="save-tag">Save Rs.15</span></div>
+                <div class="card-actions">
+                    <button class="details-btn" type="button">📄 Details</button>
+                    <button class="add-cart-btn" onclick="addToCart('Fortune Soya Chunks',95,'images/grocery_category_images/Green Peas.jpeg',110)">🛒 Add to Cart</button>
+                </div>
+            </div>
+        </div>
+
+        <div class="product-card staples-product-card" data-name="Poha" data-brand="Saffola" data-category="breakfast" data-image="images/grocery_category_images/Poha.jpeg" data-description="Quick-cooking poha for soft and tasty breakfast recipes, snacks, and savory evening meals." data-stock="66" data-rating="4.5" data-reviews="119" data-price="62" data-original="68">
+            <span class="discount-badge">9% OFF</span>
+            <button class="wish-btn" onclick="toggleWishlist('Poha',62,'images/grocery_category_images/Poha.jpeg',this)">❤️</button>
+            <img src="images/grocery_category_images/Poha.jpeg" alt="Poha">
+            <div class="card-body">
+                <h3>Poha</h3><p class="qty">1 kg</p>
+                <div class="price-wrap"><span class="orig-price">Rs. 68</span><span class="disc-price">Rs. 62</span><span class="save-tag">Save Rs.6</span></div>
+                <div class="card-actions">
+                    <button class="details-btn" type="button">📄 Details</button>
+                    <button class="add-cart-btn" onclick="addToCart('Poha',62,'images/grocery_category_images/Poha.jpeg',68)">🛒 Add to Cart</button>
+                </div>
+            </div>
+        </div>
+
+        <div class="product-card staples-product-card" data-name="Suji Rava" data-brand="Rajdhani" data-category="breakfast" data-image="images/grocery_category_images/Suji - Rawa.jpeg" data-description="Fine semolina ideal for upma, khichdi, and bakery dishes with a gentle, mild taste." data-stock="59" data-rating="4.4" data-reviews="103" data-price="74" data-original="82">
+            <span class="discount-badge">10% OFF</span>
+            <button class="wish-btn" onclick="toggleWishlist('Suji Rava',74,'images/grocery_category_images/Suji - Rawa.jpeg',this)">❤️</button>
+            <img src="images/grocery_category_images/Suji - Rawa.jpeg" alt="Suji Rava">
+            <div class="card-body">
+                <h3>Suji Rava</h3><p class="qty">500 g</p>
+                <div class="price-wrap"><span class="orig-price">Rs. 82</span><span class="disc-price">Rs. 74</span><span class="save-tag">Save Rs.8</span></div>
+                <div class="card-actions">
+                    <button class="details-btn" type="button">📄 Details</button>
+                    <button class="add-cart-btn" onclick="addToCart('Suji Rava',74,'images/grocery_category_images/Suji - Rawa.jpeg',82)">🛒 Add to Cart</button>
+                </div>
+            </div>
+        </div>
+
+        <div class="product-card staples-product-card" data-name="Besan" data-brand="Fortune" data-category="flour" data-image="images/grocery_category_images/Suji - Rawa.jpeg" data-description="Gram flour used for pakoras, sweets, and everyday Indian recipes with a rich authentic taste." data-stock="61" data-rating="4.6" data-reviews="136" data-price="88" data-original="96">
+            <span class="discount-badge">8% OFF</span>
+            <button class="wish-btn" onclick="toggleWishlist('Besan',88,'images/grocery_category_images/Suji - Rawa.jpeg',this)">❤️</button>
+            <img src="images/grocery_category_images/Suji - Rawa.jpeg" alt="Besan">
+            <div class="card-body">
+                <h3>Besan</h3><p class="qty">1 kg</p>
+                <div class="price-wrap"><span class="orig-price">Rs. 96</span><span class="disc-price">Rs. 88</span><span class="save-tag">Save Rs.8</span></div>
+                <div class="card-actions">
+                    <button class="details-btn" type="button">📄 Details</button>
+                    <button class="add-cart-btn" onclick="addToCart('Besan',88,'images/grocery_category_images/Suji - Rawa.jpeg',96)">🛒 Add to Cart</button>
+                </div>
+            </div>
+        </div>
+
+        <div class="product-card staples-product-card" data-name="Rajma" data-brand="Tata Sampann" data-category="pulses" data-image="images/grocery_category_images/Rajma.jpeg" data-description="Premium rajma beans for rich curries and comforting family meals with excellent texture and flavor." data-stock="46" data-rating="4.7" data-reviews="165" data-price="92" data-original="104">
+            <span class="discount-badge">12% OFF</span>
+            <button class="wish-btn" onclick="toggleWishlist('Rajma',92,'images/grocery_category_images/Rajma.jpeg',this)">❤️</button>
+            <img src="images/grocery_category_images/Rajma.jpeg" alt="Rajma">
+            <div class="card-body">
+                <h3>Rajma</h3><p class="qty">500 g</p>
+                <div class="price-wrap"><span class="orig-price">Rs. 104</span><span class="disc-price">Rs. 92</span><span class="save-tag">Save Rs.12</span></div>
+                <div class="card-actions">
+                    <button class="details-btn" type="button">📄 Details</button>
+                    <button class="add-cart-btn" onclick="addToCart('Rajma',92,'images/grocery_category_images/Rajma.jpeg',104)">🛒 Add to Cart</button>
+                </div>
+            </div>
+        </div>
+
+        <div class="product-card staples-product-card" data-name="Kabuli Chana" data-brand="Tata Sampann" data-category="pulses" data-image="images/grocery_category_images/Kabuli Chana.jpeg" data-description="Kabuli chana with a soft bite and nutritious profile, perfect for curries and salads." data-stock="45" data-rating="4.6" data-reviews="124" data-price="87" data-original="98">
+            <span class="discount-badge">11% OFF</span>
+            <button class="wish-btn" onclick="toggleWishlist('Kabuli Chana',87,'images/grocery_category_images/Kabuli Chana.jpeg',this)">❤️</button>
+            <img src="images/grocery_category_images/Kabuli Chana.jpeg" alt="Kabuli Chana">
+            <div class="card-body">
+                <h3>Kabuli Chana</h3><p class="qty">500 g</p>
+                <div class="price-wrap"><span class="orig-price">Rs. 98</span><span class="disc-price">Rs. 87</span><span class="save-tag">Save Rs.11</span></div>
+                <div class="card-actions">
+                    <button class="details-btn" type="button">📄 Details</button>
+                    <button class="add-cart-btn" onclick="addToCart('Kabuli Chana',87,'images/grocery_category_images/Kabuli Chana.jpeg',98)">🛒 Add to Cart</button>
+                </div>
+            </div>
+        </div>
+
+        <div class="product-card staples-product-card" data-name="Black Chana" data-brand="Tata Sampann" data-category="pulses" data-image="images/grocery_category_images/Kabuli Chana.jpeg" data-description="A flavorful black chana choice for curries and protein-rich meals with a hearty texture." data-stock="43" data-rating="4.5" data-reviews="116" data-price="86" data-original="96">
+            <span class="discount-badge">10% OFF</span>
+            <button class="wish-btn" onclick="toggleWishlist('Black Chana',86,'images/grocery_category_images/Kabuli Chana.jpeg',this)">❤️</button>
+            <img src="images/grocery_category_images/Kabuli Chana.jpeg" alt="Black Chana">
+            <div class="card-body">
+                <h3>Black Chana</h3><p class="qty">500 g</p>
+                <div class="price-wrap"><span class="orig-price">Rs. 96</span><span class="disc-price">Rs. 86</span><span class="save-tag">Save Rs.10</span></div>
+                <div class="card-actions">
+                    <button class="details-btn" type="button">📄 Details</button>
+                    <button class="add-cart-btn" onclick="addToCart('Black Chana',86,'images/grocery_category_images/Kabuli Chana.jpeg',96)">🛒 Add to Cart</button>
+                </div>
+            </div>
+        </div>
+
+        <div class="product-card staples-product-card" data-name="Green Moong" data-brand="Tata Sampann" data-category="pulses" data-image="images/grocery_category_images/Moong Dal.jpeg" data-description="Green moong with a fresh taste and quick-cooking quality for dals, khichdi, and healthy bowls." data-stock="41" data-rating="4.6" data-reviews="120" data-price="90" data-original="101">
+            <span class="discount-badge">11% OFF</span>
+            <button class="wish-btn" onclick="toggleWishlist('Green Moong',90,'images/grocery_category_images/Moong Dal.jpeg',this)">❤️</button>
+            <img src="images/grocery_category_images/Moong Dal.jpeg" alt="Green Moong">
+            <div class="card-body">
+                <h3>Green Moong</h3><p class="qty">500 g</p>
+                <div class="price-wrap"><span class="orig-price">Rs. 101</span><span class="disc-price">Rs. 90</span><span class="save-tag">Save Rs.11</span></div>
+                <div class="card-actions">
+                    <button class="details-btn" type="button">📄 Details</button>
+                    <button class="add-cart-btn" onclick="addToCart('Green Moong',90,'images/grocery_category_images/Moong Dal.jpeg',101)">🛒 Add to Cart</button>
+                </div>
+            </div>
+        </div>
+
+        <div class="product-card staples-product-card" data-name="Brown Rice" data-brand="India Gate" data-category="rice" data-image="images/grocery_category_images/India Gate Basmati Rice.jpeg" data-description="Whole grain brown rice with natural nutrients and a nutty flavor for healthy and balanced meals." data-stock="38" data-rating="4.6" data-reviews="95" data-price="135" data-original="150">
+            <span class="discount-badge">10% OFF</span>
+            <button class="wish-btn" onclick="toggleWishlist('Brown Rice',135,'images/grocery_category_images/India Gate Basmati Rice.jpeg',this)">❤️</button>
+            <img src="images/grocery_category_images/India Gate Basmati Rice.jpeg" alt="Brown Rice">
+            <div class="card-body">
+                <h3>Brown Rice</h3><p class="qty">1 kg</p>
+                <div class="price-wrap"><span class="orig-price">Rs. 150</span><span class="disc-price">Rs. 135</span><span class="save-tag">Save Rs.15</span></div>
+                <div class="card-actions">
+                    <button class="details-btn" type="button">📄 Details</button>
+                    <button class="add-cart-btn" onclick="addToCart('Brown Rice',135,'images/grocery_category_images/India Gate Basmati Rice.jpeg',150)">🛒 Add to Cart</button>
+                </div>
+            </div>
+        </div>
+
+        <div class="product-card staples-product-card" data-name="Quinoa" data-brand="Organic Tattva" data-category="grains" data-image="images/grocery_category_images/India Gate Basmati Rice.jpeg" data-description="Nutritious quinoa grains ideal for salads, pilaf, and wholesome modern recipes with a light texture." data-stock="27" data-rating="4.8" data-reviews="88" data-price="250" data-original="280">
+            <span class="discount-badge">11% OFF</span>
+            <button class="wish-btn" onclick="toggleWishlist('Quinoa',250,'images/grocery_category_images/India Gate Basmati Rice.jpeg',this)">❤️</button>
+            <img src="images/grocery_category_images/India Gate Basmati Rice.jpeg" alt="Quinoa">
+            <div class="card-body">
+                <h3>Quinoa</h3><p class="qty">500 g</p>
+                <div class="price-wrap"><span class="orig-price">Rs. 280</span><span class="disc-price">Rs. 250</span><span class="save-tag">Save Rs.30</span></div>
+                <div class="card-actions">
+                    <button class="details-btn" type="button">📄 Details</button>
+                    <button class="add-cart-btn" onclick="addToCart('Quinoa',250,'images/grocery_category_images/India Gate Basmati Rice.jpeg',280)">🛒 Add to Cart</button>
+                </div>
+            </div>
+        </div>
+
+        <div class="product-card staples-product-card" data-name="Dalia" data-brand="Broken Wheat / Branded Pack" data-category="grains" data-image="images/grocery_category_images/Poha.jpeg" data-description="Dalia is made from broken wheat and is perfect for nourishing porridge and wholesome breakfasts." data-stock="64" data-rating="4.5" data-reviews="92" data-price="68" data-original="75">
+            <span class="discount-badge">9% OFF</span>
+            <button class="wish-btn" onclick="toggleWishlist('Dalia',68,'images/grocery_category_images/Poha.jpeg',this)">❤️</button>
+            <img src="images/grocery_category_images/Poha.jpeg" alt="Dalia">
+            <div class="card-body">
+                <h3>Dalia</h3><p class="qty">500 g</p>
+                <div class="price-wrap"><span class="orig-price">Rs. 75</span><span class="disc-price">Rs. 68</span><span class="save-tag">Save Rs.7</span></div>
+                <div class="card-actions">
+                    <button class="details-btn" type="button">📄 Details</button>
+                    <button class="add-cart-btn" onclick="addToCart('Dalia',68,'images/grocery_category_images/Poha.jpeg',75)">🛒 Add to Cart</button>
+                </div>
+            </div>
+        </div>
+
+        <div class="product-card staples-product-card" data-name="Sabudana" data-brand="Rajdhani" data-category="breakfast" data-image="images/grocery_category_images/Poha.jpeg" data-description="Classic sabudana for quick snacks, tasty thalipeeth, and dishes made for fasting days and family breakfasts." data-stock="53" data-rating="4.4" data-reviews="84" data-price="72" data-original="81">
+            <span class="discount-badge">11% OFF</span>
+            <button class="wish-btn" onclick="toggleWishlist('Sabudana',72,'images/grocery_category_images/Poha.jpeg',this)">❤️</button>
+            <img src="images/grocery_category_images/Poha.jpeg" alt="Sabudana">
+            <div class="card-body">
+                <h3>Sabudana</h3><p class="qty">500 g</p>
+                <div class="price-wrap"><span class="orig-price">Rs. 81</span><span class="disc-price">Rs. 72</span><span class="save-tag">Save Rs.9</span></div>
+                <div class="card-actions">
+                    <button class="details-btn" type="button">📄 Details</button>
+                    <button class="add-cart-btn" onclick="addToCart('Sabudana',72,'images/grocery_category_images/Poha.jpeg',81)">🛒 Add to Cart</button>
+                </div>
+            </div>
+        </div>
+
+        <div class="product-card staples-product-card" data-name="Vermicelli" data-brand="Bambino" data-category="breakfast" data-image="images/grocery_category_images/Suji - Rawa.jpeg" data-description="Thin, easy-to-cook vermicelli for soups, upma, and quick family breakfast dishes." data-stock="57" data-rating="4.5" data-reviews="126" data-price="88" data-original="98">
+            <span class="discount-badge">10% OFF</span>
+            <button class="wish-btn" onclick="toggleWishlist('Vermicelli',88,'images/grocery_category_images/Suji - Rawa.jpeg',this)">❤️</button>
+            <img src="images/grocery_category_images/Suji - Rawa.jpeg" alt="Vermicelli">
+            <div class="card-body">
+                <h3>Vermicelli</h3><p class="qty">400 g</p>
+                <div class="price-wrap"><span class="orig-price">Rs. 98</span><span class="disc-price">Rs. 88</span><span class="save-tag">Save Rs.10</span></div>
+                <div class="card-actions">
+                    <button class="details-btn" type="button">📄 Details</button>
+                    <button class="add-cart-btn" onclick="addToCart('Vermicelli',88,'images/grocery_category_images/Suji - Rawa.jpeg',98)">🛒 Add to Cart</button>
+                </div>
+            </div>
+        </div>
+
+        <div class="product-card staples-product-card" data-name="Maida" data-brand="Fortune" data-category="flour" data-image="images/grocery_category_images/Fortune Chakki Fresh Atta.jpeg" data-description="Refined flour perfect for sweets, snacks, and bakery preparations and homemade treats." data-stock="67" data-rating="4.3" data-reviews="91" data-price="78" data-original="85">
+            <span class="discount-badge">8% OFF</span>
+            <button class="wish-btn" onclick="toggleWishlist('Maida',78,'images/grocery_category_images/Fortune Chakki Fresh Atta.jpeg',this)">❤️</button>
+            <img src="images/grocery_category_images/Fortune Chakki Fresh Atta.jpeg" alt="Maida">
+            <div class="card-body">
+                <h3>Maida</h3><p class="qty">1 kg</p>
+                <div class="price-wrap"><span class="orig-price">Rs. 85</span><span class="disc-price">Rs. 78</span><span class="save-tag">Save Rs.7</span></div>
+                <div class="card-actions">
+                    <button class="details-btn" type="button">📄 Details</button>
+                    <button class="add-cart-btn" onclick="addToCart('Maida',78,'images/grocery_category_images/Fortune Chakki Fresh Atta.jpeg',85)">🛒 Add to Cart</button>
+                </div>
+            </div>
+        </div>
+
+        <div class="product-card staples-product-card" data-name="Sugar" data-brand="Madhur" data-category="sweetener" data-image="images/images/Mango.png" data-description="Pure and fine sugar for daily cooking, sweets, chai, and family recipes with consistent quality." data-stock="72" data-rating="4.7" data-reviews="131" data-price="210" data-original="230">
+            <span class="discount-badge">9% OFF</span>
+            <button class="wish-btn" onclick="toggleWishlist('Sugar',210,'images/images/Mango.png',this)">❤️</button>
+            <img src="images/images/Mango.png" alt="Sugar">
+            <div class="card-body">
+                <h3>Sugar</h3><p class="qty">5 kg</p>
+                <div class="price-wrap"><span class="orig-price">Rs. 230</span><span class="disc-price">Rs. 210</span><span class="save-tag">Save Rs.20</span></div>
+                <div class="card-actions">
+                    <button class="details-btn" type="button">📄 Details</button>
+                    <button class="add-cart-btn" onclick="addToCart('Sugar',210,'images/images/Mango.png',230)">🛒 Add to Cart</button>
+                </div>
+            </div>
+        </div>
+
+        <div class="product-card staples-product-card" data-name="Salt" data-brand="Tata Salt" data-category="salt" data-image="images/Tata salt.jpg" data-description="Essential iodized table salt for everyday cooking and seasoning with balanced taste and purity." data-stock="79" data-rating="4.6" data-reviews="97" data-price="34" data-original="38">
+            <span class="discount-badge">11% OFF</span>
+            <button class="wish-btn" onclick="toggleWishlist('Salt',34,'images/Tata salt.jpg',this)">❤️</button>
+            <img src="images/Tata salt.jpg" alt="Salt">
+            <div class="card-body">
+                <h3>Salt</h3><p class="qty">1 kg</p>
+                <div class="price-wrap"><span class="orig-price">Rs. 38</span><span class="disc-price">Rs. 34</span><span class="save-tag">Save Rs.4</span></div>
+                <div class="card-actions">
+                    <button class="details-btn" type="button">📄 Details</button>
+                    <button class="add-cart-btn" onclick="addToCart('Salt',34,'images/Tata salt.jpg',38)">🛒 Add to Cart</button>
+                </div>
+            </div>
+        </div>
+
+        <div class="product-card staples-product-card" data-name="Iodized Salt" data-brand="Aashirvaad" data-category="salt" data-image="images/Tata salt.jpg" data-description="Iodized salt that adds flavor to every meal and supports a balanced diet with essential iodine." data-stock="74" data-rating="4.5" data-reviews="89" data-price="36" data-original="40">
+            <span class="discount-badge">10% OFF</span>
+            <button class="wish-btn" onclick="toggleWishlist('Iodized Salt',36,'images/Tata salt.jpg',this)">❤️</button>
+            <img src="images/Tata salt.jpg" alt="Iodized Salt">
+            <div class="card-body">
+                <h3>Iodized Salt</h3><p class="qty">1 kg</p>
+                <div class="price-wrap"><span class="orig-price">Rs. 40</span><span class="disc-price">Rs. 36</span><span class="save-tag">Save Rs.4</span></div>
+                <div class="card-actions">
+                    <button class="details-btn" type="button">📄 Details</button>
+                    <button class="add-cart-btn" onclick="addToCart('Iodized Salt',36,'images/Tata salt.jpg',40)">🛒 Add to Cart</button>
+                </div>
+            </div>
+        </div>
+
+        <div class="product-card staples-product-card" data-name="Multigrain Atta" data-brand="Aashirvaad" data-category="flour" data-image="images/grocery_category_images/Fortune Chakki Fresh Atta.jpeg" data-description="A balanced multigrain flour blend that delivers fiber, nutrients, and a wholesome taste in everyday meals." data-stock="37" data-rating="4.7" data-reviews="155" data-price="410" data-original="445">
+            <span class="discount-badge">8% OFF</span>
+            <button class="wish-btn" onclick="toggleWishlist('Multigrain Atta',410,'images/grocery_category_images/Fortune Chakki Fresh Atta.jpeg',this)">❤️</button>
+            <img src="images/grocery_category_images/Fortune Chakki Fresh Atta.jpeg" alt="Multigrain Atta">
+            <div class="card-body">
+                <h3>Multigrain Atta</h3><p class="qty">5 kg</p>
+                <div class="price-wrap"><span class="orig-price">Rs. 445</span><span class="disc-price">Rs. 410</span><span class="save-tag">Save Rs.35</span></div>
+                <div class="card-actions">
+                    <button class="details-btn" type="button">📄 Details</button>
+                    <button class="add-cart-btn" onclick="addToCart('Multigrain Atta',410,'images/grocery_category_images/Fortune Chakki Fresh Atta.jpeg',445)">🛒 Add to Cart</button>
+                </div>
+            </div>
+        </div>
+
+        <div class="product-card staples-product-card" data-name="Brown Basmati Rice" data-brand="Daawat" data-category="rice" data-image="images/grocery_category_images/India Gate Basmati Rice.jpeg" data-description="Nutritious brown basmati rice with a subtle texture and earthy flavour, perfect for healthier meals." data-stock="35" data-rating="4.6" data-reviews="101" data-price="160" data-original="175">
+            <span class="discount-badge">9% OFF</span>
+            <button class="wish-btn" onclick="toggleWishlist('Brown Basmati Rice',160,'images/grocery_category_images/India Gate Basmati Rice.jpeg',this)">❤️</button>
+            <img src="images/grocery_category_images/India Gate Basmati Rice.jpeg" alt="Brown Basmati Rice">
+            <div class="card-body">
+                <h3>Brown Basmati Rice</h3><p class="qty">1 kg</p>
+                <div class="price-wrap"><span class="orig-price">Rs. 175</span><span class="disc-price">Rs. 160</span><span class="save-tag">Save Rs.15</span></div>
+                <div class="card-actions">
+                    <button class="details-btn" type="button">📄 Details</button>
+                    <button class="add-cart-btn" onclick="addToCart('Brown Basmati Rice',160,'images/grocery_category_images/India Gate Basmati Rice.jpeg',175)">🛒 Add to Cart</button>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <div id="product-details-modal" class="details-modal" aria-hidden="true">
+        <div class="details-panel">
+            <div class="details-header">Product Details</div>
+            <div class="details-body">
+                <div class="details-grid">
+                    <img id="modal-image" src="" alt="">
+                    <div>
+                        <h3 id="modal-name">Product Name</h3>
+                        <p id="modal-brand" style="margin:6px 0; color:#666; font-weight:600;"></p>
+                        <div class="details-meta">
+                            <span id="modal-stock">Stock</span>
+                            <span id="modal-rating">Rating</span>
+                            <span id="modal-qty">Qty</span>
+                        </div>
+                    </div>
+                </div>
+                <p id="modal-description" style="margin-top:18px; color:#4a4a4a; line-height:1.6;"></p>
+                <div class="price-wrap" id="modal-price-wrap" style="margin-top:16px; justify-content:flex-start;"></div>
+                <button class="details-close" type="button">Close</button>
+            </div>
+        </div>
+    </div>
+
+    <script>
+        (function () {
+            const maxProducts = 10;
+            const cutToLimit = () => {
+                const cards = Array.from(document.querySelectorAll('.product-card'));
+                cards.forEach((card, index) => {
+                    card.style.display = index < maxProducts ? '' : 'none';
+                });
+            };
+            if (document.readyState === 'loading') {
+                document.addEventListener('DOMContentLoaded', cutToLimit);
+            } else {
+                cutToLimit();
+            }
+        })();
+    </script>
+    <script>
+        (function () {
+            const localProductImages = {
+                'Amul Butter': '/images/grocery_category_images/Amul Butter.jpeg',
+                'Amul Gold Milk': '/images/grocery_category_images/Amul Gold Mlik.jpeg',
+                'Amul Taaza Milk': '/images/grocery_category_images/Amul Taza Mlik.jpg',
+                'Amul Masti Dahi': '/images/grocery_category_images/Amul Masti Dahi.jpeg',
+                'Amul Malai Paneer': '/images/grocery_category_images/Amul Malai Panner.jpeg',
+                'Amul Cheese Slices': '/images/grocery_category_images/Amul Chesse Slices.jpeg',
+                'Amul Cheese Block': '/images/grocery_category_images/Amul Cheese Block.jpeg',
+                'Amul Fresh Cream': '/images/grocery_category_images/Amul Fresh Cream.jpeg',
+                'Amul Lassi': '/images/grocery_category_images/Amul Lassi.jpeg',
+                'Amul Buttermilk': '/images/grocery_category_images/Amul Buttermlik.jpeg',
+                'Coca-Cola': '/images/grocery_category_images/Coca-Cola.jpeg',
+                'Thums Up': '/images/grocery_category_images/Thums up.jpeg',
+                'Sprite': '/images/grocery_category_images/Sprite.jpeg',
+                'Fanta Orange': '/images/grocery_category_images/Fanta Orange.jpeg',
+                'Maaza Mango Drink': '/images/grocery_category_images/Mazza Mango Drink.jpeg',
+                'Real Mixed Fruit Juice': '/images/grocery_category_images/Real Mixed Fruit Juice.jpeg',
+                'Tata Tea': '/images/grocery_category_images/Tata Tea.jpeg',
+                'Nescafé Classic Coffee': '/images/grocery_category_images/Neacafe` Classic Coffee.jpeg',
+                'Bournvita': '/images/grocery_category_images/Bournvita.jpeg',
+                'Tang Orange Drink': '/images/grocery_category_images/Tang Orange Drink.jpeg',
+                'Surf Excel Matic Detergent': '/images/grocery_category_images/Surf Excel Matic Detergent.jpeg',
+                'Ariel Matic Detergent': '/images/grocery_category_images/Ariel Matic detergent.jpeg',
+                'Tide Plus Detergent': '/images/grocery_category_images/Tide Plus Detergent.jpeg',
+                'Rin Detergent Powder': '/images/grocery_category_images/Rin Detergent Powder.jpeg',
+                'Surf Excel Liquid Detergent': '/images/grocery_category_images/Surf Excel Liquid Detergent.jpeg',
+                'Ariel Liquid Detergent': '/images/grocery_category_images/Ariel Liquid Detergent.jpeg',
+                'Vim Dishwash Liquid': '/images/grocery_category_images/Vim Dishwash Liquid.jpeg',
+                'Vim Dishwash Bar': '/images/grocery_category_images/Vim Dishwash Bar.jpeg',
+                'Harpic Toilet Cleaner': '/images/grocery_category_images/Harpic Toilet Cleaner.jpeg',
+                'Domex Toilet Cleaner': '/images/grocery_category_images/Domex Toilet Cleaner.jpeg',
+                'India Gate Basmati Rice': '/images/grocery_category_images/India Gate Basmati Rice.jpeg',
+                'Fortune Chakki Fresh Atta': '/images/grocery_category_images/Fortune Chakki Fresh Atta.jpeg',
+                'Toor Dal': '/images/grocery_category_images/Toor Dal.jpeg',
+                'Moong Dal': '/images/grocery_category_images/Moong Dal.jpeg',
+                'Masoor Dal': '/images/grocery_category_images/Masoor Dal.jpeg',
+                'Chana Dal': '/images/grocery_category_images/Chana Dal.jpeg',
+                'Poha': '/images/grocery_category_images/Poha.jpeg',
+                'Suji / Rava': '/images/grocery_category_images/Suji - Rawa.jpeg',
+                'Rajma': '/images/grocery_category_images/Rajma.jpeg',
+                'Kabuli Chana': '/images/grocery_category_images/Kabuli Chana.jpeg',
+                'Britannia Bourbon': '/images/grocery_category_images/Britannia Bourbon.jpeg',
+                'Good Day': '/images/grocery_category_images/britannia Good Day.jpeg',
+                'Marie Gold': '/images/grocery_category_images/Britannia Marie Gold.jpeg',
+                'NutriChoice': '/images/grocery_category_images/Britannia Nutrichoice.jpeg',
+                'Hide & Seek': '/images/grocery_category_images/Hide & Seek.jpeg',
+                'Oreo Original': '/images/grocery_category_images/Oreo Original.jpeg',
+                'Parle-G Biscuits': '/images/grocery_category_images/Parle-G Biscuits.jpeg',
+                'Krackjack': '/images/grocery_category_images/Krackjack.jpeg',
+                'Sunfeast Dark Fantasy': '/images/grocery_category_images/Sunfeast Dark Fantasy.jpeg',
+                'Sunfeast Marie Light': '/images/grocery_category_images/Sunfeast Marie Light.jpeg'
+            };
+
+            function normalizeName(value) {
+                return (value || '').toLowerCase().replace(/[^a-z0-9]+/g, ' ').trim();
+            }
+
+            function findLocalImage(name) {
+                if (!name) return '';
+                if (localProductImages[name]) return localProductImages[name];
+                const normalized = normalizeName(name);
+                for (const [productName, imagePath] of Object.entries(localProductImages)) {
+                    if (normalizeName(productName) === normalized) return imagePath;
+                }
+                return '';
+            }
+
+            document.querySelectorAll('.product-card img').forEach((img) => {
+                const card = img.closest('.product-card');
+                const title = card?.querySelector('h3')?.textContent || img.alt || '';
+                const localImage = findLocalImage(title.trim());
+                if (localImage) {
+                    img.src = localImage;
+                }
+            });
+        })();
+    </script>
+    <script src="Cart JS.js"></script>
+    <script src="Wishlist JS.js"></script>
+    <script>
+        const staplesSearch = document.getElementById('staples-search');
+        const filterButtons = document.querySelectorAll('.filter-btn');
+        const stapleCards = document.querySelectorAll('.staples-product-card');
+        const modal = document.getElementById('product-details-modal');
+        const modalName = document.getElementById('modal-name');
+        const modalBrand = document.getElementById('modal-brand');
+        const modalStock = document.getElementById('modal-stock');
+        const modalRating = document.getElementById('modal-rating');
+        const modalQty = document.getElementById('modal-qty');
+        const modalDescription = document.getElementById('modal-description');
+        const modalImage = document.getElementById('modal-image');
+        const modalPriceWrap = document.getElementById('modal-price-wrap');
+
+        let activeFilter = 'all';
+        let searchQuery = '';
+
+        function applyStaplesFilters() {
+            const q = searchQuery.trim().toLowerCase();
+            stapleCards.forEach(card => {
+                const name = (card.dataset.name || '').toLowerCase();
+                const brand = (card.dataset.brand || '').toLowerCase();
+                const category = (card.dataset.category || '').toLowerCase();
+                const matchText = !q || name.includes(q) || brand.includes(q) || category.includes(q);
+                const matchCategory = activeFilter === 'all' || category === activeFilter;
+                card.style.display = matchText && matchCategory ? '' : 'none';
+            });
+        }
+
+        if (staplesSearch) {
+            staplesSearch.addEventListener('input', (e) => {
+                searchQuery = e.target.value;
+                applyStaplesFilters();
+            });
+        }
+
+        filterButtons.forEach(button => {
+            button.addEventListener('click', () => {
+                filterButtons.forEach(item => item.classList.toggle('active', item === button));
+                activeFilter = button.dataset.filter || 'all';
+                applyStaplesFilters();
+            });
+        });
+
+        document.addEventListener('click', (event) => {
+            const detailsBtn = event.target.closest('.details-btn');
+            if (detailsBtn) {
+                const card = detailsBtn.closest('.staples-product-card');
+                if (!card) return;
+                const price = Number(card.dataset.price || 0);
+                const original = Number(card.dataset.original || price);
+                modalName.textContent = card.dataset.name || 'Product';
+                modalBrand.textContent = card.dataset.brand || 'Brand';
+                modalStock.textContent = 'Stock: ' + (card.dataset.stock || 'In stock');
+                modalRating.textContent = '★ ' + (card.dataset.rating || '4.5') + ' (' + (card.dataset.reviews || '0') + ' reviews)';
+                modalQty.textContent = 'Qty: ' + (card.querySelector('.qty')?.textContent || '');
+                modalDescription.textContent = card.dataset.description || 'Detailed information about this product.';
+                modalImage.src = card.dataset.image || '';
+                modalImage.alt = card.dataset.name || 'Product';
+                modalPriceWrap.innerHTML = `
+                    <span class="orig-price" style="text-decoration:line-through; color:#888; margin-right:8px; font-weight:700;">Rs. ${original}</span>
+                    <span class="disc-price" style="font-weight:900; color:#f59e0b;">Rs. ${price}</span>
+                    <span class="save-tag" style="margin-left:8px;">Save Rs.${original - price}</span>
+                `;
+                modal.classList.add('open');
+                modal.setAttribute('aria-hidden', 'false');
+            }
+
+            if (event.target === modal || event.target.closest('.details-close')) {
+                modal.classList.remove('open');
+                modal.setAttribute('aria-hidden', 'true');
+            }
+        });
+    </script>
+</body>
+</html>

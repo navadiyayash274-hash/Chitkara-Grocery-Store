@@ -1,0 +1,118 @@
+﻿<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Personal Care - Chitkara Grocery Store</title>
+    <link rel="stylesheet" href="Category Shared CSS.css">
+    <style>
+        .cat-hero .cat-tag { background:rgba(171,71,188,0.12); border:1px solid rgba(171,71,188,0.35); color:#ab47bc; }
+        .cat-hero h1 { background:linear-gradient(90deg,#ab47bc,#ffffff,#ce93d8,#ab47bc); }
+        .product-card:hover { border-color:rgba(171,71,188,0.5); box-shadow:0 20px 50px rgba(171,71,188,0.2); }
+        .disc-price { background:linear-gradient(90deg,#ab47bc,#ce93d8); -webkit-background-clip:text; -webkit-text-fill-color:transparent; background-clip:text; }
+        .save-tag { background:rgba(171,71,188,0.15); color:#ab47bc; border:1px solid rgba(171,71,188,0.3); }
+        .add-cart-btn { background:linear-gradient(120deg,#8e24aa,#6a1b9a); color:#fff; box-shadow:0 6px 20px rgba(142,36,170,0.4); }
+        .add-cart-btn:hover { background:linear-gradient(120deg,#ab47bc,#8e24aa); box-shadow:0 10px 30px rgba(142,36,170,0.6); }
+    </style>
+<script src="Auth JS.js"></script>
+</head>
+<body>
+    <nav class="cat-nav">
+        <a href="Home Page HTML.html" class="logo"><span>C</span>GS</a>
+        <span style="color:#ab47bc;font-weight:700;font-size:1rem;">💄 Personal Care</span>
+        <a href="Home Page HTML.html" class="home-btn">🏠 Home</a>
+    </nav>
+    <div class="cat-hero">
+        <span class="cat-tag">💄 PERSONAL CARE</span>
+        <h1 style="-webkit-text-fill-color:#ab47bc;background:none;font-size:2.5rem;font-weight:900;letter-spacing:3px;margin-bottom:10px;">Personal Care</h1>
+        <p>Top personal care essentials and beauty products at unbeatable prices</p>
+    </div>
+    <div class="products-grid">
+
+        <div class="product-card">
+            <span class="discount-badge">15% OFF</span>
+            <button class="wish-btn" onclick="toggleWishlist('Lakme Face Wash',127,'images/Lakme Facewash.jpg',this)">❤️</button>
+            <img src="images/Lakme Facewash.jpg" alt="Lakme Face Wash">
+            <div class="card-body">
+                <h3>Lakme Face Wash</h3><p class="qty">100 ml</p>
+                <div class="price-wrap"><span class="orig-price">Rs. 150</span><span class="disc-price">Rs. 127</span><span class="save-tag">Save Rs.23</span></div>
+                <button class="add-cart-btn" onclick="addToCart('Lakme Face Wash',127,'images/Lakme Facewash.jpg',150)">🛒 Add to Cart</button>
+            </div>
+        </div>
+
+        <div class="product-card">
+            <span class="discount-badge">10% OFF</span>
+            <button class="wish-btn" onclick="toggleWishlist('Moisturizer',225,'images/Moisturizer.jpg',this)">❤️</button>
+            <img src="images/Moisturizer.jpg" alt="Moisturizer">
+            <div class="card-body">
+                <h3>Moisturizer Cream</h3><p class="qty">100 ml</p>
+                <div class="price-wrap"><span class="orig-price">Rs. 250</span><span class="disc-price">Rs. 225</span><span class="save-tag">Save Rs.25</span></div>
+                <button class="add-cart-btn" onclick="addToCart('Moisturizer',225,'images/Moisturizer.jpg',250)">🛒 Add to Cart</button>
+            </div>
+        </div>
+
+        <div class="product-card">
+            <span class="discount-badge">12% OFF</span>
+            <button class="wish-btn" onclick="toggleWishlist('Face Cream',176,'images/Face Cream.jpg',this)">❤️</button>
+            <img src="images/Face Cream.jpg" alt="Face Cream">
+            <div class="card-body">
+                <h3>Face Cream</h3><p class="qty">50 gm</p>
+                <div class="price-wrap"><span class="orig-price">Rs. 200</span><span class="disc-price">Rs. 176</span><span class="save-tag">Save Rs.24</span></div>
+                <button class="add-cart-btn" onclick="addToCart('Face Cream',176,'images/Face Cream.jpg',200)">🛒 Add to Cart</button>
+            </div>
+        </div>
+
+        <div class="product-card">
+            <span class="discount-badge">10% OFF</span>
+            <button class="wish-btn" onclick="toggleWishlist('Mens Face Wash',135,'images/Men\'s Face Wash.jpg',this)">❤️</button>
+            <img src="images/Men's Face Wash.jpg" alt="Men's Face Wash">
+            <div class="card-body">
+                <h3>Men's Face Wash</h3><p class="qty">100 ml</p>
+                <div class="price-wrap"><span class="orig-price">Rs. 150</span><span class="disc-price">Rs. 135</span><span class="save-tag">Save Rs.15</span></div>
+                <button class="add-cart-btn" onclick="addToCart('Mens Face Wash',135,'images/Men\'s Face Wash.jpg',150)">🛒 Add to Cart</button>
+            </div>
+        </div>
+
+        <div class="product-card">
+            <span class="discount-badge">12% OFF</span>
+            <button class="wish-btn" onclick="toggleWishlist('Lip Balm',88,'images/Lip Balm.jpg',this)">❤️</button>
+            <img src="images/Lip Balm.jpg" alt="Lip Balm">
+            <div class="card-body">
+                <h3>Lip Balm</h3><p class="qty">1 piece</p>
+                <div class="price-wrap"><span class="orig-price">Rs. 100</span><span class="disc-price">Rs. 88</span><span class="save-tag">Save Rs.12</span></div>
+                <button class="add-cart-btn" onclick="addToCart('Lip Balm',88,'images/Lip Balm.jpg',100)">🛒 Add to Cart</button>
+            </div>
+        </div>
+
+        <div class="product-card">
+            <span class="discount-badge">10% OFF</span>
+            <button class="wish-btn" onclick="toggleWishlist('Beard Oil',135,'images/Beard Oil.jpg',this)">❤️</button>
+            <img src="images/Beard Oil.jpg" alt="Beard Oil">
+            <div class="card-body">
+                <h3>Beard Oil</h3><p class="qty">30 ml</p>
+                <div class="price-wrap"><span class="orig-price">Rs. 150</span><span class="disc-price">Rs. 135</span><span class="save-tag">Save Rs.15</span></div>
+                <button class="add-cart-btn" onclick="addToCart('Beard Oil',135,'images/Beard Oil.jpg',150)">🛒 Add to Cart</button>
+            </div>
+        </div>
+
+    </div>
+    <script>
+        (function () {
+            const maxProducts = 10;
+            const cutToLimit = () => {
+                const cards = Array.from(document.querySelectorAll('.product-card'));
+                cards.forEach((card, index) => {
+                    card.style.display = index < maxProducts ? '' : 'none';
+                });
+            };
+            if (document.readyState === 'loading') {
+                document.addEventListener('DOMContentLoaded', cutToLimit);
+            } else {
+                cutToLimit();
+            }
+        })();
+    </script>
+    <script src="Cart JS.js"></script>
+    <script src="Wishlist JS.js"></script>
+</body>
+</html>

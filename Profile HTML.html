@@ -1,0 +1,455 @@
+﻿<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>My Profile - Chitkara Grocery Store</title>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css">
+    <style>
+        @import url('https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;700;800;900&display=swap');
+
+        * { margin:0; padding:0; box-sizing:border-box; font-family:'Poppins',sans-serif; outline:none; }
+
+        body {
+            min-height: 100vh;
+            background: linear-gradient(135deg, #0b1a0d 0%, #0d1f3c 35%, #1a0b2e 70%, #0b1a0d 100%);
+            background-size: 400% 400%;
+            animation: bgAnim 12s ease infinite;
+            padding: 40px 20px;
+            position: relative;
+            overflow-x: hidden;
+        }
+
+        @keyframes bgAnim {
+            0%   { background-position: 0% 50%; }
+            50%  { background-position: 100% 50%; }
+            100% { background-position: 0% 50%; }
+        }
+
+        body::before {
+            content: '';
+            position: fixed; top:0; left:0; width:100%; height:100%;
+            background-image:
+                linear-gradient(rgba(78,176,96,0.04) 1px, transparent 1px),
+                linear-gradient(90deg, rgba(78,176,96,0.04) 1px, transparent 1px);
+            background-size: 50px 50px;
+            pointer-events: none; z-index:0;
+            animation: gridScroll 20s linear infinite;
+        }
+
+        @keyframes gridScroll {
+            from { transform: translateY(0); }
+            to   { transform: translateY(50px); }
+        }
+
+        body::after {
+            content: '';
+            position: fixed;
+            width: 500px; height: 500px;
+            background: radial-gradient(circle, rgba(142,68,173,0.15) 0%, transparent 70%);
+            top: -150px; right: -150px;
+            border-radius: 50%;
+            pointer-events: none; z-index: 0;
+            animation: orbFloat 8s ease-in-out infinite alternate;
+        }
+
+        @keyframes orbFloat {
+            from { transform: scale(1); }
+            to   { transform: scale(1.3) translate(-20px, 20px); }
+        }
+
+        /* ===== NAVBAR ===== */
+        .top-nav {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            flex-wrap: nowrap;
+            max-width: 900px;
+            margin: 0 auto 30px auto;
+            position: relative;
+            z-index: 1;
+        }
+
+        .top-nav .logo {
+            font-size: 1.4rem;
+            font-weight: 900;
+            color: #e0e0e0;
+            text-decoration: none;
+            letter-spacing: 1px;
+        }
+
+        .top-nav .logo span { color: #4eb060; }
+
+        .top-nav a.home-btn {
+            padding: 10px 22px;
+            background: linear-gradient(135deg, #4eb060, #2e7d32);
+            color: #fff;
+            text-decoration: none;
+            border-radius: 30px;
+            font-size: 0.85rem;
+            font-weight: 600;
+            transition: all 0.3s ease;
+            box-shadow: 0 4px 15px rgba(78,176,96,0.3);
+        }
+
+        .top-nav a.home-btn:hover {
+            transform: translateY(-3px);
+            box-shadow: 0 8px 25px rgba(78,176,96,0.5);
+        }
+
+        .profile-menu { position: relative; margin-left: auto; flex: 0 0 auto; }
+        .profile-menu-toggle { display: none; }
+        .profile-menu-button { width: 44px; height: 40px; padding: 9px; display: flex; flex-direction: column; justify-content: center; gap: 5px; border: 1px solid rgba(78,176,96,0.35); border-radius: 8px; background: rgba(255,255,255,0.08); cursor: pointer; }
+        .profile-menu-button span { display: block; width: 24px; height: 2px; background: #c8e6c9; transition: transform .2s ease, opacity .2s ease; }
+        .profile-menu-toggle:checked + .profile-menu-button span:first-child { transform: translateY(7px) rotate(45deg); }
+        .profile-menu-toggle:checked + .profile-menu-button span:nth-child(2) { opacity: 0; }
+        .profile-menu-toggle:checked + .profile-menu-button span:last-child { transform: translateY(-7px) rotate(-45deg); }
+        .profile-menu-panel { display: none; position: absolute; right: 0; top: 48px; min-width: 190px; padding: 8px; background: rgba(10,20,15,0.98); border: 1px solid rgba(78,176,96,0.35); border-radius: 9px; box-shadow: 0 15px 35px rgba(0,0,0,0.4); z-index: 5; }
+        .profile-menu-toggle:checked ~ .profile-menu-panel { display: block; }
+        .profile-menu-panel a { display: block; padding: 11px 13px; color: #e8f5e9; text-decoration: none; border-radius: 5px; font-size: .88rem; }
+        .profile-menu-panel a:hover { background: rgba(78,176,96,0.2); color: #fff; }
+
+        /* ===== PROFILE CARD ===== */
+        .profile-wrapper {
+            max-width: 900px;
+            margin: 0 auto;
+            position: relative;
+            z-index: 1;
+            animation: fadeInUp 0.7s ease both;
+        }
+
+        @keyframes fadeInUp {
+            from { opacity:0; transform:translateY(30px); }
+            to   { opacity:1; transform:translateY(0); }
+        }
+
+        /* Header section */
+        .profile-header {
+            background: rgba(255,255,255,0.06);
+            backdrop-filter: blur(20px);
+            border: 1px solid rgba(78,176,96,0.25);
+            border-radius: 24px;
+            padding: 30px 35px;
+            display: flex;
+            align-items: center;
+            gap: 25px;
+            margin-bottom: 20px;
+            box-shadow: 0 15px 40px rgba(0,0,0,0.4);
+        }
+
+        .avatar-big {
+            width: 90px; height: 90px;
+            border-radius: 50%;
+            background: linear-gradient(135deg, #4eb060, #2e7d32);
+            display: flex; align-items: center; justify-content: center;
+            font-size: 2.8rem;
+            box-shadow: 0 8px 25px rgba(78,176,96,0.5);
+            flex-shrink: 0;
+            animation: floatAvatar 4s ease-in-out infinite;
+        }
+
+        @keyframes floatAvatar {
+            0%,100% { transform: translateY(0); }
+            50%      { transform: translateY(-8px); }
+        }
+
+        .header-info h2 {
+            font-size: 1.5rem;
+            font-weight: 800;
+            background: linear-gradient(90deg, #4eb060, #a5d6a7, #fff, #a5d6a7, #4eb060);
+            background-size: 300%;
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            background-clip: text;
+            animation: textShine 4s linear infinite;
+            margin-bottom: 4px;
+        }
+
+        @keyframes textShine {
+            0%   { background-position: 0%; }
+            100% { background-position: 300%; }
+        }
+
+        .header-info p { color: #81c784; font-size: 0.88rem; }
+
+        .header-badge {
+            margin-left: auto;
+            background: rgba(78,176,96,0.12);
+            border: 1px solid rgba(78,176,96,0.3);
+            color: #4eb060;
+            padding: 8px 18px;
+            border-radius: 30px;
+            font-size: 0.8rem;
+            font-weight: 700;
+            letter-spacing: 1px;
+        }
+
+        /* Info grid */
+        .info-grid {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 16px;
+            margin-bottom: 20px;
+        }
+
+        .info-card {
+            background: rgba(255,255,255,0.05);
+            backdrop-filter: blur(15px);
+            border: 1px solid rgba(78,176,96,0.15);
+            border-radius: 18px;
+            padding: 22px 24px;
+            transition: all 0.35s ease;
+            cursor: default;
+        }
+
+        .info-card:hover {
+            transform: translateY(-5px);
+            border-color: rgba(78,176,96,0.4);
+            box-shadow: 0 12px 30px rgba(78,176,96,0.15);
+            background: rgba(78,176,96,0.07);
+        }
+
+        .info-card .label {
+            color: #81c784;
+            font-size: 0.72rem;
+            font-weight: 700;
+            letter-spacing: 1.5px;
+            text-transform: uppercase;
+            margin-bottom: 8px;
+            display: flex;
+            align-items: center;
+            gap: 6px;
+        }
+
+        .info-card .value {
+            color: #e0e0e0;
+            font-size: 1rem;
+            font-weight: 600;
+            letter-spacing: 0.3px;
+        }
+
+        .info-card .value.empty {
+            color: rgba(255,255,255,0.2);
+            font-style: italic;
+            font-size: 0.85rem;
+        }
+
+        /* Full width card */
+        .info-card.full {
+            grid-column: 1 / -1;
+        }
+
+        /* Action buttons */
+        .action-row {
+            display: flex;
+            gap: 14px;
+            flex-wrap: wrap;
+        }
+
+        .edit-btn {
+            flex: 1;
+            padding: 14px;
+            background: linear-gradient(120deg, #4eb060, #2e7d32);
+            border: none;
+            border-radius: 14px;
+            color: #fff;
+            font-size: 0.95rem;
+            font-weight: 700;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            box-shadow: 0 8px 25px rgba(78,176,96,0.4);
+            font-family: 'Poppins', sans-serif;
+            letter-spacing: 0.5px;
+            text-decoration: none;
+            text-align: center;
+            display: block;
+        }
+
+        .edit-btn:hover {
+            transform: translateY(-3px);
+            box-shadow: 0 12px 35px rgba(78,176,96,0.6);
+        }
+
+        .logout-btn {
+            flex: 1;
+            padding: 14px;
+            background: rgba(255,80,80,0.1);
+            border: 1px solid rgba(255,80,80,0.3) !important;
+            border-radius: 14px;
+            color: #ff6b6b;
+            font-size: 0.95rem;
+            font-weight: 700;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            font-family: 'Poppins', sans-serif;
+        }
+
+        .logout-btn:hover {
+            background: rgba(255,80,80,0.2);
+            transform: translateY(-3px);
+            box-shadow: 0 8px 20px rgba(255,80,80,0.3);
+        }
+
+        /* Scrollbar */
+        ::-webkit-scrollbar { width: 7px; }
+        ::-webkit-scrollbar-track { background: #0b1a0d; }
+        ::-webkit-scrollbar-thumb { background: linear-gradient(#4eb060, #7b2fbe); border-radius: 10px; }
+
+        @media(max-width:600px) {
+            .top-nav { width: 100%; padding: 0 4px; }
+            .info-grid { grid-template-columns: 1fr; }
+            .profile-header { flex-direction: column; text-align: center; }
+            .header-badge { margin-left: 0; }
+            .profile-header { padding: 22px; }
+        }
+    </style>
+<script src="Auth JS.js"></script>
+</head>
+<body>
+
+    <!-- Top Nav -->
+    <nav class="top-nav">
+        <a href="Home Page HTML.html" class="logo"><span>C</span>GS</a>
+        <div class="profile-menu">
+            <input type="checkbox" class="profile-menu-toggle" id="profile-menu-toggle">
+            <label for="profile-menu-toggle" class="profile-menu-button" aria-label="Open account menu">
+                <span></span><span></span><span></span>
+            </label>
+            <div class="profile-menu-panel">
+                <a href="Login And Registration HTML.html">Login</a>
+                <a href="Login And Registration HTML.html">Sign up</a>
+                <a href="My Orders HTML.html">My Orders</a>
+                <a href="Personal Info HTML.html">Information</a>
+                <a href="Feedback Form HTML.html">Feedback</a>
+                <a href="Home Page HTML.html">Home</a>
+            </div>
+        </div>
+    </nav>
+
+    <!-- Profile Wrapper -->
+    <div class="profile-wrapper">
+
+        <!-- Header -->
+        <div class="profile-header">
+            <div class="avatar-big" id="avatar-emoji">👤</div>
+            <div class="header-info">
+                <h2 id="profile-name">Loading...</h2>
+                <p id="profile-contact">—</p>
+            </div>
+            <div class="header-badge">✅ Verified</div>
+        </div>
+
+        <!-- Info Grid -->
+        <div class="info-grid">
+
+            <div class="info-card">
+                <div class="label"><i class="fas fa-user"></i> First Name</div>
+                <div class="value" id="p-firstname">—</div>
+            </div>
+
+            <div class="info-card">
+                <div class="label"><i class="fas fa-user"></i> Last Name</div>
+                <div class="value" id="p-lastname">—</div>
+            </div>
+
+            <div class="info-card">
+                <div class="label"><i class="fas fa-envelope"></i> Email Address</div>
+                <div class="value" id="p-email">—</div>
+            </div>
+
+            <div class="info-card">
+                <div class="label"><i class="fas fa-phone"></i> Phone Number</div>
+                <div class="value" id="p-phone">—</div>
+            </div>
+
+            <div class="info-card">
+                <div class="label"><i class="fas fa-birthday-cake"></i> Date of Birth</div>
+                <div class="value" id="p-dob">—</div>
+            </div>
+
+            <div class="info-card">
+                <div class="label"><i class="fas fa-venus-mars"></i> Gender</div>
+                <div class="value" id="p-gender">—</div>
+            </div>
+
+            <div class="info-card full">
+                <div class="label"><i class="fas fa-map-marker-alt"></i> Full Address</div>
+                <div class="value" id="p-address">—</div>
+            </div>
+
+            <div class="info-card">
+                <div class="label"><i class="fas fa-city"></i> City</div>
+                <div class="value" id="p-city">—</div>
+            </div>
+
+            <div class="info-card">
+                <div class="label"><i class="fas fa-map-pin"></i> Pincode</div>
+                <div class="value" id="p-pincode">—</div>
+            </div>
+
+        </div>
+
+        <!-- Actions -->
+        <div class="action-row">
+            <a href="Personal Info HTML.html" class="edit-btn">✏️ Edit Personal Information</a>
+            <button class="logout-btn" onclick="logout()">🚪 Logout</button>
+        </div>
+
+    </div>
+
+    <script>
+        document.addEventListener('DOMContentLoaded', function() {
+            // Load profile from localStorage
+            const profile = JSON.parse(localStorage.getItem('cgs_profile') || '{}');
+            const name    = localStorage.getItem('cgs_user_name')    || '';
+            const contact = localStorage.getItem('cgs_user_contact') || '';
+
+            // Set avatar emoji based on gender
+            const genderEmoji = { Male:'👨', Female:'👩', Other:'🧑' };
+            document.getElementById('avatar-emoji').textContent = genderEmoji[profile.gender] || '👤';
+
+            // Header
+            document.getElementById('profile-name').textContent    = name    || profile.fullName  || 'My Profile';
+            document.getElementById('profile-contact').textContent = contact || profile.email || profile.phone || '—';
+
+            // Fill all fields
+            set('p-firstname', profile.firstName);
+            set('p-lastname',  profile.lastName);
+            set('p-email',     profile.email    || localStorage.getItem('cgs_email'));
+            set('p-phone',     profile.phone    || localStorage.getItem('cgs_phone'));
+            set('p-dob',       profile.dob ? formatDate(profile.dob) : null);
+            set('p-gender',    profile.gender);
+            set('p-address',   profile.address  || localStorage.getItem('cgs_address'));
+            set('p-city',      profile.city);
+            set('p-pincode',   profile.pincode  || localStorage.getItem('cgs_pincode'));
+        });
+
+        function set(id, val) {
+            const el = document.getElementById(id);
+            if (val && val.trim() !== '') {
+                el.textContent = val;
+                el.classList.remove('empty');
+            } else {
+                el.textContent = 'Not provided';
+                el.classList.add('empty');
+            }
+        }
+
+        function formatDate(d) {
+            if (!d) return null;
+            const date = new Date(d);
+            return date.toLocaleDateString('en-IN', { day:'2-digit', month:'long', year:'numeric' });
+        }
+
+        function logout() {
+            localStorage.removeItem('cgs_logged_in');
+            localStorage.removeItem('cgs_user_name');
+            localStorage.removeItem('cgs_user_contact');
+            localStorage.removeItem('cgs_profile');
+            localStorage.removeItem('cgs_profile_done');
+            window.location.href = 'Login And Registration HTML.html';
+        }
+    </script>
+
+</body>
+</html>

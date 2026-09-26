@@ -1,0 +1,571 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Snacks & Biscuit - Chitkara Grocery Store</title>
+    <link rel="stylesheet" href="Category Shared CSS.css">
+    <style>
+        .cat-hero .cat-tag { background:rgba(255,138,101,0.12); border:1px solid rgba(255,138,101,0.35); color:#ff8a65; }
+        .cat-hero h1 { background:linear-gradient(90deg,#ff8a65,#ffffff,#ffd0b0,#ff8a65); }
+        .product-card:hover { border-color:rgba(255,138,101,0.5); box-shadow:0 20px 50px rgba(255,138,101,0.2); }
+        .disc-price { background:linear-gradient(90deg,#ff8a65,#ffd0b0); -webkit-background-clip:text; -webkit-text-fill-color:transparent; background-clip:text; }
+        .save-tag { background:rgba(255,138,101,0.15); color:#ff8a65; border:1px solid rgba(255,138,101,0.3); }
+        .add-cart-btn { background:linear-gradient(120deg,#ff7043,#e64a19); color:#fff; box-shadow:0 6px 20px rgba(255,112,67,0.4); }
+        .add-cart-btn:hover { background:linear-gradient(120deg,#ff8a65,#d84315); box-shadow:0 10px 30px rgba(255,112,67,0.6); }
+        .toolbar { max-width:1200px; margin:20px auto 0; padding:0 30px; display:flex; flex-wrap:wrap; gap:16px; align-items:center; justify-content:space-between; position:relative; z-index:1; }
+        .toolbar input { flex:1; min-width:220px; padding:12px 18px; border-radius:14px; border:1px solid rgba(255,138,101,0.4); background:rgba(255,255,255,0.04); color:#f5f5f5; font-size:0.95rem; }
+        .toolbar input::placeholder { color:#b9b9b9; }
+        .filter-group { display:flex; flex-wrap:wrap; gap:10px; }
+        .filter-btn { border:none; border-radius:999px; padding:8px 14px; background:rgba(255,255,255,0.08); color:#f0f0f0; cursor:pointer; font-weight:600; }
+        .filter-btn.active { background:linear-gradient(120deg,#ffb74d,#ff8a65); color:#111; }
+        .view-btn { width:100%; margin-top:10px; padding:10px 12px; border:none; border-radius:12px; background:rgba(255,255,255,0.08); color:#fff; cursor:pointer; font-weight:600; }
+        .view-btn:hover { background:rgba(255,255,255,0.15); }
+        .modal { display:none; position:fixed; inset:0; background:rgba(13,16,24,0.7); z-index:200; justify-content:center; align-items:center; padding:20px; }
+        .modal.show { display:flex; }
+        .modal-content { background:linear-gradient(135deg,#1b1d2d,#101826); border:1px solid rgba(255,138,101,0.5); border-radius:22px; max-width:560px; width:100%; padding:24px; box-shadow:0 20px 60px rgba(0,0,0,0.5); }
+        .modal-content h3 { color:#fff; margin-bottom:12px; }
+        .modal-content p { color:#d7d7d7; margin:6px 0; }
+        .modal-close { float:right; background:none; border:none; color:#fff; font-size:1.4rem; cursor:pointer; }
+    </style>
+    <script src="Auth JS.js"></script>
+</head>
+<body>
+    <nav class="cat-nav">
+        <a href="Home Page HTML.html" class="logo"><span>C</span>GS</a>
+        <span style="color:#ff8a65;font-weight:700;font-size:1rem;">🍪 Snacks & Biscuit</span>
+        <a href="Home Page HTML.html" class="home-btn">🏠 Home</a>
+    </nav>
+    <div class="cat-hero">
+        <span class="cat-tag">🍪 CRUNCHY</span>
+        <h1 style="-webkit-text-fill-color:#ff8a65;background:none;font-size:2.5rem;font-weight:900;letter-spacing:3px;margin-bottom:10px;">Snacks & Biscuits</h1>
+        <p>Daily munchies, crunchy bites, and family favorite snacks in one place.</p>
+    </div>
+    <div class="toolbar">
+        <input type="text" id="snackSearch" placeholder="Search snacks & biscuits..." aria-label="Search snacks and biscuits">
+        <div class="filter-group">
+            <button class="filter-btn active" data-filter="all">All</button>
+            <button class="filter-btn" data-filter="biscuits">Biscuits</button>
+            <button class="filter-btn" data-filter="chips">Chips</button>
+            <button class="filter-btn" data-filter="namkeen">Namkeen</button>
+            <button class="filter-btn" data-filter="chocolates">Chocolates</button>
+        </div>
+    </div>
+
+    <div class="products-grid" id="snackGrid">
+        <div class="product-card" data-category="biscuits">
+            <span class="discount-badge">10% OFF</span>
+            <button class="wish-btn" onclick="toggleWishlist('Parle-G Biscuits',72,'images/grocery_category_images/Parle-G Biscuits.jpeg',this)">❤️</button>
+            <img src="images/grocery_category_images/Parle-G Biscuits.jpeg" alt="Parle-G Biscuits">
+            <div class="card-body">
+                <h3>Parle-G Biscuits</h3><p class="qty">800 g</p>
+                <div class="price-wrap"><span class="orig-price">Rs. 80</span><span class="disc-price">Rs. 72</span><span class="save-tag">Save Rs.8</span></div>
+                <button class="view-btn" data-name="Parle-G Biscuits" data-price="72" data-original="80" data-image="images/grocery_category_images/Parle-G Biscuits.jpeg" data-qty="800 g" data-description="Classic sweet and crunchy biscuits loved by every generation for tea-time breaks and quick snacking.">View Details</button>
+                <button class="add-cart-btn" onclick="addToCart('Parle-G Biscuits',72,'images/grocery_category_images/Parle-G Biscuits.jpeg',80)">🛒 Add to Cart</button>
+            </div>
+        </div>
+        <div class="product-card" data-category="biscuits">
+            <span class="discount-badge">7% OFF</span>
+            <button class="wish-btn" onclick="toggleWishlist('Britannia Good Day',68,'images/grocery_category_images/britannia Good Day.jpeg',this)">❤️</button>
+            <img src="images/grocery_category_images/britannia Good Day.jpeg" alt="Britannia Good Day">
+            <div class="card-body">
+                <h3>Britannia Good Day</h3><p class="qty">200 g</p>
+                <div class="price-wrap"><span class="orig-price">Rs. 75</span><span class="disc-price">Rs. 68</span><span class="save-tag">Save Rs.7</span></div>
+                <button class="view-btn" data-name="Britannia Good Day" data-price="68" data-original="75" data-image="images/grocery_category_images/britannia Good Day.jpeg" data-qty="200 g" data-description="Buttery, crunchy cookies with a rich taste that brings the perfect golden bite to every snack break.">View Details</button>
+                <button class="add-cart-btn" onclick="addToCart('Britannia Good Day',68,'images/grocery_category_images/britannia Good Day.jpeg',75)">🛒 Add to Cart</button>
+            </div>
+        </div>
+        <div class="product-card" data-category="biscuits">
+            <span class="discount-badge">9% OFF</span>
+            <button class="wish-btn" onclick="toggleWishlist('Britannia Marie Gold',90,'images/grocery_category_images/Britannia Marie Gold.jpeg',this)">❤️</button>
+            <img src="images/grocery_category_images/Britannia Marie Gold.jpeg" alt="Britannia Marie Gold">
+            <div class="card-body">
+                <h3>Britannia Marie Gold</h3><p class="qty">250 g</p>
+                <div class="price-wrap"><span class="orig-price">Rs. 99</span><span class="disc-price">Rs. 90</span><span class="save-tag">Save Rs.9</span></div>
+                <button class="view-btn" data-name="Britannia Marie Gold" data-price="90" data-original="99" data-image="images/grocery_category_images/Britannia Marie Gold.jpeg" data-qty="250 g" data-description="Light, crisp biscuits with a delicate sweetness that fits perfectly with tea or coffee.">View Details</button>
+                <button class="add-cart-btn" onclick="addToCart('Britannia Marie Gold',90,'images/grocery_category_images/Britannia Marie Gold.jpeg',99)">🛒 Add to Cart</button>
+            </div>
+        </div>
+        <div class="product-card" data-category="biscuits">
+            <span class="discount-badge">6% OFF</span>
+            <button class="wish-btn" onclick="toggleWishlist('Britannia Bourbon',62,'images/grocery_category_images/Britannia Bourbon.jpeg',this)">❤️</button>
+            <img src="images/grocery_category_images/Britannia Bourbon.jpeg" alt="Britannia Bourbon">
+            <div class="card-body">
+                <h3>Britannia Bourbon</h3><p class="qty">150 g</p>
+                <div class="price-wrap"><span class="orig-price">Rs. 68</span><span class="disc-price">Rs. 62</span><span class="save-tag">Save Rs.6</span></div>
+                <button class="view-btn" data-name="Britannia Bourbon" data-price="62" data-original="68" data-image="images/grocery_category_images/Britannia Bourbon.jpeg" data-qty="150 g" data-description="Creamy chocolate-filled biscuits with a soft centre and a smooth cocoa finish.">View Details</button>
+                <button class="add-cart-btn" onclick="addToCart('Britannia Bourbon',62,'images/grocery_category_images/Britannia Bourbon.jpeg',68)">🛒 Add to Cart</button>
+            </div>
+        </div>
+        <div class="product-card" data-category="biscuits">
+            <span class="discount-badge">8% OFF</span>
+            <button class="wish-btn" onclick="toggleWishlist('Britannia NutriChoice',88,'images/grocery_category_images/Britannia Nutrichoice.jpeg',this)">❤️</button>
+            <img src="images/grocery_category_images/Britannia Nutrichoice.jpeg" alt="Britannia NutriChoice">
+            <div class="card-body">
+                <h3>Britannia NutriChoice</h3><p class="qty">300 g</p>
+                <div class="price-wrap"><span class="orig-price">Rs. 96</span><span class="disc-price">Rs. 88</span><span class="save-tag">Save Rs.8</span></div>
+                <button class="view-btn" data-name="Britannia NutriChoice" data-price="88" data-original="96" data-image="images/grocery_category_images/Britannia Nutrichoice.jpeg" data-qty="300 g" data-description="Healthy and tasty biscuits with a lighter profile for everyday snacking without compromising on crunch.">View Details</button>
+                <button class="add-cart-btn" onclick="addToCart('Britannia NutriChoice',88,'images/grocery_category_images/Britannia Nutrichoice.jpeg',96)">🛒 Add to Cart</button>
+            </div>
+        </div>
+        <div class="product-card" data-category="biscuits">
+            <span class="discount-badge">11% OFF</span>
+            <button class="wish-btn" onclick="toggleWishlist('Oreo Original',82,'images/grocery_category_images/Oreo Original.jpeg',this)">❤️</button>
+            <img src="images/grocery_category_images/Oreo Original.jpeg" alt="Oreo Original">
+            <div class="card-body">
+                <h3>Oreo Original</h3><p class="qty">120 g</p>
+                <div class="price-wrap"><span class="orig-price">Rs. 93</span><span class="disc-price">Rs. 82</span><span class="save-tag">Save Rs.11</span></div>
+                <button class="view-btn" data-name="Oreo Original" data-price="82" data-original="93" data-image="images/grocery_category_images/Oreo Original.jpeg" data-qty="120 g" data-description="Classic chocolate sandwich biscuits with a soft cream filling and irresistible crunch.">View Details</button>
+                <button class="add-cart-btn" onclick="addToCart('Oreo Original',82,'images/grocery_category_images/Oreo Original.jpeg',93)">🛒 Add to Cart</button>
+            </div>
+        </div>
+        <div class="product-card" data-category="biscuits">
+            <span class="discount-badge">15% OFF</span>
+            <button class="wish-btn" onclick="toggleWishlist('Sunfeast Dark Fantasy',120,'images/grocery_category_images/Sunfeast Dark Fantasy.jpeg',this)">❤️</button>
+            <img src="images/grocery_category_images/Sunfeast Dark Fantasy.jpeg" alt="Sunfeast Dark Fantasy">
+            <div class="card-body">
+                <h3>Sunfeast Dark Fantasy</h3><p class="qty">300 g</p>
+                <div class="price-wrap"><span class="orig-price">Rs. 135</span><span class="disc-price">Rs. 120</span><span class="save-tag">Save Rs.15</span></div>
+                <button class="view-btn" data-name="Sunfeast Dark Fantasy" data-price="120" data-original="135" data-image="images/grocery_category_images/Sunfeast Dark Fantasy.jpeg" data-qty="300 g" data-description="Rich chocolate-coated biscuits with an indulgent cocoa taste and a luxurious texture.">View Details</button>
+                <button class="add-cart-btn" onclick="addToCart('Sunfeast Dark Fantasy',120,'images/grocery_category_images/Sunfeast Dark Fantasy.jpeg',135)">🛒 Add to Cart</button>
+            </div>
+        </div>
+        <div class="product-card" data-category="biscuits">
+            <span class="discount-badge">10% OFF</span>
+            <button class="wish-btn" onclick="toggleWishlist('Sunfeast Marie Light',90,'images/grocery_category_images/Sunfeast Marie Light.jpeg',this)">❤️</button>
+            <img src="images/grocery_category_images/Sunfeast Marie Light.jpeg" alt="Sunfeast Marie Light">
+            <div class="card-body">
+                <h3>Sunfeast Marie Light</h3><p class="qty">250 g</p>
+                <div class="price-wrap"><span class="orig-price">Rs. 100</span><span class="disc-price">Rs. 90</span><span class="save-tag">Save Rs.10</span></div>
+                <button class="view-btn" data-name="Sunfeast Marie Light" data-price="90" data-original="100" data-image="images/grocery_category_images/Sunfeast Marie Light.jpeg" data-qty="250 g" data-description="A light, crisp tea biscuit with a delicate flavour and smooth finish.">View Details</button>
+                <button class="add-cart-btn" onclick="addToCart('Sunfeast Marie Light',90,'images/grocery_category_images/Sunfeast Marie Light.jpeg',100)">🛒 Add to Cart</button>
+            </div>
+        </div>
+        <div class="product-card" data-category="biscuits">
+            <span class="discount-badge">12% OFF</span>
+            <button class="wish-btn" onclick="toggleWishlist('Hide & Seek',86,'images/grocery_category_images/Hide & Seek.jpeg',this)">❤️</button>
+            <img src="images/grocery_category_images/Hide & Seek.jpeg" alt="Hide & Seek">
+            <div class="card-body">
+                <h3>Hide & Seek</h3><p class="qty">120 g</p>
+                <div class="price-wrap"><span class="orig-price">Rs. 98</span><span class="disc-price">Rs. 86</span><span class="save-tag">Save Rs.12</span></div>
+                <button class="view-btn" data-name="Hide & Seek" data-price="86" data-original="98" data-image="images/grocery_category_images/Hide & Seek.jpeg" data-qty="120 g" data-description="Sweet and crunchy chocolate biscuits with a crisp wafer bite that keeps snacking exciting.">View Details</button>
+                <button class="add-cart-btn" onclick="addToCart('Hide & Seek',86,'images/grocery_category_images/Hide & Seek.jpeg',98)">🛒 Add to Cart</button>
+            </div>
+        </div>
+        <div class="product-card" data-category="biscuits">
+            <span class="discount-badge">7% OFF</span>
+            <button class="wish-btn" onclick="toggleWishlist('KrackJack',65,'images/grocery_category_images/Krackjack.jpeg',this)">❤️</button>
+            <img src="images/grocery_category_images/Krackjack.jpeg" alt="KrackJack">
+            <div class="card-body">
+                <h3>KrackJack</h3><p class="qty">200 g</p>
+                <div class="price-wrap"><span class="orig-price">Rs. 72</span><span class="disc-price">Rs. 65</span><span class="save-tag">Save Rs.7</span></div>
+                <button class="view-btn" data-name="KrackJack" data-price="65" data-original="72" data-image="images/grocery_category_images/Krackjack.jpeg" data-qty="200 g" data-description="Savory biscuit crackers with a crispy bite and a satisfying salt-and-flavour punch.">View Details</button>
+                <button class="add-cart-btn" onclick="addToCart('KrackJack',65,'images/grocery_category_images/Krackjack.jpeg',72)">🛒 Add to Cart</button>
+            </div>
+        </div>
+        <div class="product-card" data-category="biscuits">
+            <span class="discount-badge">8% OFF</span>
+            <button class="wish-btn" onclick="toggleWishlist('Monaco',60,'images/grocery_category_images/Parle-G Biscuits.jpeg',this)">❤️</button>
+            <img src="images/grocery_category_images/Parle-G Biscuits.jpeg" alt="Monaco">
+            <div class="card-body">
+                <h3>Monaco</h3><p class="qty">200 g</p>
+                <div class="price-wrap"><span class="orig-price">Rs. 68</span><span class="disc-price">Rs. 60</span><span class="save-tag">Save Rs.8</span></div>
+                <button class="view-btn" data-name="Monaco" data-price="60" data-original="68" data-image="images/grocery_category_images/Parle-G Biscuits.jpeg" data-qty="200 g" data-description="Classic savory biscuits with a crisp finish and a tasty seasoning fit for everyday snacking.">View Details</button>
+                <button class="add-cart-btn" onclick="addToCart('Monaco',60,'images/grocery_category_images/Parle-G Biscuits.jpeg',68)">🛒 Add to Cart</button>
+            </div>
+        </div>
+        <div class="product-card" data-category="biscuits">
+            <span class="discount-badge">6% OFF</span>
+            <button class="wish-btn" onclick="toggleWishlist('Bourbon Cream',48,'images/grocery_category_images/Britannia Bourbon.jpeg',this)">❤️</button>
+            <img src="images/grocery_category_images/Britannia Bourbon.jpeg" alt="Bourbon Cream">
+            <div class="card-body">
+                <h3>Bourbon Cream</h3><p class="qty">150 g</p>
+                <div class="price-wrap"><span class="orig-price">Rs. 54</span><span class="disc-price">Rs. 48</span><span class="save-tag">Save Rs.6</span></div>
+                <button class="view-btn" data-name="Bourbon Cream" data-price="48" data-original="54" data-image="images/grocery_category_images/Britannia Bourbon.jpeg" data-qty="150 g" data-description="Creamy chocolate biscuit with a rich and mellow finish that appeals to all age groups.">View Details</button>
+                <button class="add-cart-btn" onclick="addToCart('Bourbon Cream',48,'images/grocery_category_images/Britannia Bourbon.jpeg',54)">🛒 Add to Cart</button>
+            </div>
+        </div>
+        <div class="product-card" data-category="chips">
+            <span class="discount-badge">5% OFF</span>
+            <button class="wish-btn" onclick="toggleWishlist('Lay\'s Classic Salted',40,'images/images/chip.png',this)">❤️</button>
+            <img src="images/images/chip.png" alt="Lay's Classic Salted">
+            <div class="card-body">
+                <h3>Lay's Classic Salted</h3><p class="qty">50 g</p>
+                <div class="price-wrap"><span class="orig-price">Rs. 45</span><span class="disc-price">Rs. 40</span><span class="save-tag">Save Rs.5</span></div>
+                <button class="view-btn" data-name="Lay's Classic Salted" data-price="40" data-original="45" data-image="images/images/chip.png" data-qty="50 g" data-description="Perfectly salted potato chips with a crunchy texture for instant cravings.">View Details</button>
+                <button class="add-cart-btn" onclick="addToCart('Lay\'s Classic Salted',40,'images/images/chip.png',45)">🛒 Add to Cart</button>
+            </div>
+        </div>
+        <div class="product-card" data-category="chips">
+            <span class="discount-badge">5% OFF</span>
+            <button class="wish-btn" onclick="toggleWishlist('Lay\'s Magic Masala',40,'images/images/chip.png',this)">❤️</button>
+            <img src="images/images/chip.png" alt="Lay's Magic Masala">
+            <div class="card-body">
+                <h3>Lay's Magic Masala</h3><p class="qty">50 g</p>
+                <div class="price-wrap"><span class="orig-price">Rs. 45</span><span class="disc-price">Rs. 40</span><span class="save-tag">Save Rs.5</span></div>
+                <button class="view-btn" data-name="Lay's Magic Masala" data-price="40" data-original="45" data-image="images/images/chip.png" data-qty="50 g" data-description="A bold masala seasoning with spicy and savory notes for a flavorful snack break.">View Details</button>
+                <button class="add-cart-btn" onclick="addToCart('Lay\'s Magic Masala',40,'images/images/chip.png',45)">🛒 Add to Cart</button>
+            </div>
+        </div>
+        <div class="product-card" data-category="chips">
+            <span class="discount-badge">5% OFF</span>
+            <button class="wish-btn" onclick="toggleWishlist('Lay\'s American Style Cream & Onion',40,'images/images/chip.png',this)">❤️</button>
+            <img src="images/images/chip.png" alt="Lay's American Style Cream & Onion">
+            <div class="card-body">
+                <h3>Lay's American Style Cream & Onion</h3><p class="qty">50 g</p>
+                <div class="price-wrap"><span class="orig-price">Rs. 45</span><span class="disc-price">Rs. 40</span><span class="save-tag">Save Rs.5</span></div>
+                <button class="view-btn" data-name="Lay's American Style Cream & Onion" data-price="40" data-original="45" data-image="images/images/chip.png" data-qty="50 g" data-description="A creamy onion aroma with a smooth finish and a savoury crunch for every snack occasion.">View Details</button>
+                <button class="add-cart-btn" onclick="addToCart('Lay\'s American Style Cream & Onion',40,'images/images/chip.png',45)">🛒 Add to Cart</button>
+            </div>
+        </div>
+        <div class="product-card" data-category="chips">
+            <span class="discount-badge">7% OFF</span>
+            <button class="wish-btn" onclick="toggleWishlist('Kurkure Masala Munch',45,'images/images/chip.png',this)">❤️</button>
+            <img src="images/images/chip.png" alt="Kurkure Masala Munch">
+            <div class="card-body">
+                <h3>Kurkure Masala Munch</h3><p class="qty">90 g</p>
+                <div class="price-wrap"><span class="orig-price">Rs. 52</span><span class="disc-price">Rs. 45</span><span class="save-tag">Save Rs.7</span></div>
+                <button class="view-btn" data-name="Kurkure Masala Munch" data-price="45" data-original="52" data-image="images/images/chip.png" data-qty="90 g" data-description="Masala-coated corn bites with a crisp crunch and spicy flavor.">View Details</button>
+                <button class="add-cart-btn" onclick="addToCart('Kurkure Masala Munch',45,'images/images/chip.png',52)">🛒 Add to Cart</button>
+            </div>
+        </div>
+        <div class="product-card" data-category="chips">
+            <span class="discount-badge">7% OFF</span>
+            <button class="wish-btn" onclick="toggleWishlist('Kurkure Chilli Chatka',45,'images/images/chip.png',this)">❤️</button>
+            <img src="images/images/chip.png" alt="Kurkure Chilli Chatka">
+            <div class="card-body">
+                <h3>Kurkure Chilli Chatka</h3><p class="qty">90 g</p>
+                <div class="price-wrap"><span class="orig-price">Rs. 52</span><span class="disc-price">Rs. 45</span><span class="save-tag">Save Rs.7</span></div>
+                <button class="view-btn" data-name="Kurkure Chilli Chatka" data-price="45" data-original="52" data-image="images/images/chip.png" data-qty="90 g" data-description="Tangy chilli flavor with a spicy, crunchy texture for a zesty kick.">View Details</button>
+                <button class="add-cart-btn" onclick="addToCart('Kurkure Chilli Chatka',45,'images/images/chip.png',52)">🛒 Add to Cart</button>
+            </div>
+        </div>
+        <div class="product-card" data-category="chips">
+            <span class="discount-badge">8% OFF</span>
+            <button class="wish-btn" onclick="toggleWishlist('Bingo Tedhe Medhe',50,'images/images/chip.png',this)">❤️</button>
+            <img src="images/images/chip.png" alt="Bingo Tedhe Medhe">
+            <div class="card-body">
+                <h3>Bingo Tedhe Medhe</h3><p class="qty">90 g</p>
+                <div class="price-wrap"><span class="orig-price">Rs. 58</span><span class="disc-price">Rs. 50</span><span class="save-tag">Save Rs.8</span></div>
+                <button class="view-btn" data-name="Bingo Tedhe Medhe" data-price="50" data-original="58" data-image="images/images/chip.png" data-qty="90 g" data-description="Crunchy, twisted snacks packed with a spicy and tangy profile for an instant flavor burst.">View Details</button>
+                <button class="add-cart-btn" onclick="addToCart('Bingo Tedhe Medhe',50,'images/images/chip.png',58)">🛒 Add to Cart</button>
+            </div>
+        </div>
+        <div class="product-card" data-category="chips">
+            <span class="discount-badge">8% OFF</span>
+            <button class="wish-btn" onclick="toggleWishlist('Bingo Mad Angles',50,'images/images/chip.png',this)">❤️</button>
+            <img src="images/images/chip.png" alt="Bingo Mad Angles">
+            <div class="card-body">
+                <h3>Bingo Mad Angles</h3><p class="qty">90 g</p>
+                <div class="price-wrap"><span class="orig-price">Rs. 58</span><span class="disc-price">Rs. 50</span><span class="save-tag">Save Rs.8</span></div>
+                <button class="view-btn" data-name="Bingo Mad Angles" data-price="50" data-original="58" data-image="images/images/chip.png" data-qty="90 g" data-description="Unique corner-shaped snacks with a crunchy bite and a delicious savory seasoning.">View Details</button>
+                <button class="add-cart-btn" onclick="addToCart('Bingo Mad Angles',50,'images/images/chip.png',58)">🛒 Add to Cart</button>
+            </div>
+        </div>
+        <div class="product-card" data-category="namkeen">
+            <span class="discount-badge">18% OFF</span>
+            <button class="wish-btn" onclick="toggleWishlist('Haldiram\'s Aloo Bhujia',120,'images/grocery_category_images/Parle-G Biscuits.jpeg',this)">❤️</button>
+            <img src="images/grocery_category_images/Parle-G Biscuits.jpeg" alt="Haldiram's Aloo Bhujia">
+            <div class="card-body">
+                <h3>Haldiram's Aloo Bhujia</h3><p class="qty">200 g</p>
+                <div class="price-wrap"><span class="orig-price">Rs. 138</span><span class="disc-price">Rs. 120</span><span class="save-tag">Save Rs.18</span></div>
+                <button class="view-btn" data-name="Haldiram's Aloo Bhujia" data-price="120" data-original="138" data-image="images/grocery_category_images/Parle-G Biscuits.jpeg" data-qty="200 g" data-description="Classic potato bhujia with a crisp texture and a rich savory taste.">View Details</button>
+                <button class="add-cart-btn" onclick="addToCart('Haldiram\'s Aloo Bhujia',120,'images/grocery_category_images/Parle-G Biscuits.jpeg',138)">🛒 Add to Cart</button>
+            </div>
+        </div>
+        <div class="product-card" data-category="namkeen">
+            <span class="discount-badge">14% OFF</span>
+            <button class="wish-btn" onclick="toggleWishlist('Haldiram\'s Bhujia Sev',110,'images/grocery_category_images/Parle-G Biscuits.jpeg',this)">❤️</button>
+            <img src="images/grocery_category_images/Parle-G Biscuits.jpeg" alt="Haldiram's Bhujia Sev">
+            <div class="card-body">
+                <h3>Haldiram's Bhujia Sev</h3><p class="qty">200 g</p>
+                <div class="price-wrap"><span class="orig-price">Rs. 124</span><span class="disc-price">Rs. 110</span><span class="save-tag">Save Rs.14</span></div>
+                <button class="view-btn" data-name="Haldiram's Bhujia Sev" data-price="110" data-original="124" data-image="images/grocery_category_images/Parle-G Biscuits.jpeg" data-qty="200 g" data-description="Fine sev strands with a warm masala flavour and a traditional crunchy finish.">View Details</button>
+                <button class="add-cart-btn" onclick="addToCart('Haldiram\'s Bhujia Sev',110,'images/grocery_category_images/Parle-G Biscuits.jpeg',124)">🛒 Add to Cart</button>
+            </div>
+        </div>
+        <div class="product-card" data-category="namkeen">
+            <span class="discount-badge">16% OFF</span>
+            <button class="wish-btn" onclick="toggleWishlist('Haldiram\'s Moong Dal',120,'images/grocery_category_images/Moong Dal.jpeg',this)">❤️</button>
+            <img src="images/grocery_category_images/Moong Dal.jpeg" alt="Haldiram's Moong Dal">
+            <div class="card-body">
+                <h3>Haldiram's Moong Dal</h3><p class="qty">200 g</p>
+                <div class="price-wrap"><span class="orig-price">Rs. 136</span><span class="disc-price">Rs. 120</span><span class="save-tag">Save Rs.16</span></div>
+                <button class="view-btn" data-name="Haldiram's Moong Dal" data-price="120" data-original="136" data-image="images/grocery_category_images/Moong Dal.jpeg" data-qty="200 g" data-description="Roasted moong dal snack with a hearty crunch and a mildly spiced finish.">View Details</button>
+                <button class="add-cart-btn" onclick="addToCart('Haldiram\'s Moong Dal',120,'images/grocery_category_images/Moong Dal.jpeg',136)">🛒 Add to Cart</button>
+            </div>
+        </div>
+        <div class="product-card" data-category="chips">
+            <span class="discount-badge">7% OFF</span>
+            <button class="wish-btn" onclick="toggleWishlist('Balaji Wafers',75,'images/images/chip.png',this)">❤️</button>
+            <img src="images/images/chip.png" alt="Balaji Wafers">
+            <div class="card-body">
+                <h3>Balaji Wafers</h3><p class="qty">150 g</p>
+                <div class="price-wrap"><span class="orig-price">Rs. 82</span><span class="disc-price">Rs. 75</span><span class="save-tag">Save Rs.7</span></div>
+                <button class="view-btn" data-name="Balaji Wafers" data-price="75" data-original="82" data-image="images/images/chip.png" data-qty="150 g" data-description="Thin, crispy wafers with a classic salty taste and satisfying crunch.">View Details</button>
+                <button class="add-cart-btn" onclick="addToCart('Balaji Wafers',75,'images/images/chip.png',82)">🛒 Add to Cart</button>
+            </div>
+        </div>
+        <div class="product-card" data-category="chips">
+            <span class="discount-badge">7% OFF</span>
+            <button class="wish-btn" onclick="toggleWishlist('Balaji Masala Wafers',75,'images/images/chip.png',this)">❤️</button>
+            <img src="images/images/chip.png" alt="Balaji Masala Wafers">
+            <div class="card-body">
+                <h3>Balaji Masala Wafers</h3><p class="qty">150 g</p>
+                <div class="price-wrap"><span class="orig-price">Rs. 82</span><span class="disc-price">Rs. 75</span><span class="save-tag">Save Rs.7</span></div>
+                <button class="view-btn" data-name="Balaji Masala Wafers" data-price="75" data-original="82" data-image="images/images/chip.png" data-qty="150 g" data-description="Masala-flavoured wafers with a spicy tang and classic crispy texture.">View Details</button>
+                <button class="add-cart-btn" onclick="addToCart('Balaji Masala Wafers',75,'images/images/chip.png',82)">🛒 Add to Cart</button>
+            </div>
+        </div>
+        <div class="product-card" data-category="chips">
+            <span class="discount-badge">5% OFF</span>
+            <button class="wish-btn" onclick="toggleWishlist('Uncle Chipps',35,'images/images/chip.png',this)">❤️</button>
+            <img src="images/images/chip.png" alt="Uncle Chipps">
+            <div class="card-body">
+                <h3>Uncle Chipps</h3><p class="qty">55 g</p>
+                <div class="price-wrap"><span class="orig-price">Rs. 40</span><span class="disc-price">Rs. 35</span><span class="save-tag">Save Rs.5</span></div>
+                <button class="view-btn" data-name="Uncle Chipps" data-price="35" data-original="40" data-image="images/images/chip.png" data-qty="55 g" data-description="Savory and crunchy chips with a balanced taste for lunchboxes and evening bites.">View Details</button>
+                <button class="add-cart-btn" onclick="addToCart('Uncle Chipps',35,'images/images/chip.png',40)">🛒 Add to Cart</button>
+            </div>
+        </div>
+        <div class="product-card" data-category="chips">
+            <span class="discount-badge">5% OFF</span>
+            <button class="wish-btn" onclick="toggleWishlist('Too Yumm! Chips',45,'images/images/chip.png',this)">❤️</button>
+            <img src="images/images/chip.png" alt="Too Yumm! Chips">
+            <div class="card-body">
+                <h3>Too Yumm! Chips</h3><p class="qty">60 g</p>
+                <div class="price-wrap"><span class="orig-price">Rs. 50</span><span class="disc-price">Rs. 45</span><span class="save-tag">Save Rs.5</span></div>
+                <button class="view-btn" data-name="Too Yumm! Chips" data-price="45" data-original="50" data-image="images/images/chip.png" data-qty="60 g" data-description="Crispy chips with a flavorful twist and a lighter snack profile.">View Details</button>
+                <button class="add-cart-btn" onclick="addToCart('Too Yumm! Chips',45,'images/images/chip.png',50)">🛒 Add to Cart</button>
+            </div>
+        </div>
+        <div class="product-card" data-category="chocolates">
+            <span class="discount-badge">5% OFF</span>
+            <button class="wish-btn" onclick="toggleWishlist('5 Star Chocolate',35,'images/grocery_category_images/Bournvita.jpeg',this)">❤️</button>
+            <img src="images/grocery_category_images/Bournvita.jpeg" alt="5 Star Chocolate">
+            <div class="card-body">
+                <h3>5 Star Chocolate</h3><p class="qty">45 g</p>
+                <div class="price-wrap"><span class="orig-price">Rs. 40</span><span class="disc-price">Rs. 35</span><span class="save-tag">Save Rs.5</span></div>
+                <button class="view-btn" data-name="5 Star Chocolate" data-price="35" data-original="40" data-image="images/grocery_category_images/Bournvita.jpeg" data-qty="45 g" data-description="Soft caramel and nougat chocolate bar with a rich taste and nostalgic feel.">View Details</button>
+                <button class="add-cart-btn" onclick="addToCart('5 Star Chocolate',35,'images/grocery_category_images/Bournvita.jpeg',40)">🛒 Add to Cart</button>
+            </div>
+        </div>
+        <div class="product-card" data-category="chocolates">
+            <span class="discount-badge">10% OFF</span>
+            <button class="wish-btn" onclick="toggleWishlist('Dairy Milk',60,'images/grocery_category_images/Bournvita.jpeg',this)">❤️</button>
+            <img src="images/grocery_category_images/Bournvita.jpeg" alt="Dairy Milk">
+            <div class="card-body">
+                <h3>Dairy Milk</h3><p class="qty">110 g</p>
+                <div class="price-wrap"><span class="orig-price">Rs. 70</span><span class="disc-price">Rs. 60</span><span class="save-tag">Save Rs.10</span></div>
+                <button class="view-btn" data-name="Dairy Milk" data-price="60" data-original="70" data-image="images/grocery_category_images/Bournvita.jpeg" data-qty="110 g" data-description="Classic dairy milk chocolate with a smooth cocoa taste and creamy chocolate texture.">View Details</button>
+                <button class="add-cart-btn" onclick="addToCart('Dairy Milk',60,'images/grocery_category_images/Bournvita.jpeg',70)">🛒 Add to Cart</button>
+            </div>
+        </div>
+        <div class="product-card" data-category="chocolates">
+            <span class="discount-badge">4% OFF</span>
+            <button class="wish-btn" onclick="toggleWishlist('Perk Chocolate',25,'images/grocery_category_images/Bournvita.jpeg',this)">❤️</button>
+            <img src="images/grocery_category_images/Bournvita.jpeg" alt="Perk Chocolate">
+            <div class="card-body">
+                <h3>Perk Chocolate</h3><p class="qty">40 g</p>
+                <div class="price-wrap"><span class="orig-price">Rs. 29</span><span class="disc-price">Rs. 25</span><span class="save-tag">Save Rs.4</span></div>
+                <button class="view-btn" data-name="Perk Chocolate" data-price="25" data-original="29" data-image="images/grocery_category_images/Bournvita.jpeg" data-qty="40 g" data-description="Crunchy caramel-filled chocolate bar with a light bite and satisfying sweet finish.">View Details</button>
+                <button class="add-cart-btn" onclick="addToCart('Perk Chocolate',25,'images/grocery_category_images/Bournvita.jpeg',29)">🛒 Add to Cart</button>
+            </div>
+        </div>
+        <div class="product-card" data-category="chocolates">
+            <span class="discount-badge">7% OFF</span>
+            <button class="wish-btn" onclick="toggleWishlist('KitKat',35,'images/grocery_category_images/Bournvita.jpeg',this)">❤️</button>
+            <img src="images/grocery_category_images/Bournvita.jpeg" alt="KitKat">
+            <div class="card-body">
+                <h3>KitKat</h3><p class="qty">41.5 g</p>
+                <div class="price-wrap"><span class="orig-price">Rs. 42</span><span class="disc-price">Rs. 35</span><span class="save-tag">Save Rs.7</span></div>
+                <button class="view-btn" data-name="KitKat" data-price="35" data-original="42" data-image="images/grocery_category_images/Bournvita.jpeg" data-qty="41.5 g" data-description="Crisp wafer layers coated in smooth chocolate for a light, crunchy break.">View Details</button>
+                <button class="add-cart-btn" onclick="addToCart('KitKat',35,'images/grocery_category_images/Bournvita.jpeg',42)">🛒 Add to Cart</button>
+            </div>
+        </div>
+    </div>
+
+    <div id="snackDetailsModal" class="modal" aria-hidden="true">
+        <div class="modal-content">
+            <button class="modal-close" type="button" aria-label="Close details">×</button>
+            <img id="modalImage" src="" alt="Product" style="width:100%; max-height:250px; object-fit:contain; border-radius:18px; background:rgba(255,255,255,0.04); padding:16px; margin-bottom:16px;">
+            <h3 id="modalName"></h3>
+            <p id="modalQty"></p>
+            <p id="modalPrice"></p>
+            <p id="modalDescription"></p>
+            <button class="add-cart-btn" id="modalAddToCart" style="margin-top:16px;">🛒 Add to Cart</button>
+        </div>
+    </div>
+
+    <script>
+        const snackSearch = document.getElementById('snackSearch');
+        const filterButtons = document.querySelectorAll('.filter-btn');
+        const snackCards = document.querySelectorAll('.product-card');
+        const snackModal = document.getElementById('snackDetailsModal');
+        const modalClose = document.querySelector('.modal-close');
+        const modalImage = document.getElementById('modalImage');
+        const modalName = document.getElementById('modalName');
+        const modalQty = document.getElementById('modalQty');
+        const modalPrice = document.getElementById('modalPrice');
+        const modalDescription = document.getElementById('modalDescription');
+        const modalAddToCart = document.getElementById('modalAddToCart');
+
+        let currentProduct = null;
+
+        function applySnackFilter() {
+            const query = (snackSearch.value || '').trim().toLowerCase();
+            const activeFilter = document.querySelector('.filter-btn.active')?.dataset.filter || 'all';
+
+            snackCards.forEach((card) => {
+                const text = card.querySelector('h3').textContent.toLowerCase();
+                const category = card.dataset.category;
+                const matchesText = !query || text.includes(query);
+                const matchesFilter = activeFilter === 'all' || category === activeFilter;
+                card.style.display = matchesText && matchesFilter ? 'block' : 'none';
+            });
+        }
+
+        snackSearch.addEventListener('input', applySnackFilter);
+
+        filterButtons.forEach((button) => {
+            button.addEventListener('click', () => {
+                filterButtons.forEach((btn) => btn.classList.toggle('active', btn === button));
+                applySnackFilter();
+            });
+        });
+
+        document.querySelectorAll('.view-btn').forEach((button) => {
+            button.addEventListener('click', () => {
+                currentProduct = {
+                    name: button.dataset.name,
+                    price: Number(button.dataset.price),
+                    original: Number(button.dataset.original),
+                    image: button.dataset.image,
+                    qty: button.dataset.qty,
+                    description: button.dataset.description
+                };
+
+                modalImage.src = currentProduct.image;
+                modalImage.alt = currentProduct.name;
+                modalName.textContent = currentProduct.name;
+                modalQty.textContent = `Quantity: ${currentProduct.qty}`;
+                modalPrice.textContent = `Price: Rs. ${currentProduct.price} (Original: Rs. ${currentProduct.original})`;
+                modalDescription.textContent = currentProduct.description;
+                modalAddToCart.onclick = () => {
+                    addToCart(currentProduct.name, currentProduct.price, currentProduct.image, currentProduct.original);
+                    snackModal.classList.remove('show');
+                };
+                snackModal.classList.add('show');
+                snackModal.setAttribute('aria-hidden', 'false');
+            });
+        });
+
+        function closeSnackModal() {
+            snackModal.classList.remove('show');
+            snackModal.setAttribute('aria-hidden', 'true');
+        }
+
+        modalClose.addEventListener('click', closeSnackModal);
+        snackModal.addEventListener('click', (event) => {
+            if (event.target === snackModal) closeSnackModal();
+        });
+    </script>
+    <script>
+        (function () {
+            const maxProducts = 10;
+            const cutToLimit = () => {
+                const cards = Array.from(document.querySelectorAll('.product-card'));
+                cards.forEach((card, index) => {
+                    card.style.display = index < maxProducts ? '' : 'none';
+                });
+            };
+            if (document.readyState === 'loading') {
+                document.addEventListener('DOMContentLoaded', cutToLimit);
+            } else {
+                cutToLimit();
+            }
+        })();
+    </script>
+    <script>
+        (function () {
+            const localProductImages = {
+                'Amul Butter': '/images/grocery_category_images/Amul Butter.jpeg',
+                'Amul Gold Milk': '/images/grocery_category_images/Amul Gold Mlik.jpeg',
+                'Amul Taaza Milk': '/images/grocery_category_images/Amul Taza Mlik.jpg',
+                'Amul Masti Dahi': '/images/grocery_category_images/Amul Masti Dahi.jpeg',
+                'Amul Malai Paneer': '/images/grocery_category_images/Amul Malai Panner.jpeg',
+                'Amul Cheese Slices': '/images/grocery_category_images/Amul Chesse Slices.jpeg',
+                'Amul Cheese Block': '/images/grocery_category_images/Amul Cheese Block.jpeg',
+                'Amul Fresh Cream': '/images/grocery_category_images/Amul Fresh Cream.jpeg',
+                'Amul Lassi': '/images/grocery_category_images/Amul Lassi.jpeg',
+                'Amul Buttermilk': '/images/grocery_category_images/Amul Buttermlik.jpeg',
+                'Coca-Cola': '/images/grocery_category_images/Coca-Cola.jpeg',
+                'Thums Up': '/images/grocery_category_images/Thums up.jpeg',
+                'Sprite': '/images/grocery_category_images/Sprite.jpeg',
+                'Fanta Orange': '/images/grocery_category_images/Fanta Orange.jpeg',
+                'Maaza Mango Drink': '/images/grocery_category_images/Mazza Mango Drink.jpeg',
+                'Real Mixed Fruit Juice': '/images/grocery_category_images/Real Mixed Fruit Juice.jpeg',
+                'Tata Tea': '/images/grocery_category_images/Tata Tea.jpeg',
+                'Nescafé Classic Coffee': '/images/grocery_category_images/Neacafe` Classic Coffee.jpeg',
+                'Bournvita': '/images/grocery_category_images/Bournvita.jpeg',
+                'Tang Orange Drink': '/images/grocery_category_images/Tang Orange Drink.jpeg',
+                'Surf Excel Matic Detergent': '/images/grocery_category_images/Surf Excel Matic Detergent.jpeg',
+                'Ariel Matic Detergent': '/images/grocery_category_images/Ariel Matic detergent.jpeg',
+                'Tide Plus Detergent': '/images/grocery_category_images/Tide Plus Detergent.jpeg',
+                'Rin Detergent Powder': '/images/grocery_category_images/Rin Detergent Powder.jpeg',
+                'Surf Excel Liquid Detergent': '/images/grocery_category_images/Surf Excel Liquid Detergent.jpeg',
+                'Ariel Liquid Detergent': '/images/grocery_category_images/Ariel Liquid Detergent.jpeg',
+                'Vim Dishwash Liquid': '/images/grocery_category_images/Vim Dishwash Liquid.jpeg',
+                'Vim Dishwash Bar': '/images/grocery_category_images/Vim Dishwash Bar.jpeg',
+                'Harpic Toilet Cleaner': '/images/grocery_category_images/Harpic Toilet Cleaner.jpeg',
+                'Domex Toilet Cleaner': '/images/grocery_category_images/Domex Toilet Cleaner.jpeg',
+                'India Gate Basmati Rice': '/images/grocery_category_images/India Gate Basmati Rice.jpeg',
+                'Fortune Chakki Fresh Atta': '/images/grocery_category_images/Fortune Chakki Fresh Atta.jpeg',
+                'Toor Dal': '/images/grocery_category_images/Toor Dal.jpeg',
+                'Moong Dal': 'images/grocery_category_images/Moong Dal.jpeg',
+                'Masoor Dal': '/images/grocery_category_images/Masoor Dal.jpeg',
+                'Chana Dal': '/images/grocery_category_images/Chana Dal.jpeg',
+                'Poha': '/images/grocery_category_images/Poha.jpeg',
+                'Suji / Rava': '/images/grocery_category_images/Suji - Rawa.jpeg',
+                'Rajma': '/images/grocery_category_images/Rajma.jpeg',
+                'Kabuli Chana': '/images/grocery_category_images/Kabuli Chana.jpeg',
+                'Britannia Bourbon': 'images/grocery_category_images/Britannia Bourbon.jpeg',
+                'Good Day': 'images/grocery_category_images/britannia Good Day.jpeg',
+                'Marie Gold': 'images/grocery_category_images/Britannia Marie Gold.jpeg',
+                'NutriChoice': 'images/grocery_category_images/Britannia Nutrichoice.jpeg',
+                'Hide & Seek': 'images/grocery_category_images/Hide & Seek.jpeg',
+                'Oreo Original': 'images/grocery_category_images/Oreo Original.jpeg',
+                'Parle-G Biscuits': 'images/grocery_category_images/Parle-G Biscuits.jpeg',
+                'Krackjack': 'images/grocery_category_images/Krackjack.jpeg',
+                'Sunfeast Dark Fantasy': 'images/grocery_category_images/Sunfeast Dark Fantasy.jpeg',
+                'Sunfeast Marie Light': 'images/grocery_category_images/Sunfeast Marie Light.jpeg'
+            };
+
+            function normalizeName(value) {
+                return (value || '').toLowerCase().replace(/[^a-z0-9]+/g, ' ').trim();
+            }
+
+            function findLocalImage(name) {
+                if (!name) return '';
+                if (localProductImages[name]) return localProductImages[name];
+                const normalized = normalizeName(name);
+                for (const [productName, imagePath] of Object.entries(localProductImages)) {
+                    if (normalizeName(productName) === normalized) return imagePath;
+                }
+                return '';
+            }
+
+            document.querySelectorAll('.product-card img').forEach((img) => {
+                const card = img.closest('.product-card');
+                const title = card?.querySelector('h3')?.textContent || img.alt || '';
+                const localImage = findLocalImage(title.trim());
+                if (localImage) {
+                    img.src = localImage;
+                }
+            });
+        })();
+    </script>
+    <script src="Cart JS.js"></script>
+    <script src="Wishlist JS.js"></script>
+</body>
+</html>

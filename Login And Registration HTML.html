@@ -1,0 +1,520 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Login / Sign Up - Chitkara Grocery Store</title>
+    <link rel="stylesheet" href="Login And Registration CSS.css">
+    <style>
+        .auth-wrapper{min-height:100vh;display:flex;align-items:center;justify-content:center;padding:20px;position:relative;z-index:1;}
+        .auth-card{background:rgba(255,255,255,0.06);backdrop-filter:blur(20px);border:1px solid rgba(78,176,96,0.25);border-radius:28px;padding:35px 30px;width:100%;max-width:440px;box-shadow:0 25px 60px rgba(0,0,0,0.5);animation:fadeInUp 0.6s ease both;}
+        @keyframes fadeInUp{from{opacity:0;transform:translateY(30px)}to{opacity:1;transform:translateY(0)}}
+        .auth-logo{text-align:center;font-size:1.6rem;font-weight:900;color:#e0e0e0;letter-spacing:2px;margin-bottom:5px;}
+        .auth-logo span{color:#4eb060;}
+        .auth-title{text-align:center;font-size:1.3rem;font-weight:800;background:linear-gradient(90deg,#4eb060,#a5d6a7,#fff,#a5d6a7,#4eb060);background-size:300%;-webkit-background-clip:text;-webkit-text-fill-color:transparent;background-clip:text;animation:shine 4s linear infinite;margin-bottom:4px;}
+        @keyframes shine{0%{background-position:0%}100%{background-position:300%}}
+        .auth-sub{text-align:center;color:#9ca3af;font-size:0.82rem;margin-bottom:18px;}
+        .tab-row{display:flex;background:rgba(255,255,255,0.05);border-radius:12px;padding:4px;margin-bottom:18px;gap:4px;}
+        .tab-btn{flex:1;padding:10px;border:none;border-radius:10px;background:transparent;color:#9ca3af;font-size:0.85rem;font-weight:600;cursor:pointer;transition:all 0.3s;font-family:'Poppins',sans-serif;}
+        .tab-btn.active{background:linear-gradient(120deg,#4eb060,#2e7d32);color:#fff;box-shadow:0 4px 15px rgba(78,176,96,0.4);}
+        .method-row{display:flex;gap:10px;margin-bottom:14px;}
+        .method-btn{flex:1;padding:11px;border:2px solid rgba(78,176,96,0.25)!important;border-radius:12px;background:rgba(255,255,255,0.04);color:#9ca3af;font-size:0.82rem;font-weight:600;cursor:pointer;transition:all 0.3s;font-family:'Poppins',sans-serif;text-align:center;}
+        .method-btn.active{border-color:#4eb060!important;background:rgba(78,176,96,0.12);color:#4eb060;}
+        .auth-input{width:100%;padding:12px 16px;background:rgba(255,255,255,0.07);border:1px solid rgba(78,176,96,0.3)!important;border-radius:12px;color:#e0e0e0;font-size:0.9rem;margin-bottom:12px;font-family:'Poppins',sans-serif;transition:all 0.3s;outline:none;}
+        .auth-input::placeholder{color:rgba(255,255,255,0.3);}
+        .auth-input:focus{border-color:rgba(78,176,96,0.7)!important;background:rgba(255,255,255,0.1);box-shadow:0 0 15px rgba(78,176,96,0.15);}
+        .pw-wrap{position:relative;margin-bottom:12px;}
+        .pw-wrap .auth-input{margin-bottom:0;padding-right:46px;}
+        .pw-eye{position:absolute;right:14px;top:50%;transform:translateY(-50%);background:none;border:none;color:#81c784;cursor:pointer;font-size:1rem;}
+        .pw-hint{font-size:0.72rem;margin-bottom:8px;margin-top:3px;}
+        .pw-hint.ok{color:#4eb060;} .pw-hint.err{color:#ff6b6b;}
+        .otp-boxes{display:flex;gap:8px;justify-content:center;margin-bottom:12px;}
+        .otp-box{width:44px;height:52px;background:rgba(255,255,255,0.07);border:2px solid rgba(78,176,96,0.3)!important;border-radius:12px;color:#e0e0e0;font-size:1.4rem;font-weight:700;text-align:center;font-family:'Poppins',sans-serif;outline:none;transition:all 0.3s;}
+        .otp-box:focus{border-color:#4eb060!important;box-shadow:0 0 12px rgba(78,176,96,0.3);transform:scale(1.05);}
+        .otp-show{background:rgba(78,176,96,0.1);border:1px solid rgba(78,176,96,0.3);border-radius:12px;padding:10px;text-align:center;margin-bottom:12px;display:none;}
+        .otp-show p{color:#9ca3af;font-size:0.75rem;margin-bottom:3px;}
+        .otp-show strong{color:#4eb060;font-size:1.5rem;font-weight:900;letter-spacing:8px;}
+        .auth-btn{width:100%;padding:13px;background:linear-gradient(120deg,#4eb060,#2e7d32);border:none;border-radius:14px;color:#fff;font-size:0.95rem;font-weight:700;cursor:pointer;transition:all 0.3s;box-shadow:0 8px 25px rgba(78,176,96,0.4);font-family:'Poppins',sans-serif;margin-bottom:8px;}
+        .auth-btn:hover{transform:translateY(-3px);box-shadow:0 12px 35px rgba(78,176,96,0.6);}
+        .auth-btn-back{width:100%;padding:10px;background:rgba(255,255,255,0.06);border:1px solid rgba(255,255,255,0.15)!important;border-radius:14px;color:#9ca3af;font-size:0.85rem;cursor:pointer;font-family:'Poppins',sans-serif;margin-bottom:8px;transition:all 0.3s;}
+        .auth-btn-back:hover{color:#e0e0e0;background:rgba(255,255,255,0.1);}
+        .auth-alert{border-radius:10px;padding:10px 14px;font-size:0.82rem;font-weight:600;text-align:center;margin-bottom:12px;display:none;}
+        .auth-alert.error{background:rgba(255,80,80,0.15);color:#ff6b6b;border:1px solid rgba(255,80,80,0.3);}
+        .auth-alert.success{background:rgba(78,176,96,0.15);color:#4eb060;border:1px solid rgba(78,176,96,0.3);}
+        .auth-alert.info{background:rgba(253,204,13,0.1);color:#fdcc0d;border:1px solid rgba(253,204,13,0.3);}
+        .resend-row{text-align:center;color:#9ca3af;font-size:0.8rem;margin-bottom:10px;}
+        .resend-btn{background:none;border:none;color:#4eb060;cursor:pointer;font-size:0.8rem;font-weight:600;font-family:'Poppins',sans-serif;text-decoration:underline;}
+        .forgot-wrap{text-align:center;margin-bottom:6px;}
+        .forgot-wrap button{background:none;border:none;color:#81c784;cursor:pointer;font-size:0.8rem;font-family:'Poppins',sans-serif;text-decoration:underline;}
+        .forgot-wrap button:hover{color:#4eb060;}
+        .steps-row{display:flex;justify-content:center;gap:6px;margin-bottom:16px;}
+        .step-dot{width:8px;height:8px;border-radius:50%;background:rgba(78,176,96,0.2);transition:all 0.3s;}
+        .step-dot.active{background:#4eb060;width:24px;border-radius:4px;box-shadow:0 0 10px rgba(78,176,96,0.5);}
+        .d-none{display:none!important;}
+    </style>
+</head>
+<body>
+<div class="orb-green"></div>
+<div class="auth-wrapper">
+<div class="auth-card">
+
+    <div class="auth-logo"><span>C</span>GS</div>
+    <div class="auth-title" id="page-title">Welcome Back!</div>
+    <p class="auth-sub" id="page-sub">Sign in to continue shopping</p>
+
+    <div class="tab-row">
+        <button class="tab-btn active" onclick="switchTab('login')">🔐 Sign In</button>
+        <button class="tab-btn" onclick="switchTab('signup')">✨ Sign Up</button>
+    </div>
+
+    <div class="steps-row">
+        <div class="step-dot active" id="dot1"></div>
+        <div class="step-dot" id="dot2"></div>
+        <div class="step-dot" id="dot3"></div>
+    </div>
+
+    <div class="auth-alert" id="auth-alert"></div>
+
+    <!-- ===== SIGN IN — only Enter Password ===== -->
+    <div id="login-section">
+        <div class="method-row">
+            <button class="method-btn active" id="l-email-btn" onclick="setMethod('l','email')">📧 Email</button>
+            <button class="method-btn" id="l-phone-btn" onclick="setMethod('l','phone')">📱 Phone</button>
+        </div>
+        <div id="l-s1">
+            <input type="text" class="auth-input" id="l-contact" placeholder="📧 Enter Email Address">
+            <div class="pw-wrap">
+                <input type="password" class="auth-input" id="l-pw" placeholder="🔒 Enter Password">
+                <button class="pw-eye" onclick="togglePw('l-pw')">👁</button>
+            </div>
+            <button class="auth-btn" onclick="loginStep1()">📨 Send OTP</button>
+            <div class="forgot-wrap">
+                <button onclick="showForgot()">Forgot Password?</button>
+            </div>
+        </div>
+        <div id="l-s2" class="d-none">
+            <div class="otp-show" id="l-otp-show">
+                <p>🔐 Your OTP (Demo)</p>
+                <strong id="l-otp-val"></strong>
+            </div>
+            <p style="color:#9ca3af;font-size:0.8rem;text-align:center;margin-bottom:10px;">OTP sent to <span id="l-cshow" style="color:#4eb060;"></span></p>
+            <div class="otp-boxes">
+                <input class="otp-box" maxlength="1" id="l1" oninput="nxt(this,'l',1)">
+                <input class="otp-box" maxlength="1" id="l2" oninput="nxt(this,'l',2)">
+                <input class="otp-box" maxlength="1" id="l3" oninput="nxt(this,'l',3)">
+                <input class="otp-box" maxlength="1" id="l4" oninput="nxt(this,'l',4)">
+                <input class="otp-box" maxlength="1" id="l5" oninput="nxt(this,'l',5)">
+                <input class="otp-box" maxlength="1" id="l6" oninput="nxt(this,'l',6)">
+            </div>
+            <div class="resend-row">Didn't receive? <button class="resend-btn" onclick="loginStep1()">Resend</button></div>
+            <button class="auth-btn" onclick="loginStep2()">✅ Verify & Sign In</button>
+            <button class="auth-btn-back" onclick="back('l')">← Back</button>
+        </div>
+    </div>
+
+    <!-- ===== SIGN UP — Create Password + Confirm Password ===== -->
+    <div id="signup-section" class="d-none">
+        <div class="method-row">
+            <button class="method-btn active" id="s-email-btn" onclick="setMethod('s','email')">📧 Email</button>
+            <button class="method-btn" id="s-phone-btn" onclick="setMethod('s','phone')">📱 Phone</button>
+        </div>
+        <div id="s-s1">
+            <input type="text" class="auth-input" id="s-contact" placeholder="📧 Enter Email Address">
+            <div class="pw-wrap">
+                <input type="password" class="auth-input" id="s-pw" placeholder="🔒 Create Password (min 8 chars)" oninput="checkPw()">
+                <button class="pw-eye" onclick="togglePw('s-pw')">👁</button>
+            </div>
+            <p class="pw-hint" id="s-pw-hint"></p>
+            <div class="pw-wrap">
+                <input type="password" class="auth-input" id="s-cpw" placeholder="🔒 Confirm Password">
+                <button class="pw-eye" onclick="togglePw('s-cpw')">👁</button>
+            </div>
+            <button class="auth-btn" onclick="signupStep1()">📨 Send OTP</button>
+        </div>
+        <div id="s-s2" class="d-none">
+            <div class="otp-show" id="s-otp-show">
+                <p>🔐 Your OTP (Demo)</p>
+                <strong id="s-otp-val"></strong>
+            </div>
+            <p style="color:#9ca3af;font-size:0.8rem;text-align:center;margin-bottom:10px;">OTP sent to <span id="s-cshow" style="color:#4eb060;"></span></p>
+            <div class="otp-boxes">
+                <input class="otp-box" maxlength="1" id="s1" oninput="nxt(this,'s',1)">
+                <input class="otp-box" maxlength="1" id="s2" oninput="nxt(this,'s',2)">
+                <input class="otp-box" maxlength="1" id="s3" oninput="nxt(this,'s',3)">
+                <input class="otp-box" maxlength="1" id="s4" oninput="nxt(this,'s',4)">
+                <input class="otp-box" maxlength="1" id="s5" oninput="nxt(this,'s',5)">
+                <input class="otp-box" maxlength="1" id="s6" oninput="nxt(this,'s',6)">
+            </div>
+            <div class="resend-row">Didn't receive? <button class="resend-btn" onclick="signupStep1()">Resend</button></div>
+            <button class="auth-btn" onclick="signupStep2()">✅ Verify & Sign Up</button>
+            <button class="auth-btn-back" onclick="back('s')">← Back</button>
+        </div>
+    </div>
+
+    <!-- ===== FORGOT PASSWORD ===== -->
+    <div id="forgot-section" class="d-none">
+        <div id="f-s1">
+            <p style="color:#9ca3af;font-size:0.82rem;text-align:center;margin-bottom:12px;">Enter registered email or phone to reset password</p>
+            <input type="text" class="auth-input" id="f-contact" placeholder="📧 Email or 📱 Phone">
+            <button class="auth-btn" onclick="forgotStep1()">📨 Send Reset OTP</button>
+            <button class="auth-btn-back" onclick="showSection('login')">← Back to Login</button>
+        </div>
+        <div id="f-s2" class="d-none">
+            <div class="otp-show" id="f-otp-show">
+                <p>🔐 Reset OTP (Demo)</p>
+                <strong id="f-otp-val"></strong>
+            </div>
+            <p style="color:#9ca3af;font-size:0.8rem;text-align:center;margin-bottom:10px;">OTP sent to <span id="f-cshow" style="color:#4eb060;"></span></p>
+            <div class="otp-boxes">
+                <input class="otp-box" maxlength="1" id="f1" oninput="nxt(this,'f',1)">
+                <input class="otp-box" maxlength="1" id="f2" oninput="nxt(this,'f',2)">
+                <input class="otp-box" maxlength="1" id="f3" oninput="nxt(this,'f',3)">
+                <input class="otp-box" maxlength="1" id="f4" oninput="nxt(this,'f',4)">
+                <input class="otp-box" maxlength="1" id="f5" oninput="nxt(this,'f',5)">
+                <input class="otp-box" maxlength="1" id="f6" oninput="nxt(this,'f',6)">
+            </div>
+            <div class="resend-row">Didn't receive? <button class="resend-btn" onclick="forgotStep1()">Resend</button></div>
+            <button class="auth-btn" onclick="forgotStep2()">✅ Verify OTP</button>
+            <button class="auth-btn-back" onclick="backForgot()">← Back</button>
+        </div>
+        <div id="f-s3" class="d-none">
+            <p style="color:#81c784;font-size:0.82rem;text-align:center;margin-bottom:12px;">✅ OTP Verified! Set your new password</p>
+            <div class="pw-wrap">
+                <input type="password" class="auth-input" id="f-newpw" placeholder="🔒 New Password (min 8 chars)" oninput="checkNewPw()">
+                <button class="pw-eye" onclick="togglePw('f-newpw')">👁</button>
+            </div>
+            <p class="pw-hint" id="f-pw-hint"></p>
+            <div class="pw-wrap">
+                <input type="password" class="auth-input" id="f-cpw" placeholder="🔒 Confirm New Password">
+                <button class="pw-eye" onclick="togglePw('f-cpw')">👁</button>
+            </div>
+            <button class="auth-btn" onclick="forgotStep3()">🔒 Reset Password</button>
+        </div>
+    </div>
+
+</div>
+</div>
+
+<script>
+let lOTP='',sOTP='',fOTP='';
+let lMethod='email',sMethod='email';
+
+function genOTP(){return Math.floor(100000+Math.random()*900000).toString();}
+function togglePw(id){const e=document.getElementById(id);e.type=e.type==='password'?'text':'password';}
+function nxt(el,p,n){if(el.value&&n<6)document.getElementById(p+(n+1)).focus();}
+function getOTP(p){let o='';for(let i=1;i<=6;i++)o+=document.getElementById(p+i).value;return o;}
+
+function showAlert(msg,type){
+    const el=document.getElementById('auth-alert');
+    el.textContent=msg;el.className='auth-alert '+type;el.style.display='block';
+    clearTimeout(el._t);el._t=setTimeout(()=>el.style.display='none',5000);
+}
+function clearAlert(){document.getElementById('auth-alert').style.display='none';}
+function setDots(n){for(let i=1;i<=3;i++)document.getElementById('dot'+i).classList.toggle('active',i===n);}
+
+function checkPw(){
+    const v=document.getElementById('s-pw').value;
+    const h=document.getElementById('s-pw-hint');
+    if(!v){h.textContent='';return;}
+    if(v.length<8){h.textContent='❌ Min 8 characters required';h.className='pw-hint err';}
+    else{h.textContent='✅ Good password!';h.className='pw-hint ok';}
+}
+
+function checkNewPw(){
+    const v=document.getElementById('f-newpw').value;
+    const h=document.getElementById('f-pw-hint');
+    if(!v){h.textContent='';return;}
+    if(v.length<8){h.textContent='❌ Min 8 characters required';h.className='pw-hint err';}
+    else{h.textContent='✅ Good password!';h.className='pw-hint ok';}
+}
+
+const API_BASE_URL = location.protocol === 'file:' || ['localhost', '127.0.0.1'].includes(location.hostname)
+    ? 'http://localhost:5000'
+    : '';
+
+function shakeBoxes(){
+    document.querySelectorAll('.otp-box').forEach(b=>{
+        b.style.borderColor='rgba(255,80,80,0.8)';
+        setTimeout(()=>b.style.borderColor='',1000);
+    });
+}
+
+async function sendOTPRequest(contact) {
+    let response;
+    try {
+        response = await fetch(`${API_BASE_URL}/api/users/send-otp`, {
+            method: 'POST',
+            headers: { 'Content-Type': 'application/json' },
+            body: JSON.stringify({ contact })
+        });
+    } catch (error) {
+        throw new Error('Cannot reach the server. Start it with "npm start" and open http://localhost:5000.');
+    }
+
+    const data = await response.json();
+    if (!response.ok) {
+        throw new Error(data.message || 'Unable to send OTP');
+    }
+
+    return data;
+}
+
+async function verifyOTPRequest(contact, otp) {
+    let response;
+    try {
+        response = await fetch(`${API_BASE_URL}/api/users/verify-otp`, {
+            method: 'POST',
+            headers: { 'Content-Type': 'application/json' },
+            body: JSON.stringify({ contact, otp })
+        });
+    } catch (error) {
+        throw new Error('Cannot reach the server. Start it with "npm start" and open http://localhost:5000.');
+    }
+
+    const data = await response.json();
+    if (!response.ok) {
+        throw new Error(data.message || 'Unable to verify OTP');
+    }
+
+    return data;
+}
+
+function switchTab(tab){
+    document.querySelectorAll('.tab-btn').forEach((b,i)=>b.classList.toggle('active',(tab==='login'&&i===0)||(tab==='signup'&&i===1)));
+    showSection(tab);
+    document.getElementById('page-title').textContent=tab==='login'?'Welcome Back!':'Create Account';
+    document.getElementById('page-sub').textContent=tab==='login'?'Sign in to continue shopping':'Join CGS — Fresh groceries at your door!';
+    setDots(1);clearAlert();
+}
+
+function showSection(sec){
+    ['login','signup','forgot'].forEach(s=>{
+        document.getElementById(s+'-section').classList.toggle('d-none',s!==sec);
+    });
+}
+
+function showForgot(){
+    showSection('forgot');
+    document.getElementById('page-title').textContent='Reset Password';
+    document.getElementById('page-sub').textContent='Verify identity to reset password';
+    setDots(1);clearAlert();
+}
+
+function setMethod(pre,m){
+    if(pre==='l')lMethod=m;else sMethod=m;
+    document.getElementById(pre+'-email-btn').classList.toggle('active',m==='email');
+    document.getElementById(pre+'-phone-btn').classList.toggle('active',m==='phone');
+    document.getElementById(pre==='l'?'l-contact':'s-contact').placeholder=
+        m==='email'?'📧 Enter Email Address':'📱 Enter 10-digit Phone Number';
+}
+
+function back(pre){
+    document.getElementById(pre+'-s1').classList.remove('d-none');
+    document.getElementById(pre+'-s2').classList.add('d-none');
+    document.getElementById(pre+'-otp-show').style.display='none';
+    setDots(1);clearAlert();
+}
+
+function backForgot(){
+    document.getElementById('f-s1').classList.remove('d-none');
+    document.getElementById('f-s2').classList.add('d-none');
+    document.getElementById('f-otp-show').style.display='none';
+    setDots(1);clearAlert();
+}
+
+// ===== SIGN IN =====
+async function loginStep1(){
+    const contact=document.getElementById('l-contact').value.trim();
+    const pw=document.getElementById('l-pw').value;
+
+    if(!contact){showAlert('⚠️ Enter your email or phone number','error');return;}
+    if(lMethod==='email'&&!contact.includes('@')){showAlert('⚠️ Enter a valid email address','error');return;}
+    if(lMethod==='phone'&&(isNaN(contact)||contact.length!==10)){showAlert('⚠️ Enter valid 10-digit phone number','error');return;}
+    if(!pw){showAlert('⚠️ Enter your password','error');return;}
+    if(pw.length<8){showAlert('⚠️ Password must be at least 8 characters','error');return;}
+
+    const storedPw=localStorage.getItem('cgs_pw_'+contact);
+
+    if(!storedPw){
+        showAlert('❌ No account found! Please Sign Up first.','error');
+        setTimeout(()=>{
+            document.querySelectorAll('.tab-btn')[1].style.animation='pulse 0.5s ease 3';
+        },500);
+        return;
+    }
+
+    if(storedPw!==pw){
+        showAlert('❌ Wrong password! Click "Forgot Password?" to reset.','error');
+        document.getElementById('l-pw').style.borderColor='rgba(255,80,80,0.8)';
+        setTimeout(()=>document.getElementById('l-pw').style.borderColor='',2000);
+        return;
+    }
+
+    try {
+        const data=await sendOTPRequest(contact);
+        const otp = data.otp || 'OTP sent';
+        lOTP = data.otp || '';
+        document.getElementById('l-otp-val').textContent = otp;
+        document.getElementById('l-otp-show').style.display='block';
+        document.getElementById('l-cshow').textContent=contact;
+        document.getElementById('l-s1').classList.add('d-none');
+        document.getElementById('l-s2').classList.remove('d-none');
+        setDots(2);
+        showAlert(data.otp ? '✅ OTP generated — shown above!' : '✅ OTP sent successfully! Check your phone/email.','success');
+        setTimeout(()=>document.getElementById('l1').focus(),100);
+    } catch (err) {
+        showAlert(`⚠️ ${err.message}`,'error');
+    }
+}
+
+async function loginStep2(){
+    const entered=getOTP('l');
+    if(entered.length<6){showAlert('⚠️ Enter all 6 digits','error');return;}
+
+    const contact=document.getElementById('l-contact').value.trim();
+
+    try {
+        await verifyOTPRequest(contact, entered);
+    } catch (err) {
+        showAlert(`❌ ${err.message}`,'error');
+        shakeBoxes();
+        return;
+    }
+
+    localStorage.setItem('cgs_logged_in','true');
+    localStorage.setItem('cgs_user_contact',contact);
+    localStorage.setItem('cgs_user_name',localStorage.getItem('cgs_name_'+contact)||contact);
+
+    setDots(3);
+    showAlert('✅ Login successful! Redirecting...','success');
+    setTimeout(()=>{
+        window.location.href=localStorage.getItem('cgs_profile_done')?'Home Page HTML.html':'Personal Info HTML.html';
+    },1500);
+}
+
+// ===== SIGN UP =====
+async function signupStep1(){
+    const contact=document.getElementById('s-contact').value.trim();
+    const pw=document.getElementById('s-pw').value.normalize('NFKC');
+    const cpw=document.getElementById('s-cpw').value.trim().normalize('NFKC');
+
+    if(!contact){showAlert('⚠️ Enter your email or phone number','error');return;}
+    if(sMethod==='email'&&!contact.includes('@')){showAlert('⚠️ Enter a valid email address','error');return;}
+    if(sMethod==='phone'&&(isNaN(contact)||contact.length!==10)){showAlert('⚠️ Enter valid 10-digit phone number','error');return;}
+    if(!pw){showAlert('⚠️ Create a password','error');return;}
+    if(pw.length<8){showAlert('❌ Password must be at least 8 characters','error');return;}
+    if(pw!==cpw){showAlert('❌ Passwords do not match!','error');return;}
+
+    if(localStorage.getItem('cgs_pw_'+contact)){
+        showAlert('⚠️ Account already exists! Please Sign In.','error');
+        setTimeout(()=>switchTab('login'),1500);
+        return;
+    }
+
+    try {
+        const data=await sendOTPRequest(contact);
+        const otp = data.otp || 'OTP sent';
+        sOTP=data.otp || '';
+        document.getElementById('s-otp-val').textContent=otp;
+        document.getElementById('s-otp-show').style.display='block';
+        document.getElementById('s-cshow').textContent=contact;
+        document.getElementById('s-s1').classList.add('d-none');
+        document.getElementById('s-s2').classList.remove('d-none');
+        setDots(2);
+        showAlert(data.otp ? '✅ OTP generated — shown above!' : '✅ OTP sent successfully! Check your phone/email.','success');
+        setTimeout(()=>document.getElementById('s1').focus(),100);
+    } catch (err) {
+        showAlert(`⚠️ ${err.message}`,'error');
+    }
+}
+
+async function signupStep2(){
+    const entered=getOTP('s');
+    if(entered.length<6){showAlert('⚠️ Enter all 6 digits','error');return;}
+
+    const contact=document.getElementById('s-contact').value.trim();
+    const pw=document.getElementById('s-pw').value;
+
+    try {
+        await verifyOTPRequest(contact, entered);
+    } catch (err) {
+        showAlert(`❌ ${err.message}`,'error');
+        shakeBoxes();
+        return;
+    }
+
+    localStorage.setItem('cgs_pw_'+contact,pw);
+    localStorage.setItem('cgs_logged_in','true');
+    localStorage.setItem('cgs_user_contact',contact);
+    localStorage.setItem('cgs_user_name',contact);
+
+    setDots(3);
+    showAlert('✅ Account created! Redirecting...','success');
+    setTimeout(()=>{window.location.href='Personal Info HTML.html';},1500);
+}
+
+// ===== FORGOT PASSWORD =====
+async function forgotStep1(){
+    const contact=document.getElementById('f-contact').value.trim();
+    if(!contact){showAlert('⚠️ Enter your email or phone','error');return;}
+    if(!localStorage.getItem('cgs_pw_'+contact)){
+        showAlert('❌ No account found with this email/phone!','error');return;
+    }
+
+    try {
+        const data=await sendOTPRequest(contact);
+        const otp = data.otp || 'OTP sent';
+        fOTP = data.otp || '';
+        document.getElementById('f-otp-val').textContent=otp;
+        document.getElementById('f-otp-show').style.display='block';
+        document.getElementById('f-cshow').textContent=contact;
+        document.getElementById('f-s1').classList.add('d-none');
+        document.getElementById('f-s2').classList.remove('d-none');
+        setDots(2);
+        showAlert(data.otp ? '✅ Reset OTP generated — shown above!' : '✅ Reset OTP sent successfully! Check your phone/email.','success');
+        setTimeout(()=>document.getElementById('f1').focus(),100);
+    } catch (err) {
+        showAlert(`⚠️ ${err.message}`,'error');
+    }
+}
+
+async function forgotStep2(){
+    const entered=getOTP('f');
+    if(entered.length<6){showAlert('⚠️ Enter all 6 digits','error');return;}
+
+    const contact=document.getElementById('f-contact').value.trim();
+
+    try {
+        await verifyOTPRequest(contact, entered);
+    } catch (err) {
+        showAlert(`❌ ${err.message}`,'error');
+        shakeBoxes();
+        return;
+    }
+
+    document.getElementById('f-s2').classList.add('d-none');
+    document.getElementById('f-s3').classList.remove('d-none');
+    setDots(3);showAlert('✅ OTP verified! Set new password.','success');
+}
+
+function forgotStep3(){
+    const contact=document.getElementById('f-contact').value.trim();
+    const newpw=document.getElementById('f-newpw').value;
+    const cpw=document.getElementById('f-cpw').value;
+    if(newpw.length<8){showAlert('❌ Password must be at least 8 characters','error');return;}
+    if(newpw!==cpw){showAlert('❌ Passwords do not match!','error');return;}
+
+    localStorage.setItem('cgs_pw_'+contact,newpw);
+    showAlert('✅ Password reset! Please login.','success');
+    setTimeout(()=>{
+        ['f-s1','f-s2','f-s3'].forEach((id,i)=>document.getElementById(id).classList.toggle('d-none',i!==0));
+        document.getElementById('f-otp-show').style.display='none';
+        showSection('login');
+        document.getElementById('page-title').textContent='Welcome Back!';
+        document.getElementById('page-sub').textContent='Sign in with your new password';
+        setDots(1);
+    },2000);
+}
+</script>
+</body>
+</html>
