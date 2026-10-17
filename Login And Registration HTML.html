@@ -248,7 +248,7 @@ async function sendOTPRequest(contact) {
             body: JSON.stringify({ contact })
         });
     } catch (error) {
-        throw new Error('Cannot reach the server. Start it with "npm start" and open http://localhost:5000.');
+        throw new Error('Server is not running. Run: node server.js in your terminal, then open http://localhost:5000');
     }
 
     const data = await response.json();
@@ -268,7 +268,7 @@ async function verifyOTPRequest(contact, otp) {
             body: JSON.stringify({ contact, otp })
         });
     } catch (error) {
-        throw new Error('Cannot reach the server. Start it with "npm start" and open http://localhost:5000.');
+        throw new Error('Server is not running. Run: node server.js in your terminal, then open http://localhost:5000');
     }
 
     const data = await response.json();
